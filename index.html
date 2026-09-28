@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Tinshed Players - Crew Rostering System</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Tinshed Players</h1>
+      <h2>Add Volunteer</h2>
+
+      <form id="volunteerForm">
+        <label for="fullName">Full Name *</label>
+        <input type="text" id="fullName" placeholder="Enter volunteer name" />
+
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" placeholder="Enter phone number" />
+
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" placeholder="Enter email address" />
+
+        <label for="status">Status</label>
+        <input type="text" id="status" value="Active" readonly />
+
+        <p id="message"></p>
+
+        <div class="buttons">
+          <button type="submit">Save Volunteer</button>
+          <button type="reset" class="cancel">Cancel</button>
+        </div>
+      </form>
+
+      <div id="savedVolunteer" class="saved-record"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

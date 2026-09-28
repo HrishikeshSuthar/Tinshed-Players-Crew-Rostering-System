@@ -1,0 +1,73 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 40px;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  background-color: #333333;
+  color: white;
+}
+
+.cancel {
+  background-color: #dddddd;
+}
+
+#message {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.saved-record {
+  margin-top: 25px;
+  padding: 15px;
+  border-top: 1px solid #dddddd;
+}
