@@ -94,3 +94,40 @@ button {
 .role-list li {
     margin-bottom: 8px;
 }
+
+select {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+#assignmentMessage {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.roster {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #dddddd;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}

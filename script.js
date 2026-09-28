@@ -69,3 +69,50 @@ crewRoleForm.addEventListener("submit", function (event) {
 
   roleName.value = "";
 });
+
+
+// --------------------------------
+// Assign Volunteer to Crew Role
+// --------------------------------
+
+const assignmentForm = document.getElementById("assignmentForm");
+const assignmentMessage = document.getElementById("assignmentMessage");
+const rosterBody = document.getElementById("rosterBody");
+
+assignmentForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    const performance = document.getElementById("performance").value;
+    const crewRole = document.getElementById("assignmentRole").value;
+    const volunteer = document.getElementById("volunteer").value;
+
+    // Validate selections
+    if (performance === "" || crewRole === "" || volunteer === "") {
+        assignmentMessage.textContent =
+            "Please select a performance, crew role and volunteer.";
+        assignmentMessage.style.color = "red";
+        return;
+    }
+
+    // Every new assignment starts as unconfirmed
+    const status = "Unconfirmed";
+
+    // Add assignment to performance roster
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${performance}</td>
+        <td>${crewRole}</td>
+        <td>${volunteer}</td>
+        <td>${status}</td>
+    `;
+
+    rosterBody.appendChild(row);
+
+    assignmentMessage.textContent =
+        "Volunteer assigned successfully.";
+    assignmentMessage.style.color = "green";
+
+    assignmentForm.reset();
+});

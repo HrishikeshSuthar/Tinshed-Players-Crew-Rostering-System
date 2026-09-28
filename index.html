@@ -1,105 +1,125 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tinshed Players - Crew Rostering System</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-
+  <body>
     <div class="container">
+      <h1>Tinshed Players</h1>
+      <p class="subtitle">Crew Rostering System</p>
 
-        <h1>Tinshed Players</h1>
-        <p class="subtitle">Crew Rostering System</p>
+      <!-- Add Volunteer Section -->
+      <section>
+        <h2>Add Volunteer</h2>
 
-        <!-- Add Volunteer Section -->
-        <section>
-            <h2>Add Volunteer</h2>
+        <form id="volunteerForm">
+          <label for="fullName">Full Name *</label>
+          <input type="text" id="fullName" placeholder="Enter volunteer name" />
 
-            <form id="volunteerForm">
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" placeholder="Enter phone number" />
 
-                <label for="fullName">Full Name *</label>
-                <input
-                    type="text"
-                    id="fullName"
-                    placeholder="Enter volunteer name"
-                >
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" placeholder="Enter email address" />
 
-                <label for="phone">Phone Number *</label>
-                <input
-                    type="tel"
-                    id="phone"
-                    placeholder="Enter phone number"
-                >
+          <label for="status">Status</label>
+          <input type="text" id="status" value="Active" readonly />
 
-                <label for="email">Email Address *</label>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter email address"
-                >
+          <p id="message"></p>
 
-                <label for="status">Status</label>
-                <input
-                    type="text"
-                    id="status"
-                    value="Active"
-                    readonly
-                >
+          <div class="buttons">
+            <button type="submit">Save Volunteer</button>
+            <button type="reset" class="cancel">Cancel</button>
+          </div>
+        </form>
 
-                <p id="message"></p>
+        <div id="savedVolunteer" class="saved-record"></div>
+      </section>
 
-                <div class="buttons">
-                    <button type="submit">Save Volunteer</button>
-                    <button type="reset" class="cancel">Cancel</button>
-                </div>
+      <!-- Crew Role Management Section -->
+      <section>
+        <h2>Crew Role Management</h2>
 
-            </form>
+        <form id="crewRoleForm">
+          <label for="roleName">Crew Role Name *</label>
 
-            <div id="savedVolunteer" class="saved-record"></div>
-        </section>
+          <input type="text" id="roleName" placeholder="Enter crew role" />
 
+          <p id="roleMessage"></p>
 
-        <!-- Crew Role Management Section -->
-        <section>
-            <h2>Crew Role Management</h2>
+          <button type="submit">Add Crew Role</button>
+        </form>
 
-            <form id="crewRoleForm">
+        <div class="role-list">
+          <h3>Current Crew Roles</h3>
 
-                <label for="roleName">Crew Role Name *</label>
+          <ul id="crewRoleList">
+            <li>Stage Manager</li>
+            <li>Lighting</li>
+            <li>Sound</li>
+            <li>Front of House</li>
+          </ul>
+        </div>
+      </section>
 
-                <input
-                    type="text"
-                    id="roleName"
-                    placeholder="Enter crew role"
-                >
+      <!-- Assign Volunteer to Crew Role -->
+      <section>
+        <h2>Assign Volunteer to Crew Role</h2>
 
-                <p id="roleMessage"></p>
+        <form id="assignmentForm">
+          <label for="performance">Performance *</label>
+          <select id="performance">
+            <option value="">Select performance</option>
+            <option value="Opening Night">Opening Night</option>
+            <option value="Friday Evening">Friday Evening</option>
+            <option value="Saturday Matinee">Saturday Matinee</option>
+          </select>
 
-                <button type="submit">Add Crew Role</button>
+          <label for="assignmentRole">Crew Role *</label>
+          <select id="assignmentRole">
+            <option value="">Select crew role</option>
+            <option value="Stage Manager">Stage Manager</option>
+            <option value="Lighting">Lighting</option>
+            <option value="Sound">Sound</option>
+            <option value="Front of House">Front of House</option>
+          </select>
 
-            </form>
+          <label for="volunteer">Volunteer *</label>
+          <select id="volunteer">
+            <option value="">Select volunteer</option>
+            <option value="John Smith">John Smith</option>
+            <option value="Sarah Brown">Sarah Brown</option>
+            <option value="Michael Lee">Michael Lee</option>
+          </select>
 
-            <div class="role-list">
+          <p id="assignmentMessage"></p>
 
-                <h3>Current Crew Roles</h3>
+          <button type="submit">Assign Volunteer</button>
+        </form>
 
-                <ul id="crewRoleList">
-                    <li>Stage Manager</li>
-                    <li>Lighting</li>
-                    <li>Sound</li>
-                    <li>Front of House</li>
-                </ul>
+        <div class="roster">
+          <h3>Performance Roster</h3>
 
-            </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Performance</th>
+                <th>Crew Role</th>
+                <th>Volunteer</th>
+                <th>Status</th>
+              </tr>
+            </thead>
 
-        </section>
-
+            <tbody id="rosterBody"></tbody>
+          </table>
+        </div>
+      </section>
     </div>
 
     <script src="script.js"></script>
-
-</body>
+  </body>
 </html>
