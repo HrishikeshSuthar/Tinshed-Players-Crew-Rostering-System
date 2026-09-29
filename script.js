@@ -1,105 +1,375 @@
-// --------------------------------
-// Add Volunteer
-// --------------------------------
+// ========================================
+// Tinshed Players Crew Rostering System
+// ========================================
 
-const volunteerForm = document.getElementById("volunteerForm");
-const message = document.getElementById("message");
-const savedVolunteer = document.getElementById("savedVolunteer");
 
+// ========================================
+// Volunteer Management
+// ========================================
+
+const volunteerForm =
+    document.getElementById("volunteerForm");
+
+const volunteerBody =
+    document.getElementById("volunteerBody");
+
+const volunteerMessage =
+    document.getElementById("message");
+
+
+// Save new volunteer
 volunteerForm.addEventListener("submit", function (event) {
-  event.preventDefault();
 
-  const fullName = document.getElementById("fullName").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const email = document.getElementById("email").value.trim();
+    event.preventDefault();
 
-  if (fullName === "" || phone === "" || email === "") {
-    message.textContent = "Please complete all required fields.";
-    message.style.color = "red";
-    return;
-  }
 
-  if (!email.includes("@") || !email.includes(".")) {
-    message.textContent = "Please enter a valid email address.";
-    message.style.color = "red";
-    return;
-  }
+    const name =
+        document.getElementById("fullName").value.trim();
 
-  message.textContent = "Volunteer saved successfully.";
-  message.style.color = "green";
+    const phone =
+        document.getElementById("phone").value.trim();
 
-  savedVolunteer.innerHTML = `
-        <h3>Volunteer Record</h3>
-        <p><strong>Name:</strong> ${fullName}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Status:</strong> Active</p>
+    const email =
+        document.getElementById("email").value.trim();
+
+
+    // Required information validation
+    if (
+        name === "" ||
+        phone === "" ||
+        email === ""
+    ) {
+
+        volunteerMessage.textContent =
+            "Please complete all required fields.";
+
+        volunteerMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // Email validation
+    if (
+        !email.includes("@") ||
+        !email.includes(".")
+    ) {
+
+        volunteerMessage.textContent =
+            "Please enter a valid email address.";
+
+        volunteerMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // Create volunteer record
+    const row = document.createElement("tr");
+
+
+    row.innerHTML = `
+        <td class="volunteer-name">
+            ${name}
+        </td>
+
+        <td class="volunteer-phone">
+            ${phone}
+        </td>
+
+        <td class="volunteer-email">
+            ${email}
+        </td>
+
+        <td class="volunteer-status">
+            Active
+        </td>
+
+        <td>
+            <button
+                type="button"
+                onclick="editVolunteer(this)"
+            >
+                Edit
+            </button>
+
+            <button
+                type="button"
+                onclick="deactivateVolunteer(this)"
+            >
+                Deactivate
+            </button>
+        </td>
     `;
+
+
+    volunteerBody.appendChild(row);
+
+
+    volunteerMessage.textContent =
+        "Volunteer saved successfully.";
+
+    volunteerMessage.style.color = "green";
+
+
+    volunteerForm.reset();
 });
 
-// --------------------------------
-// Crew Role Management
-// --------------------------------
 
-const crewRoleForm = document.getElementById("crewRoleForm");
-const roleName = document.getElementById("roleName");
-const roleMessage = document.getElementById("roleMessage");
-const crewRoleList = document.getElementById("crewRoleList");
+// ========================================
+// Edit Volunteer
+// ========================================
+
+function editVolunteer(button) {
+
+    const row =
+        button.closest("tr");
+
+
+    const nameCell =
+        row.querySelector(".volunteer-name");
+
+    const phoneCell =
+        row.querySelector(".volunteer-phone");
+
+    const emailCell =
+        row.querySelector(".volunteer-email");
+
+
+    const updatedName = prompt(
+        "Update volunteer name:",
+        nameCell.textContent.trim()
+    );
+
+
+    // Cancel editing
+    if (updatedName === null) {
+        return;
+    }
+
+
+    const updatedPhone = prompt(
+        "Update phone number:",
+        phoneCell.textContent.trim()
+    );
+
+
+    if (updatedPhone === null) {
+        return;
+    }
+
+
+    const updatedEmail = prompt(
+        "Update email address:",
+        emailCell.textContent.trim()
+    );
+
+
+    if (updatedEmail === null) {
+        return;
+    }
+
+
+    // Required information validation
+    if (
+        updatedName.trim() === "" ||
+        updatedPhone.trim() === "" ||
+        updatedEmail.trim() === ""
+    ) {
+
+        alert(
+            "Name, phone and email are required. Changes were not saved."
+        );
+
+        return;
+    }
+
+
+    // Email validation
+    if (
+        !updatedEmail.includes("@") ||
+        !updatedEmail.includes(".")
+    ) {
+
+        alert(
+            "Please enter a valid email address. Changes were not saved."
+        );
+
+        return;
+    }
+
+
+    // Save changes
+    nameCell.textContent =
+        updatedName.trim();
+
+    phoneCell.textContent =
+        updatedPhone.trim();
+
+    emailCell.textContent =
+        updatedEmail.trim();
+
+
+    volunteerMessage.textContent =
+        "Volunteer record updated successfully.";
+
+    volunteerMessage.style.color = "green";
+}
+
+
+// ========================================
+// Deactivate Volunteer
+// ========================================
+
+function deactivateVolunteer(button) {
+
+    const row =
+        button.closest("tr");
+
+    const statusCell =
+        row.querySelector(".volunteer-status");
+
+
+    // Check existing status
+    if (statusCell.textContent.trim() === "Inactive") {
+
+        volunteerMessage.textContent =
+            "This volunteer is already inactive.";
+
+        volunteerMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // Change status instead of deleting record
+    statusCell.textContent = "Inactive";
+
+
+    // Disable deactivate button
+    button.disabled = true;
+
+
+    volunteerMessage.textContent =
+        "Volunteer deactivated successfully. Existing records are retained.";
+
+    volunteerMessage.style.color = "green";
+}
+
+
+// ========================================
+// Crew Role Management
+// ========================================
+
+const crewRoleForm =
+    document.getElementById("crewRoleForm");
+
+const roleName =
+    document.getElementById("roleName");
+
+const roleMessage =
+    document.getElementById("roleMessage");
+
+const crewRoleList =
+    document.getElementById("crewRoleList");
+
 
 crewRoleForm.addEventListener("submit", function (event) {
-  event.preventDefault();
 
-  const newRole = roleName.value.trim();
+    event.preventDefault();
 
-  // Check if role name is empty
-  if (newRole === "") {
-    roleMessage.textContent = "Please enter a crew role.";
-    roleMessage.style.color = "red";
-    return;
-  }
 
-  // Add new role to list
-  const listItem = document.createElement("li");
-  listItem.textContent = newRole;
+    const newRole =
+        roleName.value.trim();
 
-  crewRoleList.appendChild(listItem);
 
-  roleMessage.textContent = "Crew role added successfully.";
-  roleMessage.style.color = "green";
+    // Validate crew role
+    if (newRole === "") {
 
-  roleName.value = "";
+        roleMessage.textContent =
+            "Please enter a crew role.";
+
+        roleMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // Add crew role
+    const listItem =
+        document.createElement("li");
+
+    listItem.textContent =
+        newRole;
+
+
+    crewRoleList.appendChild(listItem);
+
+
+    roleMessage.textContent =
+        "Crew role added successfully.";
+
+    roleMessage.style.color = "green";
+
+
+    roleName.value = "";
 });
 
 
-// --------------------------------
+// ========================================
 // Assign Volunteer to Crew Role
-// --------------------------------
+// ========================================
 
-const assignmentForm = document.getElementById("assignmentForm");
-const assignmentMessage = document.getElementById("assignmentMessage");
-const rosterBody = document.getElementById("rosterBody");
+const assignmentForm =
+    document.getElementById("assignmentForm");
+
+const assignmentMessage =
+    document.getElementById("assignmentMessage");
+
+const rosterBody =
+    document.getElementById("rosterBody");
+
 
 assignmentForm.addEventListener("submit", function (event) {
 
     event.preventDefault();
 
-    const performance = document.getElementById("performance").value;
-    const crewRole = document.getElementById("assignmentRole").value;
-    const volunteer = document.getElementById("volunteer").value;
+
+    const performance =
+        document.getElementById("performance").value;
+
+    const crewRole =
+        document.getElementById("assignmentRole").value;
+
+    const volunteer =
+        document.getElementById("volunteer").value;
+
 
     // Validate selections
-    if (performance === "" || crewRole === "" || volunteer === "") {
+    if (
+        performance === "" ||
+        crewRole === "" ||
+        volunteer === ""
+    ) {
+
         assignmentMessage.textContent =
             "Please select a performance, crew role and volunteer.";
+
         assignmentMessage.style.color = "red";
+
         return;
     }
 
-    // Every new assignment starts as unconfirmed
-    const status = "Unconfirmed";
 
-    // Add assignment to performance roster
-    const row = document.createElement("tr");
+    // New assignments start as unconfirmed
+    const status =
+        "Unconfirmed";
+
+
+    // Create roster row
+    const row =
+        document.createElement("tr");
+
 
     row.innerHTML = `
         <td>${performance}</td>
@@ -108,11 +378,16 @@ assignmentForm.addEventListener("submit", function (event) {
         <td>${status}</td>
     `;
 
+
     rosterBody.appendChild(row);
+
 
     assignmentMessage.textContent =
         "Volunteer assigned successfully.";
-    assignmentMessage.style.color = "green";
+
+    assignmentMessage.style.color =
+        "green";
+
 
     assignmentForm.reset();
 });

@@ -1,125 +1,285 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tinshed Players - Crew Rostering System</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <h1>Tinshed Players</h1>
-      <p class="subtitle">Crew Rostering System</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <!-- Add Volunteer Section -->
-      <section>
-        <h2>Add Volunteer</h2>
+  <title>Tinshed Players - Crew Rostering System</title>
 
-        <form id="volunteerForm">
-          <label for="fullName">Full Name *</label>
-          <input type="text" id="fullName" placeholder="Enter volunteer name" />
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-          <label for="phone">Phone Number *</label>
-          <input type="tel" id="phone" placeholder="Enter phone number" />
+<body>
 
-          <label for="email">Email Address *</label>
-          <input type="email" id="email" placeholder="Enter email address" />
+  <div class="container">
 
-          <label for="status">Status</label>
-          <input type="text" id="status" value="Active" readonly />
+    <h1>Tinshed Players</h1>
+    <p class="subtitle">Crew Rostering System</p>
 
-          <p id="message"></p>
 
-          <div class="buttons">
-            <button type="submit">Save Volunteer</button>
-            <button type="reset" class="cancel">Cancel</button>
-          </div>
-        </form>
+    <!-- ===================================== -->
+    <!-- Add / Manage Volunteer -->
+    <!-- ===================================== -->
 
-        <div id="savedVolunteer" class="saved-record"></div>
-      </section>
+    <section>
 
-      <!-- Crew Role Management Section -->
-      <section>
-        <h2>Crew Role Management</h2>
+      <h2>Add Volunteer</h2>
 
-        <form id="crewRoleForm">
-          <label for="roleName">Crew Role Name *</label>
+      <form id="volunteerForm">
 
-          <input type="text" id="roleName" placeholder="Enter crew role" />
+        <label for="fullName">Full Name *</label>
+        <input
+          type="text"
+          id="fullName"
+          placeholder="Enter volunteer name"
+        />
 
-          <p id="roleMessage"></p>
+        <label for="phone">Phone Number *</label>
+        <input
+          type="tel"
+          id="phone"
+          placeholder="Enter phone number"
+        />
 
-          <button type="submit">Add Crew Role</button>
-        </form>
+        <label for="email">Email Address *</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter email address"
+        />
 
-        <div class="role-list">
-          <h3>Current Crew Roles</h3>
+        <label for="status">Status</label>
+        <input
+          type="text"
+          id="status"
+          value="Active"
+          readonly
+        />
 
-          <ul id="crewRoleList">
-            <li>Stage Manager</li>
-            <li>Lighting</li>
-            <li>Sound</li>
-            <li>Front of House</li>
-          </ul>
+        <p id="message"></p>
+
+        <div class="buttons">
+
+          <button type="submit">
+            Save Volunteer
+          </button>
+
+          <button type="reset" class="cancel">
+            Cancel
+          </button>
+
         </div>
-      </section>
 
-      <!-- Assign Volunteer to Crew Role -->
-      <section>
-        <h2>Assign Volunteer to Crew Role</h2>
+      </form>
 
-        <form id="assignmentForm">
-          <label for="performance">Performance *</label>
-          <select id="performance">
-            <option value="">Select performance</option>
-            <option value="Opening Night">Opening Night</option>
-            <option value="Friday Evening">Friday Evening</option>
-            <option value="Saturday Matinee">Saturday Matinee</option>
-          </select>
 
-          <label for="assignmentRole">Crew Role *</label>
-          <select id="assignmentRole">
-            <option value="">Select crew role</option>
-            <option value="Stage Manager">Stage Manager</option>
-            <option value="Lighting">Lighting</option>
-            <option value="Sound">Sound</option>
-            <option value="Front of House">Front of House</option>
-          </select>
+      <!-- Volunteer Records -->
 
-          <label for="volunteer">Volunteer *</label>
-          <select id="volunteer">
-            <option value="">Select volunteer</option>
-            <option value="John Smith">John Smith</option>
-            <option value="Sarah Brown">Sarah Brown</option>
-            <option value="Michael Lee">Michael Lee</option>
-          </select>
+      <div class="volunteer-list">
 
-          <p id="assignmentMessage"></p>
+        <h3>Volunteer Records</h3>
 
-          <button type="submit">Assign Volunteer</button>
-        </form>
+        <table>
 
-        <div class="roster">
-          <h3>Performance Roster</h3>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-          <table>
-            <thead>
-              <tr>
-                <th>Performance</th>
-                <th>Crew Role</th>
-                <th>Volunteer</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+          <tbody id="volunteerBody">
+          </tbody>
 
-            <tbody id="rosterBody"></tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </table>
 
-    <script src="script.js"></script>
-  </body>
+      </div>
+
+    </section>
+
+
+    <!-- ===================================== -->
+    <!-- Crew Role Management -->
+    <!-- ===================================== -->
+
+    <section>
+
+      <h2>Crew Role Management</h2>
+
+      <form id="crewRoleForm">
+
+        <label for="roleName">
+          Crew Role Name *
+        </label>
+
+        <input
+          type="text"
+          id="roleName"
+          placeholder="Enter crew role"
+        />
+
+        <p id="roleMessage"></p>
+
+        <button type="submit">
+          Add Crew Role
+        </button>
+
+      </form>
+
+
+      <div class="role-list">
+
+        <h3>Current Crew Roles</h3>
+
+        <ul id="crewRoleList">
+          <li>Stage Manager</li>
+          <li>Lighting</li>
+          <li>Sound</li>
+          <li>Front of House</li>
+        </ul>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================== -->
+    <!-- Assign Volunteer to Crew Role -->
+    <!-- ===================================== -->
+
+    <section>
+
+      <h2>Assign Volunteer to Crew Role</h2>
+
+      <form id="assignmentForm">
+
+        <label for="performance">
+          Performance *
+        </label>
+
+        <select id="performance">
+
+          <option value="">
+            Select performance
+          </option>
+
+          <option value="Opening Night">
+            Opening Night
+          </option>
+
+          <option value="Friday Evening">
+            Friday Evening
+          </option>
+
+          <option value="Saturday Matinee">
+            Saturday Matinee
+          </option>
+
+        </select>
+
+
+        <label for="assignmentRole">
+          Crew Role *
+        </label>
+
+        <select id="assignmentRole">
+
+          <option value="">
+            Select crew role
+          </option>
+
+          <option value="Stage Manager">
+            Stage Manager
+          </option>
+
+          <option value="Lighting">
+            Lighting
+          </option>
+
+          <option value="Sound">
+            Sound
+          </option>
+
+          <option value="Front of House">
+            Front of House
+          </option>
+
+        </select>
+
+
+        <label for="volunteer">
+          Volunteer *
+        </label>
+
+        <select id="volunteer">
+
+          <option value="">
+            Select volunteer
+          </option>
+
+          <option value="John Smith">
+            John Smith
+          </option>
+
+          <option value="Sarah Brown">
+            Sarah Brown
+          </option>
+
+          <option value="Michael Lee">
+            Michael Lee
+          </option>
+
+        </select>
+
+
+        <p id="assignmentMessage"></p>
+
+
+        <button type="submit">
+          Assign Volunteer
+        </button>
+
+      </form>
+
+
+      <!-- Performance Roster -->
+
+      <div class="roster">
+
+        <h3>Performance Roster</h3>
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Performance</th>
+              <th>Crew Role</th>
+              <th>Volunteer</th>
+              <th>Status</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="rosterBody">
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+
 </html>
