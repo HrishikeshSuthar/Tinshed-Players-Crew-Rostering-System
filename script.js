@@ -818,6 +818,48 @@ assignmentForm.addEventListener("submit", function (event) {
 });
 
 // ========================================
+// TRACK CREW ASSIGNMENT CONFIRMATION
+// HS - PER4-13
+// ========================================
+
+function confirmAssignment(index) {
+
+    const assignment = crewAssignments[index];
+
+    // Check that the assignment exists
+    if (!assignment) {
+        return;
+    }
+
+    // Do not change an assignment that is
+    // already confirmed
+    if (assignment.status === "Confirmed") {
+
+        assignmentMessage.textContent =
+            "This crew assignment is already confirmed.";
+
+        assignmentMessage.style.color =
+            "red";
+
+        return;
+    }
+
+    // Only update the confirmation status.
+    // Performance, crew role and volunteer
+    // remain unchanged.
+    assignment.status = "Confirmed";
+
+    // Refresh the assignment table
+    displayAssignments();
+
+    assignmentMessage.textContent =
+        "Crew assignment confirmed successfully.";
+
+    assignmentMessage.style.color =
+        "green";
+}
+
+// ========================================
 // DISPLAY CREW ASSIGNMENTS
 // ========================================
 
@@ -834,6 +876,7 @@ function displayAssignments() {
             <td>${assignment.status}</td>
 
             <td>
+            <button type="button" onclick="confirmAssignment(${index})">Confirm</button>
                 <button
     type="button"
     onclick="changeAssignment(${index})"
