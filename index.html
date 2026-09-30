@@ -4,9 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Tinshed Players - Crew Rostering System</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -18,10 +16,7 @@
   <p class="subtitle">Crew Rostering System</p>
 
 
-  <!-- ================================= -->
   <!-- PRODUCTION MANAGEMENT -->
-  <!-- YM - PER4-3 -->
-  <!-- ================================= -->
 
   <section>
 
@@ -70,9 +65,83 @@
   </section>
 
 
-  <!-- ================================= -->
+  <!-- PERFORMANCE MANAGEMENT -->
+  <!-- YM - PER4-4 -->
+
+  <section>
+
+    <h2>Performance Management</h2>
+
+    <form id="performanceForm">
+
+      <label for="performanceProduction">
+        Production *
+      </label>
+
+      <select id="performanceProduction">
+
+        <option value="">
+          Select production
+        </option>
+
+      </select>
+
+
+      <label for="performanceDate">
+        Performance Date *
+      </label>
+
+      <input
+        type="date"
+        id="performanceDate"
+      >
+
+
+      <label for="performanceTime">
+        Start Time *
+      </label>
+
+      <input
+        type="time"
+        id="performanceTime"
+      >
+
+
+      <p id="performanceMessage"></p>
+
+
+      <button type="submit">
+        Add Performance
+      </button>
+
+    </form>
+
+
+    <div class="performance-list">
+
+      <h3>Performances</h3>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Production</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="performanceBody"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
   <!-- VOLUNTEER MANAGEMENT -->
-  <!-- ================================= -->
 
   <section>
 
@@ -80,9 +149,7 @@
 
     <form id="volunteerForm">
 
-      <label for="fullName">
-        Full Name *
-      </label>
+      <label for="fullName">Full Name *</label>
 
       <input
         type="text"
@@ -91,9 +158,7 @@
       >
 
 
-      <label for="phone">
-        Phone Number *
-      </label>
+      <label for="phone">Phone Number *</label>
 
       <input
         type="tel"
@@ -102,9 +167,7 @@
       >
 
 
-      <label for="email">
-        Email Address *
-      </label>
+      <label for="email">Email Address *</label>
 
       <input
         type="email"
@@ -113,9 +176,7 @@
       >
 
 
-      <label for="status">
-        Status
-      </label>
+      <label for="status">Status</label>
 
       <input
         type="text"
@@ -171,9 +232,7 @@
   </section>
 
 
-  <!-- ================================= -->
-  <!-- REQUIRED CREW ROLE MANAGEMENT -->
-  <!-- ================================= -->
+  <!-- CREW ROLE MANAGEMENT -->
 
   <section>
 
@@ -251,9 +310,7 @@
   </section>
 
 
-  <!-- ================================= -->
   <!-- ASSIGN VOLUNTEER -->
-  <!-- ================================= -->
 
   <section>
 
@@ -352,9 +409,7 @@
   </section>
 
 
-  <!-- ================================= -->
   <!-- VIEW PERFORMANCE ROSTER -->
-  <!-- ================================= -->
 
   <section>
 
@@ -396,27 +451,23 @@
     <p id="rosterMessage"></p>
 
 
-    <div id="rosterResult">
+    <table
+      id="rosterTable"
+      style="display: none;"
+    >
 
-      <table
-        id="rosterTable"
-        style="display: none;"
-      >
+      <thead>
+        <tr>
+          <th>Performance</th>
+          <th>Crew Role</th>
+          <th>Volunteer</th>
+          <th>Status</th>
+        </tr>
+      </thead>
 
-        <thead>
-          <tr>
-            <th>Performance</th>
-            <th>Crew Role</th>
-            <th>Volunteer</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+      <tbody id="rosterBody"></tbody>
 
-        <tbody id="rosterBody"></tbody>
-
-      </table>
-
-    </div>
+    </table>
 
   </section>
 
@@ -426,5 +477,4 @@
 <script src="script.js"></script>
 
 </body>
-
 </html>
