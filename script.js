@@ -137,6 +137,204 @@ loginForm.addEventListener("submit", function (event) {
 
     mainSystem.style.display =
         "block";
+    applyRoleBasedAccess();
+
+    // ========================================
+// ROLE-BASED ACCESS
+// BN - PER4-12
+// ========================================
+
+function applyRoleBasedAccess() {
+
+    const loggedInUsername =
+        document.getElementById("loggedInUsername");
+
+    const loggedInRole =
+        document.getElementById("loggedInRole");
+
+    const accessMessage =
+        document.getElementById("accessMessage");
+
+
+    const productionSection =
+        document.getElementById("productionManagementSection");
+
+    const performanceSection =
+        document.getElementById("performanceManagementSection");
+
+    const volunteerSection =
+        document.getElementById("volunteerManagementSection");
+
+    const crewRoleSection =
+        document.getElementById("crewRoleManagementSection");
+
+    const assignmentSection =
+        document.getElementById("assignmentManagementSection");
+
+    const rosterSection =
+        document.getElementById("rosterSection");
+
+    const volunteerAssignmentSection =
+        document.getElementById("volunteerAssignmentSection");
+
+
+    // Display the role for the whole login session.
+
+    loggedInUsername.textContent =
+        currentUser.username;
+
+    loggedInRole.textContent =
+        currentUser.role;
+
+
+    // Volunteer Coordinator / Admin
+
+    if (currentUser.role === "Admin") {
+
+        productionSection.style.display = "block";
+        performanceSection.style.display = "block";
+        volunteerSection.style.display = "block";
+        crewRoleSection.style.display = "block";
+        assignmentSection.style.display = "block";
+        rosterSection.style.display = "block";
+
+        volunteerAssignmentSection.style.display =
+            "none";
+
+
+        accessMessage.textContent =
+            "Volunteer Coordinator access granted. Administrative functions are available.";
+
+        accessMessage.style.color =
+            "green";
+
+        return;
+    }
+
+
+    // Volunteer / User
+
+    if (currentUser.role === "User") {
+
+        productionSection.style.display = "none";
+        performanceSection.style.display = "none";
+        volunteerSection.style.display = "none";
+        crewRoleSection.style.display = "none";
+        assignmentSection.style.display = "none";
+        rosterSection.style.display = "none";
+
+        volunteerAssignmentSection.style.display =
+            "block";
+
+
+        accessMessage.textContent =
+            "Volunteer access granted. Administrative management functions are restricted.";
+
+        accessMessage.style.color =
+            "green";
+
+
+        displayMyAssignments();
+
+        return;
+    }
+
+
+    // Any unknown role is denied access.
+
+    productionSection.style.display = "none";
+    performanceSection.style.display = "none";
+    volunteerSection.style.display = "none";
+    crewRoleSection.style.display = "none";
+    assignmentSection.style.display = "none";
+    rosterSection.style.display = "none";
+    volunteerAssignmentSection.style.display = "none";
+
+
+    accessMessage.textContent =
+        "Access denied. Your role does not have permission to use these functions.";
+
+    accessMessage.style.color =
+        "red";
+}
+
+
+// ========================================
+// VOLUNTEER ASSIGNMENT INFORMATION
+// ========================================
+
+function displayMyAssignments() {
+
+    const myAssignmentBody =
+        document.getElementById("myAssignmentBody");
+
+    const volunteerAccessMessage =
+        document.getElementById("volunteerAccessMessage");
+
+
+    myAssignmentBody.innerHTML = "";
+
+
+    // Prototype User account displays only
+    // crew assignment information and has
+    // no administrative controls.
+
+    const userAssignments =
+        crewAssignments.filter(function (assignment) {
+
+            if (currentUser.volunteerName) {
+
+                return (
+                    assignment.volunteer.toLowerCase() ===
+                    currentUser.volunteerName.toLowerCase()
+                );
+
+            }
+
+
+            // Default prototype User account.
+            // John Smith is used only as the
+            // demonstration volunteer account.
+
+            return (
+                currentUser.username === "user" &&
+                assignment.volunteer === "John Smith"
+            );
+
+        });
+
+
+    if (userAssignments.length === 0) {
+
+        volunteerAccessMessage.textContent =
+            "No crew assignments are currently available for this volunteer.";
+
+        return;
+    }
+
+
+    volunteerAccessMessage.textContent =
+        "Your current crew assignment information:";
+
+
+    userAssignments.forEach(function (assignment) {
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+            <td>${assignment.performance}</td>
+            <td>${assignment.role}</td>
+            <td>${assignment.status}</td>
+        `;
+
+
+        myAssignmentBody.appendChild(row);
+
+    });
+
+}
 
 });
 
