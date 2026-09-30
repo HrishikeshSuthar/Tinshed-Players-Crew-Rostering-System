@@ -1,12 +1,17 @@
 // ========================================
-// PRODUCTION MANAGEMENT
-// YM - PER4-3
+// DATA
 // ========================================
 
 const productions = [];
 const performances = [];
 const requiredCrewRoles = [];
 const crewAssignments = [];
+
+
+// ========================================
+// PRODUCTION MANAGEMENT
+// YM - PER4-3
+// ========================================
 
 const productionForm =
     document.getElementById("productionForm");
@@ -134,7 +139,7 @@ function editProduction(index) {
         newTitle;
 
 
-    // Keep existing performances linked
+    // Keep existing performances connected
     // to the renamed production.
     performances.forEach(function (performance) {
 
@@ -206,11 +211,13 @@ function updateProductionOptions() {
         const option =
             document.createElement("option");
 
+
         option.value =
             production.title;
 
         option.textContent =
             production.title;
+
 
         performanceProduction.appendChild(option);
     });
@@ -253,7 +260,6 @@ performanceForm.addEventListener("submit", function (event) {
         performanceTime.value;
 
 
-    // Validate required information
     if (
         production === "" ||
         date === "" ||
@@ -293,7 +299,7 @@ performanceForm.addEventListener("submit", function (event) {
 
 
 // ========================================
-// SORT PERFORMANCES BY DATE AND TIME
+// SORT PERFORMANCES
 // ========================================
 
 function sortPerformances() {
@@ -358,7 +364,7 @@ function displayPerformances() {
 
 
 // ========================================
-// UPDATE PERFORMANCE
+// EDIT PERFORMANCE
 // ========================================
 
 function editPerformance(index) {
@@ -404,7 +410,6 @@ function editPerformance(index) {
     }
 
 
-    // Basic format validation
     const datePattern =
         /^\d{4}-\d{2}-\d{2}$/;
 
@@ -484,6 +489,7 @@ function removePerformance(index) {
 
 // ========================================
 // VOLUNTEER MANAGEMENT
+// HS + BN
 // ========================================
 
 const volunteerForm =
@@ -604,7 +610,9 @@ function editVolunteer(button) {
         nameCell.textContent.trim()
     );
 
-    if (updatedName === null) return;
+    if (updatedName === null) {
+        return;
+    }
 
 
     const updatedPhone = prompt(
@@ -612,7 +620,9 @@ function editVolunteer(button) {
         phoneCell.textContent.trim()
     );
 
-    if (updatedPhone === null) return;
+    if (updatedPhone === null) {
+        return;
+    }
 
 
     const updatedEmail = prompt(
@@ -620,7 +630,9 @@ function editVolunteer(button) {
         emailCell.textContent.trim()
     );
 
-    if (updatedEmail === null) return;
+    if (updatedEmail === null) {
+        return;
+    }
 
 
     if (
@@ -694,6 +706,7 @@ function deactivateVolunteer(button) {
 
 // ========================================
 // CREW ROLE MANAGEMENT
+// HS + BN
 // ========================================
 
 const crewRoleForm =
@@ -810,7 +823,9 @@ function editCrewRole(index) {
     );
 
 
-    if (updatedRole === null) return;
+    if (updatedRole === null) {
+        return;
+    }
 
 
     if (updatedRole.trim() === "") {
@@ -855,7 +870,9 @@ function removeCrewRole(index) {
     );
 
 
-    if (!confirmed) return;
+    if (!confirmed) {
+        return;
+    }
 
 
     requiredCrewRoles.splice(index, 1);
@@ -874,6 +891,8 @@ function removeCrewRole(index) {
 
 // ========================================
 // ASSIGN VOLUNTEER
+// HS - PER4-6
+// YM - PER4-7 DUPLICATE PREVENTION
 // ========================================
 
 const assignmentForm =
@@ -881,6 +900,9 @@ const assignmentForm =
 
 const assignmentMessage =
     document.getElementById("assignmentMessage");
+
+const assignmentBody =
+    document.getElementById("assignmentBody");
 
 
 assignmentForm.addEventListener("submit", function (event) {
@@ -914,12 +936,43 @@ assignmentForm.addEventListener("submit", function (event) {
     }
 
 
+    // Check whether the volunteer already has
+    // another role in this performance.
+    const duplicateAssignment =
+        crewAssignments.some(function (assignment) {
+
+            return (
+                assignment.performance === performance &&
+                assignment.volunteer.toLowerCase() ===
+                    volunteer.toLowerCase()
+            );
+        });
+
+
+    if (duplicateAssignment) {
+
+        assignmentMessage.textContent =
+            volunteer +
+            " already has a crew role in " +
+            performance +
+            ". A volunteer cannot have more than one role in the same performance.";
+
+        assignmentMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
     crewAssignments.push({
         performance: performance,
         role: role,
         volunteer: volunteer,
         status: "Unconfirmed"
     });
+
+
+    displayAssignments();
 
 
     assignmentMessage.textContent =
@@ -934,7 +987,142 @@ assignmentForm.addEventListener("submit", function (event) {
 
 
 // ========================================
+// DISPLAY CREW ASSIGNMENTS
+// ========================================
+
+function displayAssignments() {
+
+    assignmentBody.innerHTML = "";
+
+
+    crewAssignments.forEach(function (assignment, index) {
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+            <td>${assignment.performance}</td>
+            <td>${assignment.role}</td>
+            <td>${assignment.volunteer}</td>
+            <td>${assignment.status}</td>
+
+            <td>
+                <button
+                    type="button"
+                    onclick="changeAssignment(${index})"
+                >
+                    Change
+                </button>
+            </td>
+        `;
+
+
+        assignmentBody.appendChild(row);
+    });
+}
+
+
+// ========================================
+// CHANGE EXISTING ASSIGNMENT
+// DUPLICATE RULE ALSO APPLIES HERE
+// ========================================
+
+function changeAssignment(index) {
+
+    const currentAssignment =
+        crewAssignments[index];
+
+
+    const newRole = prompt(
+        "Enter new crew role:",
+        currentAssignment.role
+    );
+
+
+    if (newRole === null) {
+        return;
+    }
+
+
+    const newVolunteer = prompt(
+        "Enter volunteer name:",
+        currentAssignment.volunteer
+    );
+
+
+    if (newVolunteer === null) {
+        return;
+    }
+
+
+    if (
+        newRole.trim() === "" ||
+        newVolunteer.trim() === ""
+    ) {
+
+        assignmentMessage.textContent =
+            "Crew role and volunteer are required. Assignment was not changed.";
+
+        assignmentMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    // Ignore the current assignment itself.
+    // Check all other assignments for a duplicate.
+    const duplicateAssignment =
+        crewAssignments.some(function (assignment, assignmentIndex) {
+
+            return (
+                assignmentIndex !== index &&
+                assignment.performance ===
+                    currentAssignment.performance &&
+                assignment.volunteer.toLowerCase() ===
+                    newVolunteer.trim().toLowerCase()
+            );
+        });
+
+
+    if (duplicateAssignment) {
+
+        assignmentMessage.textContent =
+            newVolunteer.trim() +
+            " already has a crew role in " +
+            currentAssignment.performance +
+            ". The assignment was not changed.";
+
+        assignmentMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    // Only update after duplicate validation passes.
+    currentAssignment.role =
+        newRole.trim();
+
+    currentAssignment.volunteer =
+        newVolunteer.trim();
+
+
+    displayAssignments();
+
+
+    assignmentMessage.textContent =
+        "Crew assignment updated successfully.";
+
+    assignmentMessage.style.color =
+        "green";
+}
+
+
+// ========================================
 // VIEW PERFORMANCE ROSTER
+// BN - PER4-9
 // ========================================
 
 const rosterPerformance =

@@ -2,474 +2,518 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tinshed Players - Crew Rostering System</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tinshed Players - Crew Rostering System</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1>Tinshed Players</h1>
-  <p class="subtitle">Crew Rostering System</p>
+    <h1>Tinshed Players</h1>
+    <p class="subtitle">Crew Rostering System</p>
 
 
-  <!-- PRODUCTION MANAGEMENT -->
+    <!-- ========================================
+         PRODUCTION MANAGEMENT
+         ======================================== -->
 
-  <section>
+    <section>
 
-    <h2>Production Management</h2>
+        <h2>Production Management</h2>
 
-    <form id="productionForm">
+        <form id="productionForm">
 
-      <label for="productionTitle">
-        Production Title *
-      </label>
+            <label for="productionTitle">
+                Production Title *
+            </label>
 
-      <input
-        type="text"
-        id="productionTitle"
-        placeholder="Enter production title"
-      >
+            <input
+                type="text"
+                id="productionTitle"
+                placeholder="Enter production title"
+            >
 
-      <p id="productionMessage"></p>
+            <p id="productionMessage"></p>
 
-      <button type="submit">
-        Add Production
-      </button>
+            <button type="submit">
+                Add Production
+            </button>
 
-    </form>
+        </form>
 
 
-    <div class="production-list">
+        <div class="production-list">
 
-      <h3>Productions</h3>
+            <h3>Productions</h3>
 
-      <table>
+            <table>
 
-        <thead>
-          <tr>
-            <th>Production Title</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+                <thead>
+                    <tr>
+                        <th>Production Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-        <tbody id="productionBody"></tbody>
+                <tbody id="productionBody"></tbody>
 
-      </table>
+            </table>
 
-    </div>
+        </div>
 
-  </section>
+    </section>
 
 
-  <!-- PERFORMANCE MANAGEMENT -->
-  <!-- YM - PER4-4 -->
+    <!-- ========================================
+         PERFORMANCE MANAGEMENT
+         YM - PER4-4
+         ======================================== -->
 
-  <section>
+    <section>
 
-    <h2>Performance Management</h2>
+        <h2>Performance Management</h2>
 
-    <form id="performanceForm">
+        <form id="performanceForm">
 
-      <label for="performanceProduction">
-        Production *
-      </label>
+            <label for="performanceProduction">
+                Production *
+            </label>
 
-      <select id="performanceProduction">
+            <select id="performanceProduction">
 
-        <option value="">
-          Select production
-        </option>
+                <option value="">
+                    Select production
+                </option>
 
-      </select>
+            </select>
 
 
-      <label for="performanceDate">
-        Performance Date *
-      </label>
+            <label for="performanceDate">
+                Performance Date *
+            </label>
 
-      <input
-        type="date"
-        id="performanceDate"
-      >
+            <input
+                type="date"
+                id="performanceDate"
+            >
 
 
-      <label for="performanceTime">
-        Start Time *
-      </label>
+            <label for="performanceTime">
+                Start Time *
+            </label>
 
-      <input
-        type="time"
-        id="performanceTime"
-      >
+            <input
+                type="time"
+                id="performanceTime"
+            >
 
 
-      <p id="performanceMessage"></p>
+            <p id="performanceMessage"></p>
 
 
-      <button type="submit">
-        Add Performance
-      </button>
+            <button type="submit">
+                Add Performance
+            </button>
 
-    </form>
+        </form>
 
 
-    <div class="performance-list">
+        <div class="performance-list">
 
-      <h3>Performances</h3>
+            <h3>Performances</h3>
 
-      <table>
+            <table>
 
-        <thead>
-          <tr>
-            <th>Production</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+                <thead>
+                    <tr>
+                        <th>Production</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-        <tbody id="performanceBody"></tbody>
+                <tbody id="performanceBody"></tbody>
 
-      </table>
+            </table>
 
-    </div>
+        </div>
 
-  </section>
+    </section>
 
 
-  <!-- VOLUNTEER MANAGEMENT -->
+    <!-- ========================================
+         VOLUNTEER MANAGEMENT
+         ======================================== -->
 
-  <section>
+    <section>
 
-    <h2>Add Volunteer</h2>
+        <h2>Add Volunteer</h2>
 
-    <form id="volunteerForm">
+        <form id="volunteerForm">
 
-      <label for="fullName">Full Name *</label>
+            <label for="fullName">
+                Full Name *
+            </label>
 
-      <input
-        type="text"
-        id="fullName"
-        placeholder="Enter volunteer name"
-      >
+            <input
+                type="text"
+                id="fullName"
+                placeholder="Enter volunteer name"
+            >
 
 
-      <label for="phone">Phone Number *</label>
+            <label for="phone">
+                Phone Number *
+            </label>
 
-      <input
-        type="tel"
-        id="phone"
-        placeholder="Enter phone number"
-      >
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Enter phone number"
+            >
 
 
-      <label for="email">Email Address *</label>
+            <label for="email">
+                Email Address *
+            </label>
 
-      <input
-        type="email"
-        id="email"
-        placeholder="Enter email address"
-      >
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter email address"
+            >
 
 
-      <label for="status">Status</label>
+            <label for="status">
+                Status
+            </label>
 
-      <input
-        type="text"
-        id="status"
-        value="Active"
-        readonly
-      >
+            <input
+                type="text"
+                id="status"
+                value="Active"
+                readonly
+            >
 
 
-      <p id="message"></p>
+            <p id="message"></p>
 
 
-      <div class="buttons">
+            <div class="buttons">
 
-        <button type="submit">
-          Save Volunteer
-        </button>
+                <button type="submit">
+                    Save Volunteer
+                </button>
+
+                <button
+                    type="reset"
+                    class="cancel"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <div class="volunteer-list">
+
+            <h3>Volunteer Records</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="volunteerBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         CREW ROLE MANAGEMENT
+         ======================================== -->
+
+    <section>
+
+        <h2>Crew Role Management</h2>
+
+        <form id="crewRoleForm">
+
+            <label for="rolePerformance">
+                Performance *
+            </label>
+
+            <select id="rolePerformance">
+
+                <option value="">
+                    Select performance
+                </option>
+
+                <option value="Opening Night">
+                    Opening Night
+                </option>
+
+                <option value="Friday Evening">
+                    Friday Evening
+                </option>
+
+                <option value="Saturday Matinee">
+                    Saturday Matinee
+                </option>
+
+            </select>
+
+
+            <label for="roleName">
+                Crew Role Name *
+            </label>
+
+            <input
+                type="text"
+                id="roleName"
+                placeholder="Enter crew role"
+            >
+
+
+            <p id="roleMessage"></p>
+
+
+            <button type="submit">
+                Add Required Crew Role
+            </button>
+
+        </form>
+
+
+        <div class="role-list">
+
+            <h3>Required Crew Roles</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Performance</th>
+                        <th>Crew Role</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="crewRoleBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         ASSIGN VOLUNTEER TO CREW ROLE
+         PER4-6 + PER4-7
+         ======================================== -->
+
+    <section>
+
+        <h2>Assign Volunteer to Crew Role</h2>
+
+        <form id="assignmentForm">
+
+            <label for="performance">
+                Performance *
+            </label>
+
+            <select id="performance">
+
+                <option value="">
+                    Select performance
+                </option>
+
+                <option value="Opening Night">
+                    Opening Night
+                </option>
+
+                <option value="Friday Evening">
+                    Friday Evening
+                </option>
+
+                <option value="Saturday Matinee">
+                    Saturday Matinee
+                </option>
+
+            </select>
+
+
+            <label for="assignmentRole">
+                Crew Role *
+            </label>
+
+            <select id="assignmentRole">
+
+                <option value="">
+                    Select crew role
+                </option>
+
+                <option value="Stage Manager">
+                    Stage Manager
+                </option>
+
+                <option value="Lighting">
+                    Lighting
+                </option>
+
+                <option value="Sound">
+                    Sound
+                </option>
+
+                <option value="Front of House">
+                    Front of House
+                </option>
+
+            </select>
+
+
+            <label for="volunteer">
+                Volunteer *
+            </label>
+
+            <select id="volunteer">
+
+                <option value="">
+                    Select volunteer
+                </option>
+
+                <option value="John Smith">
+                    John Smith
+                </option>
+
+                <option value="Sarah Brown">
+                    Sarah Brown
+                </option>
+
+                <option value="Michael Lee">
+                    Michael Lee
+                </option>
+
+            </select>
+
+
+            <p id="assignmentMessage"></p>
+
+
+            <button type="submit">
+                Assign Volunteer
+            </button>
+
+        </form>
+
+
+        <div class="assignment-list">
+
+            <h3>Crew Assignments</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Performance</th>
+                        <th>Crew Role</th>
+                        <th>Volunteer</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="assignmentBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         VIEW PERFORMANCE ROSTER
+         ======================================== -->
+
+    <section>
+
+        <h2>View Performance Roster</h2>
+
+        <label for="rosterPerformance">
+            Performance *
+        </label>
+
+        <select id="rosterPerformance">
+
+            <option value="">
+                Select performance
+            </option>
+
+            <option value="Opening Night">
+                Opening Night
+            </option>
+
+            <option value="Friday Evening">
+                Friday Evening
+            </option>
+
+            <option value="Saturday Matinee">
+                Saturday Matinee
+            </option>
+
+        </select>
+
 
         <button
-          type="reset"
-          class="cancel"
+            type="button"
+            id="viewRosterButton"
         >
-          Cancel
+            View Roster
         </button>
 
-      </div>
 
-    </form>
+        <p id="rosterMessage"></p>
 
 
-    <div class="volunteer-list">
+        <table
+            id="rosterTable"
+            style="display: none;"
+        >
 
-      <h3>Volunteer Records</h3>
+            <thead>
+                <tr>
+                    <th>Performance</th>
+                    <th>Crew Role</th>
+                    <th>Volunteer</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-      <table>
+            <tbody id="rosterBody"></tbody>
 
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+        </table>
 
-        <tbody id="volunteerBody"></tbody>
-
-      </table>
-
-    </div>
-
-  </section>
-
-
-  <!-- CREW ROLE MANAGEMENT -->
-
-  <section>
-
-    <h2>Crew Role Management</h2>
-
-    <form id="crewRoleForm">
-
-      <label for="rolePerformance">
-        Performance *
-      </label>
-
-      <select id="rolePerformance">
-
-        <option value="">
-          Select performance
-        </option>
-
-        <option value="Opening Night">
-          Opening Night
-        </option>
-
-        <option value="Friday Evening">
-          Friday Evening
-        </option>
-
-        <option value="Saturday Matinee">
-          Saturday Matinee
-        </option>
-
-      </select>
-
-
-      <label for="roleName">
-        Crew Role Name *
-      </label>
-
-      <input
-        type="text"
-        id="roleName"
-        placeholder="Enter crew role"
-      >
-
-
-      <p id="roleMessage"></p>
-
-
-      <button type="submit">
-        Add Required Crew Role
-      </button>
-
-    </form>
-
-
-    <div class="role-list">
-
-      <h3>Required Crew Roles</h3>
-
-      <table>
-
-        <thead>
-          <tr>
-            <th>Performance</th>
-            <th>Crew Role</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody id="crewRoleBody"></tbody>
-
-      </table>
-
-    </div>
-
-  </section>
-
-
-  <!-- ASSIGN VOLUNTEER -->
-
-  <section>
-
-    <h2>Assign Volunteer to Crew Role</h2>
-
-    <form id="assignmentForm">
-
-      <label for="performance">
-        Performance *
-      </label>
-
-      <select id="performance">
-
-        <option value="">
-          Select performance
-        </option>
-
-        <option value="Opening Night">
-          Opening Night
-        </option>
-
-        <option value="Friday Evening">
-          Friday Evening
-        </option>
-
-        <option value="Saturday Matinee">
-          Saturday Matinee
-        </option>
-
-      </select>
-
-
-      <label for="assignmentRole">
-        Crew Role *
-      </label>
-
-      <select id="assignmentRole">
-
-        <option value="">
-          Select crew role
-        </option>
-
-        <option value="Stage Manager">
-          Stage Manager
-        </option>
-
-        <option value="Lighting">
-          Lighting
-        </option>
-
-        <option value="Sound">
-          Sound
-        </option>
-
-        <option value="Front of House">
-          Front of House
-        </option>
-
-      </select>
-
-
-      <label for="volunteer">
-        Volunteer *
-      </label>
-
-      <select id="volunteer">
-
-        <option value="">
-          Select volunteer
-        </option>
-
-        <option value="John Smith">
-          John Smith
-        </option>
-
-        <option value="Sarah Brown">
-          Sarah Brown
-        </option>
-
-        <option value="Michael Lee">
-          Michael Lee
-        </option>
-
-      </select>
-
-
-      <p id="assignmentMessage"></p>
-
-
-      <button type="submit">
-        Assign Volunteer
-      </button>
-
-    </form>
-
-  </section>
-
-
-  <!-- VIEW PERFORMANCE ROSTER -->
-
-  <section>
-
-    <h2>View Performance Roster</h2>
-
-    <label for="rosterPerformance">
-      Performance *
-    </label>
-
-    <select id="rosterPerformance">
-
-      <option value="">
-        Select performance
-      </option>
-
-      <option value="Opening Night">
-        Opening Night
-      </option>
-
-      <option value="Friday Evening">
-        Friday Evening
-      </option>
-
-      <option value="Saturday Matinee">
-        Saturday Matinee
-      </option>
-
-    </select>
-
-
-    <button
-      type="button"
-      id="viewRosterButton"
-    >
-      View Roster
-    </button>
-
-
-    <p id="rosterMessage"></p>
-
-
-    <table
-      id="rosterTable"
-      style="display: none;"
-    >
-
-      <thead>
-        <tr>
-          <th>Performance</th>
-          <th>Crew Role</th>
-          <th>Volunteer</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-
-      <tbody id="rosterBody"></tbody>
-
-    </table>
-
-  </section>
+    </section>
 
 </div>
 
