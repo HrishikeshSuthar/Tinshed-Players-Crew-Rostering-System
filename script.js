@@ -1,8 +1,209 @@
 // ========================================
-// DATA
+// PRODUCTION MANAGEMENT
+// YM - PER4-3
+// ========================================
+
+const productionForm =
+    document.getElementById("productionForm");
+
+const productionTitle =
+    document.getElementById("productionTitle");
+
+const productionMessage =
+    document.getElementById("productionMessage");
+
+const productionBody =
+    document.getElementById("productionBody");
+
+
+// Store productions during current session
+const productions = [];
+
+
+// ========================================
+// CREATE PRODUCTION
+// YM - PER4-26
+// ========================================
+
+productionForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+
+    const title =
+        productionTitle.value.trim();
+
+
+    // Validate required information
+    if (title === "") {
+
+        productionMessage.textContent =
+            "Please enter a production title.";
+
+        productionMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    // Save production
+    productions.push({
+        title: title
+    });
+
+
+    displayProductions();
+
+
+    productionMessage.textContent =
+        "Production saved successfully.";
+
+    productionMessage.style.color =
+        "green";
+
+
+    productionForm.reset();
+});
+
+
+// ========================================
+// DISPLAY PRODUCTIONS
+// ========================================
+
+function displayProductions() {
+
+    productionBody.innerHTML = "";
+
+
+    productions.forEach(function (production, index) {
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+            <td>${production.title}</td>
+
+            <td>
+
+                <button
+                    type="button"
+                    onclick="editProduction(${index})"
+                >
+                    Edit
+                </button>
+
+                <button
+                    type="button"
+                    onclick="removeProduction(${index})"
+                >
+                    Remove
+                </button>
+
+            </td>
+        `;
+
+
+        productionBody.appendChild(row);
+    });
+}
+
+
+// ========================================
+// UPDATE PRODUCTION
+// YM - PER4-27
+// ========================================
+
+function editProduction(index) {
+
+    const currentTitle =
+        productions[index].title;
+
+
+    const updatedTitle = prompt(
+        "Update production title:",
+        currentTitle
+    );
+
+
+    // Cancel update
+    if (updatedTitle === null) {
+        return;
+    }
+
+
+    // Validate update
+    if (updatedTitle.trim() === "") {
+
+        productionMessage.textContent =
+            "Production title cannot be empty. Changes were not saved.";
+
+        productionMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    productions[index].title =
+        updatedTitle.trim();
+
+
+    displayProductions();
+
+
+    productionMessage.textContent =
+        "Production updated successfully.";
+
+    productionMessage.style.color =
+        "green";
+}
+
+
+// ========================================
+// REMOVE PRODUCTION
+// YM - PER4-27
+// ========================================
+
+function removeProduction(index) {
+
+    const production =
+        productions[index];
+
+
+    const confirmed = confirm(
+        "Remove production " +
+        production.title +
+        "?"
+    );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    productions.splice(index, 1);
+
+
+    displayProductions();
+
+
+    productionMessage.textContent =
+        "Production removed successfully.";
+
+    productionMessage.style.color =
+        "green";
+}
+
+
+// ========================================
+// DATA FOR CREW ROSTERING
 // ========================================
 
 const requiredCrewRoles = [];
+
 const crewAssignments = [];
 
 
@@ -24,6 +225,7 @@ volunteerForm.addEventListener("submit", function (event) {
 
     event.preventDefault();
 
+
     const name =
         document.getElementById("fullName").value.trim();
 
@@ -34,60 +236,101 @@ volunteerForm.addEventListener("submit", function (event) {
         document.getElementById("email").value.trim();
 
 
-    if (name === "" || phone === "" || email === "") {
+    if (
+        name === "" ||
+        phone === "" ||
+        email === ""
+    ) {
 
         volunteerMessage.textContent =
             "Please complete all required fields.";
 
-        volunteerMessage.style.color = "red";
+        volunteerMessage.style.color =
+            "red";
+
         return;
     }
 
 
-    if (!email.includes("@") || !email.includes(".")) {
+    if (
+        !email.includes("@") ||
+        !email.includes(".")
+    ) {
 
         volunteerMessage.textContent =
             "Please enter a valid email address.";
 
-        volunteerMessage.style.color = "red";
+        volunteerMessage.style.color =
+            "red";
+
         return;
     }
 
 
-    const row = document.createElement("tr");
+    const row =
+        document.createElement("tr");
+
 
     row.innerHTML = `
-        <td class="volunteer-name">${name}</td>
-        <td class="volunteer-phone">${phone}</td>
-        <td class="volunteer-email">${email}</td>
-        <td class="volunteer-status">Active</td>
+        <td class="volunteer-name">
+            ${name}
+        </td>
+
+        <td class="volunteer-phone">
+            ${phone}
+        </td>
+
+        <td class="volunteer-email">
+            ${email}
+        </td>
+
+        <td class="volunteer-status">
+            Active
+        </td>
+
         <td>
-            <button type="button"
-                onclick="editVolunteer(this)">
+
+            <button
+                type="button"
+                onclick="editVolunteer(this)"
+            >
                 Edit
             </button>
 
-            <button type="button"
-                onclick="deactivateVolunteer(this)">
+            <button
+                type="button"
+                onclick="deactivateVolunteer(this)"
+            >
                 Deactivate
             </button>
+
         </td>
     `;
 
+
     volunteerBody.appendChild(row);
+
 
     volunteerMessage.textContent =
         "Volunteer saved successfully.";
 
-    volunteerMessage.style.color = "green";
+    volunteerMessage.style.color =
+        "green";
+
 
     volunteerForm.reset();
 });
 
 
+// ========================================
+// EDIT VOLUNTEER
+// ========================================
+
 function editVolunteer(button) {
 
-    const row = button.closest("tr");
+    const row =
+        button.closest("tr");
+
 
     const nameCell =
         row.querySelector(".volunteer-name");
@@ -104,7 +347,10 @@ function editVolunteer(button) {
         nameCell.textContent.trim()
     );
 
-    if (updatedName === null) return;
+
+    if (updatedName === null) {
+        return;
+    }
 
 
     const updatedPhone = prompt(
@@ -112,7 +358,10 @@ function editVolunteer(button) {
         phoneCell.textContent.trim()
     );
 
-    if (updatedPhone === null) return;
+
+    if (updatedPhone === null) {
+        return;
+    }
 
 
     const updatedEmail = prompt(
@@ -120,7 +369,10 @@ function editVolunteer(button) {
         emailCell.textContent.trim()
     );
 
-    if (updatedEmail === null) return;
+
+    if (updatedEmail === null) {
+        return;
+    }
 
 
     if (
@@ -150,35 +402,65 @@ function editVolunteer(button) {
     }
 
 
-    nameCell.textContent = updatedName.trim();
-    phoneCell.textContent = updatedPhone.trim();
-    emailCell.textContent = updatedEmail.trim();
+    nameCell.textContent =
+        updatedName.trim();
+
+    phoneCell.textContent =
+        updatedPhone.trim();
+
+    emailCell.textContent =
+        updatedEmail.trim();
 
 
     volunteerMessage.textContent =
         "Volunteer record updated successfully.";
 
-    volunteerMessage.style.color = "green";
+    volunteerMessage.style.color =
+        "green";
 }
 
 
+// ========================================
+// DEACTIVATE VOLUNTEER
+// ========================================
+
 function deactivateVolunteer(button) {
 
-    const row = button.closest("tr");
+    const row =
+        button.closest("tr");
+
 
     const statusCell =
         row.querySelector(".volunteer-status");
 
 
-    statusCell.textContent = "Inactive";
+    if (
+        statusCell.textContent.trim() === "Inactive"
+    ) {
 
-    button.disabled = true;
+        volunteerMessage.textContent =
+            "This volunteer is already inactive.";
+
+        volunteerMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    statusCell.textContent =
+        "Inactive";
+
+
+    button.disabled =
+        true;
 
 
     volunteerMessage.textContent =
         "Volunteer deactivated successfully. Existing records are retained.";
 
-    volunteerMessage.style.color = "green";
+    volunteerMessage.style.color =
+        "green";
 }
 
 
@@ -206,16 +488,25 @@ crewRoleForm.addEventListener("submit", function (event) {
 
     event.preventDefault();
 
-    const performance = rolePerformance.value;
-    const role = roleName.value.trim();
+
+    const performance =
+        rolePerformance.value;
+
+    const role =
+        roleName.value.trim();
 
 
-    if (performance === "" || role === "") {
+    if (
+        performance === "" ||
+        role === ""
+    ) {
 
         roleMessage.textContent =
             "Please select a performance and enter a crew role.";
 
-        roleMessage.style.color = "red";
+        roleMessage.style.color =
+            "red";
+
         return;
     }
 
@@ -232,11 +523,17 @@ crewRoleForm.addEventListener("submit", function (event) {
     roleMessage.textContent =
         "Required crew role added successfully.";
 
-    roleMessage.style.color = "green";
+    roleMessage.style.color =
+        "green";
+
 
     crewRoleForm.reset();
 });
 
+
+// ========================================
+// DISPLAY REQUIRED CREW ROLES
+// ========================================
 
 function displayRequiredRoles() {
 
@@ -245,14 +542,25 @@ function displayRequiredRoles() {
 
     requiredCrewRoles.forEach(function (item, index) {
 
-        const row = document.createElement("tr");
+        const row =
+            document.createElement("tr");
+
 
         row.innerHTML = `
-            <td>${item.performance}</td>
-            <td>${item.role}</td>
-            <td>Unfilled</td>
+            <td>
+                ${item.performance}
+            </td>
 
             <td>
+                ${item.role}
+            </td>
+
+            <td>
+                Unfilled
+            </td>
+
+            <td>
+
                 <button
                     type="button"
                     onclick="editCrewRole(${index})"
@@ -266,13 +574,19 @@ function displayRequiredRoles() {
                 >
                     Remove
                 </button>
+
             </td>
         `;
+
 
         crewRoleBody.appendChild(row);
     });
 }
 
+
+// ========================================
+// EDIT REQUIRED CREW ROLE
+// ========================================
 
 function editCrewRole(index) {
 
@@ -286,7 +600,9 @@ function editCrewRole(index) {
     );
 
 
-    if (updatedRole === null) return;
+    if (updatedRole === null) {
+        return;
+    }
 
 
     if (updatedRole.trim() === "") {
@@ -294,7 +610,9 @@ function editCrewRole(index) {
         roleMessage.textContent =
             "Crew role cannot be empty.";
 
-        roleMessage.style.color = "red";
+        roleMessage.style.color =
+            "red";
+
         return;
     }
 
@@ -309,9 +627,14 @@ function editCrewRole(index) {
     roleMessage.textContent =
         "Crew role updated successfully.";
 
-    roleMessage.style.color = "green";
+    roleMessage.style.color =
+        "green";
 }
 
+
+// ========================================
+// REMOVE REQUIRED CREW ROLE
+// ========================================
 
 function removeCrewRole(index) {
 
@@ -328,10 +651,15 @@ function removeCrewRole(index) {
     );
 
 
-    if (!confirmed) return;
+    if (!confirmed) {
+        return;
+    }
 
 
-    requiredCrewRoles.splice(index, 1);
+    requiredCrewRoles.splice(
+        index,
+        1
+    );
 
 
     displayRequiredRoles();
@@ -340,12 +668,13 @@ function removeCrewRole(index) {
     roleMessage.textContent =
         "Crew role removed successfully.";
 
-    roleMessage.style.color = "green";
+    roleMessage.style.color =
+        "green";
 }
 
 
 // ========================================
-// ASSIGN VOLUNTEER
+// ASSIGN VOLUNTEER TO CREW ROLE
 // ========================================
 
 const assignmentForm =
@@ -379,23 +708,31 @@ assignmentForm.addEventListener("submit", function (event) {
         assignmentMessage.textContent =
             "Please select a performance, crew role and volunteer.";
 
-        assignmentMessage.style.color = "red";
+        assignmentMessage.style.color =
+            "red";
+
         return;
     }
 
 
     crewAssignments.push({
+
         performance: performance,
+
         role: role,
+
         volunteer: volunteer,
+
         status: "Unconfirmed"
+
     });
 
 
     assignmentMessage.textContent =
         "Volunteer assigned successfully.";
 
-    assignmentMessage.style.color = "green";
+    assignmentMessage.style.color =
+        "green";
 
 
     assignmentForm.reset();
@@ -404,7 +741,6 @@ assignmentForm.addEventListener("submit", function (event) {
 
 // ========================================
 // VIEW PERFORMANCE ROSTER
-// BN - PER4-9
 // ========================================
 
 const rosterPerformance =
@@ -434,18 +770,21 @@ viewRosterButton.addEventListener("click", function () {
 
     if (selectedPerformance === "") {
 
-        rosterTable.style.display = "none";
+        rosterTable.style.display =
+            "none";
+
 
         rosterMessage.textContent =
             "Please select a performance.";
 
-        rosterMessage.style.color = "red";
+        rosterMessage.style.color =
+            "red";
 
         return;
     }
 
 
-    // Retrieve roles belonging to selected performance
+    // Find required roles for selected performance
     const rolesForPerformance =
         requiredCrewRoles.filter(function (item) {
 
@@ -453,18 +792,24 @@ viewRosterButton.addEventListener("click", function () {
                 item.performance ===
                 selectedPerformance
             );
+
         });
 
 
-    // No roles = no roster
-    if (rolesForPerformance.length === 0) {
+    // No required roles = no roster
+    if (
+        rolesForPerformance.length === 0
+    ) {
 
-        rosterTable.style.display = "none";
+        rosterTable.style.display =
+            "none";
+
 
         rosterMessage.textContent =
             "No crew roles have been created for this performance.";
 
-        rosterMessage.style.color = "red";
+        rosterMessage.style.color =
+            "red";
 
         return;
     }
@@ -472,16 +817,18 @@ viewRosterButton.addEventListener("click", function () {
 
     rolesForPerformance.forEach(function (roleItem) {
 
-        // Find matching assignment
+        // Find volunteer assignment for role
         const assignment =
             crewAssignments.find(function (item) {
 
                 return (
                     item.performance ===
                         selectedPerformance &&
+
                     item.role ===
                         roleItem.role
                 );
+
             });
 
 
@@ -502,10 +849,21 @@ viewRosterButton.addEventListener("click", function () {
 
 
         row.innerHTML = `
-            <td>${selectedPerformance}</td>
-            <td>${roleItem.role}</td>
-            <td>${volunteer}</td>
-            <td>${status}</td>
+            <td>
+                ${selectedPerformance}
+            </td>
+
+            <td>
+                ${roleItem.role}
+            </td>
+
+            <td>
+                ${volunteer}
+            </td>
+
+            <td>
+                ${status}
+            </td>
         `;
 
 
@@ -513,11 +871,13 @@ viewRosterButton.addEventListener("click", function () {
     });
 
 
-    rosterTable.style.display = "table";
+    rosterTable.style.display =
+        "table";
 
 
     rosterMessage.textContent =
         "Performance roster loaded successfully.";
 
-    rosterMessage.style.color = "green";
+    rosterMessage.style.color =
+        "green";
 });
