@@ -482,48 +482,76 @@ function removePerformance(index) {
 // ========================================
 // VOLUNTEER MANAGEMENT
 // HS + BN
+// PER4-17 - GRANT SYSTEM ACCESS
 // ========================================
 
 const volunteerForm = document.getElementById("volunteerForm");
-
 const volunteerBody = document.getElementById("volunteerBody");
-
 const volunteerMessage = document.getElementById("message");
 
+
 volunteerForm.addEventListener("submit", function (event) {
-  event.preventDefault();
 
-  const name = document.getElementById("fullName").value.trim();
+    event.preventDefault();
 
-  const phone = document.getElementById("phone").value.trim();
+    const name =
+        document.getElementById("fullName").value.trim();
 
-  const email = document.getElementById("email").value.trim();
+    const phone =
+        document.getElementById("phone").value.trim();
 
-  if (name === "" || phone === "" || email === "") {
-    volunteerMessage.textContent = "Please complete all required fields.";
+    const email =
+        document.getElementById("email").value.trim();
 
-    volunteerMessage.style.color = "red";
 
-    return;
-  }
+    if (
+        name === "" ||
+        phone === "" ||
+        email === ""
+    ) {
 
-  if (!email.includes("@") || !email.includes(".")) {
-    volunteerMessage.textContent = "Please enter a valid email address.";
+        volunteerMessage.textContent =
+            "Please complete all required fields.";
 
-    volunteerMessage.style.color = "red";
+        volunteerMessage.style.color =
+            "red";
 
-    return;
-  }
+        return;
+    }
 
-  const row = document.createElement("tr");
 
-  row.innerHTML = `
+    if (
+        !email.includes("@") ||
+        !email.includes(".")
+    ) {
+
+        volunteerMessage.textContent =
+            "Please enter a valid email address.";
+
+        volunteerMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    const row =
+        document.createElement("tr");
+
+
+    row.innerHTML = `
         <td class="volunteer-name">${name}</td>
+
         <td class="volunteer-phone">${phone}</td>
+
         <td class="volunteer-email">${email}</td>
+
         <td class="volunteer-status">Active</td>
 
+        <td class="volunteer-access">No Access</td>
+
         <td>
+
             <button
                 type="button"
                 onclick="editVolunteer(this)"
@@ -537,96 +565,315 @@ volunteerForm.addEventListener("submit", function (event) {
             >
                 Deactivate
             </button>
+
+            <button
+                type="button"
+                class="grant-access-button"
+                onclick="grantVolunteerAccess(this)"
+            >
+                Grant Access
+            </button>
+
         </td>
     `;
 
-  volunteerBody.appendChild(row);
 
-  volunteerMessage.textContent = "Volunteer saved successfully.";
+    volunteerBody.appendChild(row);
 
-  volunteerMessage.style.color = "green";
 
-  volunteerForm.reset();
+    volunteerMessage.textContent =
+        "Volunteer saved successfully.";
+
+    volunteerMessage.style.color =
+        "green";
+
+
+    volunteerForm.reset();
+
 });
 
+
+// ========================================
+// EDIT VOLUNTEER
+// ========================================
+
 function editVolunteer(button) {
-  const row = button.closest("tr");
 
-  const nameCell = row.querySelector(".volunteer-name");
+    const row =
+        button.closest("tr");
 
-  const phoneCell = row.querySelector(".volunteer-phone");
+    const nameCell =
+        row.querySelector(".volunteer-name");
 
-  const emailCell = row.querySelector(".volunteer-email");
+    const phoneCell =
+        row.querySelector(".volunteer-phone");
 
-  const updatedName = prompt(
-    "Update volunteer name:",
-    nameCell.textContent.trim(),
-  );
+    const emailCell =
+        row.querySelector(".volunteer-email");
 
-  if (updatedName === null) {
-    return;
-  }
 
-  const updatedPhone = prompt(
-    "Update phone number:",
-    phoneCell.textContent.trim(),
-  );
+    const updatedName =
+        prompt(
+            "Update volunteer name:",
+            nameCell.textContent.trim()
+        );
 
-  if (updatedPhone === null) {
-    return;
-  }
 
-  const updatedEmail = prompt(
-    "Update email address:",
-    emailCell.textContent.trim(),
-  );
+    if (updatedName === null) {
+        return;
+    }
 
-  if (updatedEmail === null) {
-    return;
-  }
 
-  if (
-    updatedName.trim() === "" ||
-    updatedPhone.trim() === "" ||
-    updatedEmail.trim() === ""
-  ) {
-    alert("Name, phone and email are required. Changes were not saved.");
+    const updatedPhone =
+        prompt(
+            "Update phone number:",
+            phoneCell.textContent.trim()
+        );
 
-    return;
-  }
 
-  if (!updatedEmail.includes("@") || !updatedEmail.includes(".")) {
-    alert("Please enter a valid email address. Changes were not saved.");
+    if (updatedPhone === null) {
+        return;
+    }
 
-    return;
-  }
 
-  nameCell.textContent = updatedName.trim();
+    const updatedEmail =
+        prompt(
+            "Update email address:",
+            emailCell.textContent.trim()
+        );
 
-  phoneCell.textContent = updatedPhone.trim();
 
-  emailCell.textContent = updatedEmail.trim();
+    if (updatedEmail === null) {
+        return;
+    }
 
-  volunteerMessage.textContent = "Volunteer record updated successfully.";
 
-  volunteerMessage.style.color = "green";
+    if (
+        updatedName.trim() === "" ||
+        updatedPhone.trim() === "" ||
+        updatedEmail.trim() === ""
+    ) {
+
+        alert(
+            "Name, phone and email are required. Changes were not saved."
+        );
+
+        return;
+    }
+
+
+    if (
+        !updatedEmail.includes("@") ||
+        !updatedEmail.includes(".")
+    ) {
+
+        alert(
+            "Please enter a valid email address. Changes were not saved."
+        );
+
+        return;
+    }
+
+
+    nameCell.textContent =
+        updatedName.trim();
+
+    phoneCell.textContent =
+        updatedPhone.trim();
+
+    emailCell.textContent =
+        updatedEmail.trim();
+
+
+    volunteerMessage.textContent =
+        "Volunteer record updated successfully.";
+
+    volunteerMessage.style.color =
+        "green";
+
 }
+
+
+// ========================================
+// DEACTIVATE VOLUNTEER
+// ========================================
 
 function deactivateVolunteer(button) {
-  const row = button.closest("tr");
 
-  const statusCell = row.querySelector(".volunteer-status");
+    const row =
+        button.closest("tr");
 
-  statusCell.textContent = "Inactive";
+    const statusCell =
+        row.querySelector(".volunteer-status");
 
-  button.disabled = true;
 
-  volunteerMessage.textContent =
-    "Volunteer deactivated successfully. Existing records are retained.";
+    statusCell.textContent =
+        "Inactive";
 
-  volunteerMessage.style.color = "green";
+
+    button.disabled =
+        true;
+
+
+    volunteerMessage.textContent =
+        "Volunteer deactivated successfully. Existing records are retained.";
+
+    volunteerMessage.style.color =
+        "green";
+
 }
 
+
+// ========================================
+// GRANT VOLUNTEER SYSTEM ACCESS
+// HS - PER4-17
+// ========================================
+
+function grantVolunteerAccess(button) {
+
+    const row =
+        button.closest("tr");
+
+    const nameCell =
+        row.querySelector(".volunteer-name");
+
+    const emailCell =
+        row.querySelector(".volunteer-email");
+
+    const statusCell =
+        row.querySelector(".volunteer-status");
+
+    const accessCell =
+        row.querySelector(".volunteer-access");
+
+
+    const volunteerName =
+        nameCell.textContent.trim();
+
+    const volunteerEmail =
+        emailCell.textContent.trim();
+
+
+    // Only active volunteer records can
+    // be granted system access.
+
+    if (statusCell.textContent.trim() !== "Active") {
+
+        volunteerMessage.textContent =
+            "System access cannot be granted to an inactive volunteer.";
+
+        volunteerMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    // Prevent duplicate system access
+    // for the same volunteer.
+
+    if (accessCell.textContent.trim() === "Active") {
+
+        volunteerMessage.textContent =
+            volunteerName +
+            " already has active system access.";
+
+        volunteerMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    // Create a simple username from
+    // the volunteer's name.
+
+    const baseUsername =
+        volunteerName
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, "");
+
+
+    let username =
+        baseUsername;
+
+    let number =
+        1;
+
+
+    // Make sure the username is unique.
+
+    while (
+        registeredUsers.some(function (user) {
+            return (
+                user.username.toLowerCase() ===
+                username.toLowerCase()
+            );
+        })
+    ) {
+
+        username =
+            baseUsername + number;
+
+        number++;
+
+    }
+
+
+    // Prototype password for the account.
+
+    const password =
+        "welcome123";
+
+
+    // Create the login account and link
+    // it to this volunteer.
+
+    registeredUsers.push({
+
+        username: username,
+
+        password: password,
+
+        role: "User",
+
+        active: true,
+
+        volunteerName: volunteerName,
+
+        volunteerEmail: volunteerEmail
+
+    });
+
+
+    // Show that this volunteer now has
+    // active system access.
+
+    accessCell.textContent =
+        "Active";
+
+
+    // Disable the button to provide another
+    // clear indication and prevent duplicates.
+
+    button.disabled =
+        true;
+
+
+    volunteerMessage.textContent =
+        "System access granted to " +
+        volunteerName +
+        ". Username: " +
+        username +
+        " | Password: " +
+        password +
+        " | Role: User";
+
+
+    volunteerMessage.style.color =
+        "green";
+
+}
 // ========================================
 // CREW ROLE MANAGEMENT
 // HS + BN
