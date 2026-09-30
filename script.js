@@ -177,6 +177,11 @@ function applyRoleBasedAccess() {
     const volunteerAssignmentSection =
         document.getElementById("volunteerAssignmentSection");
 
+    const productionScheduleSection =
+    document.getElementById("productionScheduleSection");
+
+    
+
 
     // Display the role for the whole login session.
 
@@ -197,6 +202,7 @@ function applyRoleBasedAccess() {
         crewRoleSection.style.display = "block";
         assignmentSection.style.display = "block";
         rosterSection.style.display = "block";
+        productionScheduleSection.style.display = "block";
 
         volunteerAssignmentSection.style.display =
             "none";
@@ -222,6 +228,7 @@ function applyRoleBasedAccess() {
         crewRoleSection.style.display = "none";
         assignmentSection.style.display = "none";
         rosterSection.style.display = "none";
+        productionScheduleSection.style.display = "none";
 
         volunteerAssignmentSection.style.display =
             "block";
@@ -1516,3 +1523,175 @@ viewRosterButton.addEventListener("click", function () {
 
   rosterMessage.style.color = "green";
 });
+
+// ========================================
+// VIEW PRODUCTION & PERFORMANCE SCHEDULE
+// BN - PER4-14
+// ========================================
+
+const viewScheduleButton =
+    document.getElementById("viewScheduleButton");
+
+const scheduleMessage =
+    document.getElementById("scheduleMessage");
+
+const productionSchedule =
+    document.getElementById("productionSchedule");
+
+
+viewScheduleButton.addEventListener("click", function () {
+
+    displayProductionSchedule();
+
+});
+
+
+function displayProductionSchedule() {
+
+    productionSchedule.innerHTML = "";
+
+
+    // No productions have been scheduled.
+
+    if (productions.length === 0) {
+
+        scheduleMessage.textContent =
+            "No productions are currently scheduled.";
+
+        scheduleMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    scheduleMessage.textContent =
+        "Current production and performance schedule.";
+
+    scheduleMessage.style.color =
+        "green";
+
+
+    productions.forEach(function (production) {
+
+        const productionContainer =
+            document.createElement("div");
+
+
+        const productionHeading =
+            document.createElement("h3");
+
+
+        productionHeading.textContent =
+            production.title;
+
+
+        productionContainer.appendChild(
+            productionHeading
+        );
+
+
+        // Retrieve performances belonging
+        // to this production.
+
+        const productionPerformances =
+            performances.filter(function (performance) {
+
+                return (
+                    performance.production ===
+                    production.title
+                );
+
+            });
+
+
+        // Sort the displayed performances
+        // by date and time.
+
+        productionPerformances.sort(function (a, b) {
+
+            const first =
+                new Date(
+                    a.date + "T" + a.time
+                );
+
+            const second =
+                new Date(
+                    b.date + "T" + b.time
+                );
+
+
+            return first - second;
+
+        });
+
+
+        if (productionPerformances.length === 0) {
+
+            const noPerformance =
+                document.createElement("p");
+
+
+            noPerformance.textContent =
+                "No performances scheduled.";
+
+
+            productionContainer.appendChild(
+                noPerformance
+            );
+
+        } else {
+
+            const table =
+                document.createElement("table");
+
+
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                    </tr>
+                </thead>
+
+                <tbody></tbody>
+            `;
+
+
+            const tableBody =
+                table.querySelector("tbody");
+
+
+            productionPerformances.forEach(
+                function (performance) {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+                        <td>${performance.date}</td>
+                        <td>${performance.time}</td>
+                    `;
+
+
+                    tableBody.appendChild(row);
+
+                }
+            );
+
+
+            productionContainer.appendChild(
+                table
+            );
+
+        }
+
+
+        productionSchedule.appendChild(
+            productionContainer
+        );
+
+    });
+
+}
