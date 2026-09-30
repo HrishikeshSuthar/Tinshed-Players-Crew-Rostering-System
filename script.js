@@ -265,6 +265,69 @@ function applyRoleBasedAccess() {
         "red";
 }
 
+// ========================================
+// USER LOGOUT
+// BN - PER4-16
+// ========================================
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+
+logoutButton.addEventListener("click", function () {
+
+    // Terminate the current user session.
+    currentUser = null;
+
+
+    // Hide the secured application.
+    mainSystem.style.display =
+        "none";
+
+
+    // Return to the login page.
+    loginSection.style.display =
+        "block";
+
+
+    // Clear previous credentials.
+    loginUsername.value =
+        "";
+
+    loginPassword.value =
+        "";
+
+
+    // Clear previous login message.
+    loginMessage.textContent =
+        "";
+
+
+    // Clear displayed role information.
+    const loggedInUsername =
+        document.getElementById("loggedInUsername");
+
+    const loggedInRole =
+        document.getElementById("loggedInRole");
+
+    const accessMessage =
+        document.getElementById("accessMessage");
+
+
+    loggedInUsername.textContent =
+        "";
+
+    loggedInRole.textContent =
+        "";
+
+    accessMessage.textContent =
+        "";
+
+
+    // Put cursor back in username field.
+    loginUsername.focus();
+
+});
 
 // ========================================
 // VOLUNTEER ASSIGNMENT INFORMATION
