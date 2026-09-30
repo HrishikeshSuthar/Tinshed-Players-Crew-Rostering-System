@@ -1,4 +1,146 @@
 // ========================================
+// USER LOGIN
+// HS - PER4-11
+// ========================================
+
+// Prototype registered users
+
+const registeredUsers = [
+    {
+        username: "admin",
+        password: "admin123",
+        role: "Admin",
+        active: true
+    },
+    {
+        username: "user",
+        password: "user123",
+        role: "User",
+        active: true
+    }
+];
+
+
+// Store the currently logged-in user.
+// This can later be used for PER4-12
+// Role-Based Access.
+
+let currentUser = null;
+
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const loginUsername =
+    document.getElementById("loginUsername");
+
+const loginPassword =
+    document.getElementById("loginPassword");
+
+const loginMessage =
+    document.getElementById("loginMessage");
+
+const loginSection =
+    document.getElementById("loginSection");
+
+const mainSystem =
+    document.getElementById("mainSystem");
+
+
+loginForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    const username =
+        loginUsername.value.trim();
+
+    const password =
+        loginPassword.value;
+
+
+    // Check required fields
+
+    if (
+        username === "" ||
+        password === ""
+    ) {
+
+        loginMessage.textContent =
+            "Username and password are required.";
+
+        loginMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    // Find registered user
+
+    const user =
+        registeredUsers.find(function (registeredUser) {
+
+            return (
+                registeredUser.username.toLowerCase() ===
+                username.toLowerCase()
+            );
+
+        });
+
+
+    // Check username and password
+
+    if (
+        !user ||
+        user.password !== password
+    ) {
+
+        loginMessage.textContent =
+            "Invalid username or password. Access denied.";
+
+        loginMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    // Check whether system access is active
+
+    if (!user.active) {
+
+        loginMessage.textContent =
+            "This user account has been deactivated. Access denied.";
+
+        loginMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    // Successful login
+
+    currentUser = user;
+
+    loginMessage.textContent =
+        "Login successful.";
+
+    loginMessage.style.color =
+        "green";
+
+
+    // Hide login and show system
+
+    loginSection.style.display =
+        "none";
+
+    mainSystem.style.display =
+        "block";
+
+});
+
+// ========================================
 // DATA
 // ========================================
 

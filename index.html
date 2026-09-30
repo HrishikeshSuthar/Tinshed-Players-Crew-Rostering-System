@@ -10,7 +10,61 @@
 
 <body>
 
-<div class="container">
+<!-- ========================================
+     USER LOGIN
+     HS - PER4-11
+     ======================================== -->
+
+<div class="container" id="loginSection">
+
+    <h1>Tinshed Players</h1>
+    <p class="subtitle">Crew Rostering System</p>
+
+    <section>
+
+        <h2>User Login</h2>
+
+        <form id="loginForm">
+
+            <label for="loginUsername">
+                Username *
+            </label>
+
+            <input
+                type="text"
+                id="loginUsername"
+                placeholder="Enter username"
+            >
+
+            <label for="loginPassword">
+                Password *
+            </label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter password"
+            >
+
+            <p id="loginMessage"></p>
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<!-- ========================================
+     MAIN CREW ROSTERING SYSTEM
+     Hidden until successful login
+     ======================================== -->
+
+<div class="container" id="mainSystem" style="display: none;">
 
     <h1>Tinshed Players</h1>
     <p class="subtitle">Crew Rostering System</p>
@@ -110,9 +164,7 @@
                 id="performanceTime"
             >
 
-
             <p id="performanceMessage"></p>
-
 
             <button type="submit">
                 Add Performance
@@ -291,9 +343,7 @@
                 placeholder="Enter crew role"
             >
 
-
             <p id="roleMessage"></p>
-
 
             <button type="submit">
                 Add Required Crew Role
@@ -328,7 +378,7 @@
 
     <!-- ========================================
          ASSIGN VOLUNTEER TO CREW ROLE
-         PER4-6 + PER4-7
+         PER4-6 + PER4-7 + PER4-8
          ======================================== -->
 
     <section>
@@ -417,7 +467,6 @@
 
 
             <p id="assignmentMessage"></p>
-
 
             <button type="submit">
                 Assign Volunteer
@@ -521,4 +570,5 @@
 <script src="script.js"></script>
 
 </body>
+
 </html>
