@@ -831,59 +831,69 @@ volunteerForm.addEventListener("submit", function (event) {
 
     row.innerHTML = `
 
-        <td class="volunteer-name">
-            ${name}
-        </td>
+    <td class="volunteer-name">
+        ${name}
+    </td>
 
-        <td class="volunteer-phone">
-            ${phone}
-        </td>
+    <td class="volunteer-phone">
+        ${phone}
+    </td>
 
-        <td class="volunteer-email">
-            ${email}
-        </td>
+    <td class="volunteer-email">
+        ${email}
+    </td>
 
-        <td class="volunteer-status">
-            Active
-        </td>
+    <td class="volunteer-status">
+        Active
+    </td>
 
-        <td class="volunteer-access">
-            No Access
-        </td>
+    <td class="volunteer-access">
+        No Access
+    </td>
 
-        <td>
+    <td>
 
-            <button
-                type="button"
-                onclick="editVolunteer(this)"
-            >
-                Edit
-            </button>
+        <button
+            type="button"
+            onclick="editVolunteer(this)"
+        >
+            Edit
+        </button>
 
-            <button
-                type="button"
-                onclick="deactivateVolunteer(this)"
-            >
-                Deactivate
-            </button>
+        <button
+            type="button"
+            onclick="deactivateVolunteer(this)"
+        >
+            Deactivate Volunteer
+        </button>
 
-            <button
-                type="button"
-                class="grant-access-button"
-                onclick="grantVolunteerAccess(this)"
-            >
-                Grant Access
-            </button>
+        <button
+            type="button"
+            class="grant-access-button"
+            onclick="grantVolunteerAccess(this)"
+        >
+            Grant Access
+        </button>
 
-            <button
-                type="button"
-                onclick="viewVolunteerDetails(this)"
-            >
-                View Details
-            </button>
+        <button
+            type="button"
+            class="deactivate-access-button"
+            onclick="deactivateVolunteerAccess(this)"
+            disabled
+        >
+            Deactivate Access
+        </button>
 
-        </td>
-    `;
+        <button
+            type="button"
+            onclick="viewVolunteerDetails(this)"
+        >
+            View Details
+        </button>
+
+    </td>
+`;
+
 
     volunteerBody.appendChild(row);
 
@@ -1014,6 +1024,10 @@ function deactivateVolunteer(button) {
 // GRANT VOLUNTEER SYSTEM ACCESS
 // HS - PER4-17
 // ========================================
+// ========================================
+// GRANT VOLUNTEER SYSTEM ACCESS
+// HS - PER4-17
+// ========================================
 
 function grantVolunteerAccess(button) {
 
@@ -1021,16 +1035,30 @@ function grantVolunteerAccess(button) {
         button.closest("tr");
 
     const nameCell =
-        row.querySelector(".volunteer-name");
+        row.querySelector(
+            ".volunteer-name"
+        );
 
     const emailCell =
-        row.querySelector(".volunteer-email");
+        row.querySelector(
+            ".volunteer-email"
+        );
 
     const statusCell =
-        row.querySelector(".volunteer-status");
+        row.querySelector(
+            ".volunteer-status"
+        );
 
     const accessCell =
-        row.querySelector(".volunteer-access");
+        row.querySelector(
+            ".volunteer-access"
+        );
+
+    const deactivateAccessButton =
+        row.querySelector(
+            ".deactivate-access-button"
+        );
+
 
     const volunteerName =
         nameCell.textContent.trim();
@@ -1038,68 +1066,199 @@ function grantVolunteerAccess(button) {
     const volunteerEmail =
         emailCell.textContent.trim();
 
+
+    // Volunteer record must still be active.
+
     if (
         statusCell.textContent.trim() !==
         "Active"
     ) {
+
         volunteerMessage.textContent =
             "System access cannot be granted to an inactive volunteer.";
 
-        volunteerMessage.style.color = "red";
+        volunteerMessage.style.color =
+            "red";
+
         return;
     }
 
+
+    // Check whether an account already exists.
+
+    const existingUser =
+        registeredUsers.find(
+            function (user) {
+
+                return (
+
+                    user.volunteerName &&
+                    user.volunteerName
+                        .toLowerCase() ===
+                    volunteerName
+                        .toLowerCase()
+
+                );
+
+            }
+        );
+
+
+    // If an active account already exists,
+    // do not create another account.
+
     if (
-        accessCell.textContent.trim() ===
-        "Active"
+        existingUser &&
+        existingUser.active
     ) {
+
         volunteerMessage.textContent =
             volunteerName +
             " already has active system access.";
 
-        volunteerMessage.style.color = "red";
+        volunteerMessage.style.color =
+            "red";
+
         return;
     }
+
+
+    // If an old inactive account exists,
+    // reactivate the same account.
+
+    if (
+        existingUser &&
+        !existingUser.active
+    ) {
+
+        existingUser.active =
+            true;
+
+
+        accessCell.textContent =
+            "Active";
+
+
+        button.disabled =
+            true;
+
+
+        if (deactivateAccessButton) {
+
+            deactivateAccessButton.disabled =
+                false;
+
+        }
+
+
+        volunteerMessage.textContent =
+            "System access reactivated for " +
+            volunteerName +
+            ". Username: " +
+            existingUser.username;
+
+
+        volunteerMessage.style.color =
+            "green";
+
+
+        return;
+
+    }
+
+
+    // Create username from volunteer name.
 
     const baseUsername =
         volunteerName
             .toLowerCase()
-            .replace(/[^a-z0-9]/g, "");
+            .replace(
+                /[^a-z0-9]/g,
+                ""
+            );
 
-    let username = baseUsername;
-    let number = 1;
+
+    let username =
+        baseUsername;
+
+    let number =
+        1;
+
+
+    // Prevent duplicate usernames.
 
     while (
-        registeredUsers.some(function (user) {
-            return (
-                user.username.toLowerCase() ===
-                username.toLowerCase()
-            );
-        })
+        registeredUsers.some(
+            function (user) {
+
+                return (
+
+                    user.username
+                        .toLowerCase() ===
+                    username
+                        .toLowerCase()
+
+                );
+
+            }
+        )
     ) {
+
         username =
-            baseUsername + number;
+            baseUsername +
+            number;
 
         number++;
+
     }
+
 
     const password =
         "welcome123";
 
+
+    // Create linked volunteer account.
+
     registeredUsers.push({
-        username: username,
-        password: password,
-        role: "User",
-        active: true,
-        volunteerName: volunteerName,
-        volunteerEmail: volunteerEmail
+
+        username:
+            username,
+
+        password:
+            password,
+
+        role:
+            "User",
+
+        active:
+            true,
+
+        volunteerName:
+            volunteerName,
+
+        volunteerEmail:
+            volunteerEmail
+
     });
+
+
+    // Update display.
 
     accessCell.textContent =
         "Active";
 
+
     button.disabled =
         true;
+
+
+    if (deactivateAccessButton) {
+
+        deactivateAccessButton.disabled =
+            false;
+
+    }
+
 
     volunteerMessage.textContent =
         "System access granted to " +
@@ -1110,8 +1269,161 @@ function grantVolunteerAccess(button) {
         password +
         " | Role: User";
 
+
     volunteerMessage.style.color =
         "green";
+
+}
+
+// ========================================
+// DEACTIVATE VOLUNTEER SYSTEM ACCESS
+// YM - PER4-18
+// ========================================
+
+function deactivateVolunteerAccess(button) {
+
+    const row =
+        button.closest("tr");
+
+
+    const nameCell =
+        row.querySelector(
+            ".volunteer-name"
+        );
+
+    const accessCell =
+        row.querySelector(
+            ".volunteer-access"
+        );
+
+    const grantAccessButton =
+        row.querySelector(
+            ".grant-access-button"
+        );
+
+
+    const volunteerName =
+        nameCell.textContent.trim();
+
+
+    // Find the linked system account.
+
+    const linkedUser =
+        registeredUsers.find(
+            function (user) {
+
+                return (
+
+                    user.volunteerName &&
+                    user.volunteerName
+                        .toLowerCase() ===
+                    volunteerName
+                        .toLowerCase()
+
+                );
+
+            }
+        );
+
+
+    // Make sure an active account exists.
+
+    if (
+        !linkedUser ||
+        !linkedUser.active
+    ) {
+
+        volunteerMessage.textContent =
+            volunteerName +
+            " does not currently have active system access.";
+
+        volunteerMessage.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+    // Acceptance Criteria:
+    // Ask coordinator for confirmation first.
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to deactivate system access for " +
+            volunteerName +
+            "?"
+        );
+
+
+    if (!confirmed) {
+
+        volunteerMessage.textContent =
+            "System access deactivation cancelled.";
+
+        volunteerMessage.style.color =
+            "red";
+
+        return;
+
+    }
+
+
+    // Only deactivate login access.
+    // DO NOT delete volunteer details.
+    // DO NOT delete crew assignments.
+    // DO NOT delete historical information.
+
+    linkedUser.active =
+        false;
+
+
+    // Clearly display inactive access.
+
+    accessCell.textContent =
+        "Inactive";
+
+
+    // Allow access to be granted again later.
+
+    if (grantAccessButton) {
+
+        grantAccessButton.disabled =
+            false;
+
+    }
+
+
+    button.disabled =
+        true;
+
+
+    volunteerMessage.textContent =
+        "System access for " +
+        volunteerName +
+        " has been deactivated. " +
+        "Volunteer records and existing crew assignments have been preserved.";
+
+
+    volunteerMessage.style.color =
+        "green";
+
+
+    // Refresh details if currently open.
+
+    if (
+        volunteerDetails.style.display !==
+        "none"
+    ) {
+
+        viewVolunteerDetails(
+            row.querySelector(
+                'button[onclick^="viewVolunteerDetails"]'
+            )
+        );
+
+    }
+
 }
 
 
