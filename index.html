@@ -2,148 +2,90 @@
 
 <html lang="en">
 
-
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
+    <title>Tinshed Players - Crew Rostering System</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Tinshed Players - Crew Rostering System</title>
-
-    <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 
 <body>
 
-
-
 <!-- ========================================
-
-     USER LOGIN
-
-     HS - PER4-11
-
-     ======================================== -->
-
-
+     USER LOGIN
+     HS - PER4-11
+     ======================================== -->
 
 <div class="container" id="loginSection">
 
+    <h1>Tinshed Players</h1>
+    <p class="subtitle">Crew Rostering System</p>
 
+    <section>
 
-    <h1>Tinshed Players</h1>
+        <h2>User Login</h2>
 
-    <p class="subtitle">Crew Rostering System</p>
+        <form id="loginForm">
 
+            <label for="loginUsername">
+                Username *
+            </label>
 
+            <input
+                type="text"
+                id="loginUsername"
+                placeholder="Enter username"
+            >
 
+            <label for="loginPassword">
+                Password *
+            </label>
 
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter password"
+            >
 
-    <section>
+            <p id="loginMessage"></p>
 
+            <button type="submit">
+                Login
+            </button>
 
+        </form>
 
-        <h2>User Login</h2>
-
-
-
-        <form id="loginForm">
-
-
-
-            <label for="loginUsername">
-
-                Username *
-
-            </label>
-
-
-
-            <input
-
-                type="text"
-
-                id="loginUsername"
-
-                placeholder="Enter username"
-
-            >
-
-
-
-            <label for="loginPassword">
-
-                Password *
-
-            </label>
-
-
-
-            <input
-
-                type="password"
-
-                id="loginPassword"
-
-                placeholder="Enter password"
-
-            >
-
-
-
-            <p id="loginMessage"></p>
-
-
-
-            <button type="submit">
-
-                Login
-
-            </button>
-
-
-
-        </form>
-
-
-
-    </section>
-
-
+    </section>
 
 </div>
 
 
-
-
-
 <!-- ========================================
-
-     MAIN CREW ROSTERING SYSTEM
-
-     Hidden until successful login
-
-     ======================================== -->
-
-
+     MAIN CREW ROSTERING SYSTEM
+     Hidden until successful login
+     ======================================== -->
 
 <div class="container" id="mainSystem" style="display: none;">
 
+    <!-- USER LOGOUT - BN PER4-16 -->
 
-  <!-- USER LOGOUT - BN PER4-16 -->
     <div id="logoutArea">
+
         <button type="button" id="logoutButton">
             Logout
         </button>
-    </div>
-    <h1>Tinshed Players</h1>
 
-    <p class="subtitle">Crew Rostering System</p>
+    </div>
+
+
+    <h1>Tinshed Players</h1>
+
+    <p class="subtitle">
+        Crew Rostering System
+    </p>
 
 
     <!-- ========================================
@@ -152,6 +94,7 @@
          ======================================== -->
 
     <div id="userAccessInfo">
+
         <p>
             Logged in as:
             <strong id="loggedInUsername"></strong>
@@ -163,1033 +106,535 @@
         </p>
 
         <p id="accessMessage"></p>
+
     </div>
 
 
-
-
-
-
-    <!-- ========================================
-
-         PRODUCTION MANAGEMENT
-
-         ======================================== -->
-
-
-
-    <section id="productionManagementSection">
-
-
-
-        <h2>Production Management</h2>
-
-
-
-        <form id="productionForm">
-
-
-
-            <label for="productionTitle">
-
-                Production Title *
-
-            </label>
-
-
-
-            <input
-
-                type="text"
-
-                id="productionTitle"
-
-                placeholder="Enter production title"
-
-            >
-
-
-
-            <p id="productionMessage"></p>
-
-
-
-            <button type="submit">
-
-                Add Production
-
-            </button>
-
-
-
-        </form>
-
-
-
-
-
-        <div class="production-list">
-
-
-
-            <h3>Productions</h3>
-
-
-
-            <table>
-
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>Production Title</th>
-
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-
-
-                <tbody id="productionBody"></tbody>
-
-
-
-            </table>
-
-
-
-        </div>
-
-
-
-    </section>
-
-
-
-
-
-    <!-- ========================================
-
-         PERFORMANCE MANAGEMENT
-
-         YM - PER4-4
-
-         ======================================== -->
-
-
-
-    <section id="performanceManagementSection">
-
-
-
-        <h2>Performance Management</h2>
-
-
-
-        <form id="performanceForm">
-
-
-
-            <label for="performanceProduction">
-
-                Production *
-
-            </label>
-
-
-
-            <select id="performanceProduction">
-
-
-
-                <option value="">
-
-                    Select production
-
-                </option>
-
-
-
-            </select>
-
-
-
-
-
-            <label for="performanceDate">
-
-                Performance Date *
-
-            </label>
-
-
-
-            <input
-
-                type="date"
-
-                id="performanceDate"
-
-            >
-
-
-
-
-
-            <label for="performanceTime">
-
-                Start Time *
-
-            </label>
-
-
-
-            <input
-
-                type="time"
-
-                id="performanceTime"
-
-            >
-
-
-
-            <p id="performanceMessage"></p>
-
-
-
-            <button type="submit">
-
-                Add Performance
-
-            </button>
-
-
-
-        </form>
-
-
-
-
-
-        <div class="performance-list">
-
-
-
-            <h3>Performances</h3>
-
-
-
-            <table>
-
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>Production</th>
-
-                        <th>Date</th>
-
-                        <th>Start Time</th>
-
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-
-
-                <tbody id="performanceBody"></tbody>
-
-
-
-            </table>
-
-
-
-        </div>
-
-
-
-    </section>
-
-<!-- ========================================
-     PRODUCTION & PERFORMANCE SCHEDULE
-     BN - PER4-14
-     ======================================== -->
-
-<section id="productionScheduleSection">
-
-    <h2>Production & Performance Schedule</h2>
-
-    <p>
-        View planned productions and their scheduled performances.
-    </p>
-
-    <button
-        type="button"
-        id="viewScheduleButton"
-    >
-        View Schedule
-    </button>
-
-    <p id="scheduleMessage"></p>
-
-    <div id="productionSchedule"></div>
-
-</section>
-
-
-
-
-
-    <!-- ========================================
-
-         VOLUNTEER MANAGEMENT
-
-         ======================================== -->
-
-
-
-    <section id="volunteerManagementSection">
-
-
-
-        <h2>Add Volunteer</h2>
-
-
-
-        <form id="volunteerForm">
-
-
-
-            <label for="fullName">
-
-                Full Name *
-
-            </label>
-
-
-
-            <input
-
-                type="text"
-
-                id="fullName"
-
-                placeholder="Enter volunteer name"
-
-            >
-
-
-
-
-
-            <label for="phone">
-
-                Phone Number *
-
-            </label>
-
-
-
-            <input
-
-                type="tel"
-
-                id="phone"
-
-                placeholder="Enter phone number"
-
-            >
-
-
-
-
-
-            <label for="email">
-
-                Email Address *
-
-            </label>
-
-
-
-            <input
-
-                type="email"
-
-                id="email"
-
-                placeholder="Enter email address"
-
-            >
-
-
-
-
-
-            <label for="status">
-
-                Status
-
-            </label>
-
-
-
-            <input
-
-                type="text"
-
-                id="status"
-
-                value="Active"
-
-                readonly
-
-            >
-
-
-
-
-
-            <p id="message"></p>
-
-
-
-
-
-            <div class="buttons">
-
-
-
-                <button type="submit">
-
-                    Save Volunteer
-
-                </button>
-
-
-
-                <button
-
-                    type="reset"
-
-                    class="cancel"
-
-                >
-
-                    Cancel
-
-                </button>
-
-
-
-            </div>
-
-
-
-        </form>
-
-
-
-
-
-        <div class="volunteer-list">
-
-
-
-            <h3>Volunteer Records</h3>
-
-
-
-            <table>
-
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>Name</th>
-
-                        <th>Phone</th>
-
-                        <th>Email</th>
-
-                        <th>Status</th>
-
-                        <th>System Access</th>
-
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-
-
-                <tbody id="volunteerBody"></tbody>
-
-
-
-            </table>
-
-
-
-        </div>
-
-
-
-    </section>
-
-
-
-
-
-    <!-- ========================================
-
-         CREW ROLE MANAGEMENT
-
-         ======================================== -->
-
-
-
-    <section id="crewRoleManagementSection">
-
-
-
-        <h2>Crew Role Management</h2>
-
-
-
-        <form id="crewRoleForm">
-
-
-
-            <label for="rolePerformance">
-
-                Performance *
-
-            </label>
-
-
-
-            <select id="rolePerformance">
-
-
-
-                <option value="">
-
-                    Select performance
-
-                </option>
-
-
-
-                <option value="Opening Night">
-
-                    Opening Night
-
-                </option>
-
-
-
-                <option value="Friday Evening">
-
-                    Friday Evening
-
-                </option>
-
-
-
-                <option value="Saturday Matinee">
-
-                    Saturday Matinee
-
-                </option>
-
-
-
-            </select>
-
-
-
-
-
-            <label for="roleName">
-
-                Crew Role Name *
-
-            </label>
-
-
-
-            <input
-
-                type="text"
-
-                id="roleName"
-
-                placeholder="Enter crew role"
-
-            >
-
-
-
-            <p id="roleMessage"></p>
-
-
-
-            <button type="submit">
-
-                Add Required Crew Role
-
-            </button>
-
-
-
-        </form>
-
-
-
-
-
-        <div class="role-list">
-
-
-
-            <h3>Required Crew Roles</h3>
-
-
-
-            <table>
-
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>Performance</th>
-
-                        <th>Crew Role</th>
-
-                        <th>Status</th>
-
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-
-
-                <tbody id="crewRoleBody"></tbody>
-
-
-
-            </table>
-
-
-
-        </div>
-
-
-
-    </section>
-
-
-
-
-
-    <!-- ========================================
-
-         ASSIGN VOLUNTEER TO CREW ROLE
-
-         PER4-6 + PER4-7 + PER4-8
-
-         ======================================== -->
-
-
-
-    <section id="assignmentManagementSection">
-
-
-
-        <h2>Assign Volunteer to Crew Role</h2>
-
-
-
-        <form id="assignmentForm">
-
-
-
-            <label for="performance">
-
-                Performance *
-
-            </label>
-
-
-
-            <select id="performance">
-
-
-
-                <option value="">
-
-                    Select performance
-
-                </option>
-
-
-
-                <option value="Opening Night">
-
-                    Opening Night
-
-                </option>
-
-
-
-                <option value="Friday Evening">
-
-                    Friday Evening
-
-                </option>
-
-
-
-                <option value="Saturday Matinee">
-
-                    Saturday Matinee
-
-                </option>
-
-
-
-            </select>
-
-
-
-
-
-            <label for="assignmentRole">
-
-                Crew Role *
-
-            </label>
-
-
-
-            <select id="assignmentRole">
-
-
-
-                <option value="">
-
-                    Select crew role
-
-                </option>
-
-
-
-                <option value="Stage Manager">
-
-                    Stage Manager
-
-                </option>
-
-
-
-                <option value="Lighting">
-
-                    Lighting
-
-                </option>
-
-
-
-                <option value="Sound">
-
-                    Sound
-
-                </option>
-
-
-
-                <option value="Front of House">
-
-                    Front of House
-
-                </option>
-
-
-
-            </select>
-
-
-
-
-
-            <label for="volunteer">
-
-                Volunteer *
-
-            </label>
-
-
-
-            <select id="volunteer">
-
-
-
-                <option value="">
-
-                    Select volunteer
-
-                </option>
-
-
-
-                <option value="John Smith">
-
-                    John Smith
-
-                </option>
-
-
-
-                <option value="Sarah Brown">
-
-                    Sarah Brown
-
-                </option>
-
-
-
-                <option value="Michael Lee">
-
-                    Michael Lee
-
-                </option>
-
-
-
-            </select>
-
-
-
-
-
-            <p id="assignmentMessage"></p>
-
-
-
-            <button type="submit">
-
-                Assign Volunteer
-
-            </button>
-
-
-
-        </form>
-
-
-
-
-
-        <div class="assignment-list">
-
-
-
-            <h3>Crew Assignments</h3>
-
-
-
-            <table>
-
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>Performance</th>
-
-                        <th>Crew Role</th>
-
-                        <th>Volunteer</th>
-
-                        <th>Status</th>
-
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-
-
-                <tbody id="assignmentBody"></tbody>
-
-
-
-            </table>
-
-
-
-        </div>
-
-
-
-    </section>
-
-
-
-
-
-    <!-- ========================================
-
-         VIEW PERFORMANCE ROSTER
-
-         ======================================== -->
-
-
-
-    <section id="rosterSection">
-
-
-
-        <h2>View Performance Roster</h2>
-
-
-
-        <label for="rosterPerformance">
-
-            Performance *
-
-        </label>
-
-
-
-        <select id="rosterPerformance">
-
-
-
-            <option value="">
-
-                Select performance
-
-            </option>
-
-
-
-            <option value="Opening Night">
-
-                Opening Night
-
-            </option>
-
-
-
-            <option value="Friday Evening">
-
-                Friday Evening
-
-            </option>
-
-
-
-            <option value="Saturday Matinee">
-
-                Saturday Matinee
-
-            </option>
-
-
-
-        </select>
-
-
-
-
-
-        <button
-
-            type="button"
-
-            id="viewRosterButton"
-
-        >
-
-            View Roster
-
-        </button>
-
-
-
-
-
-        <p id="rosterMessage"></p>
-
-
-
-
-
-        <table
-
-            id="rosterTable"
-
-            style="display: none;"
-
-        >
-
-
-
-            <thead>
-
-                <tr>
-
-                    <th>Performance</th>
-
-                    <th>Crew Role</th>
-
-                    <th>Volunteer</th>
-
-                    <th>Status</th>
-
-                </tr>
-
-            </thead>
-
-
-
-            <tbody id="rosterBody"></tbody>
-
-
-
-        </table>
-
-
-
-    </section>
-
     <!-- ========================================
-         VOLUNTEER ASSIGNMENT VIEW
-         BN - PER4-12
+         PRODUCTION MANAGEMENT
          ======================================== -->
 
-    <section id="volunteerAssignmentSection" style="display: none;">
+    <section id="productionManagementSection">
+
+        <h2>Production Management</h2>
+
+        <form id="productionForm">
+
+            <label for="productionTitle">
+                Production Title *
+            </label>
+
+            <input
+                type="text"
+                id="productionTitle"
+                placeholder="Enter production title"
+            >
+
+            <p id="productionMessage"></p>
+
+            <button type="submit">
+                Add Production
+            </button>
+
+        </form>
+
+
+        <div class="production-list">
+
+            <h3>Productions</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Production Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="productionBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         PERFORMANCE MANAGEMENT
+         YM - PER4-4
+         ======================================== -->
+
+    <section id="performanceManagementSection">
+
+        <h2>Performance Management</h2>
+
+        <form id="performanceForm">
+
+            <label for="performanceProduction">
+                Production *
+            </label>
+
+            <select id="performanceProduction">
+
+                <option value="">
+                    Select production
+                </option>
+
+            </select>
+
+
+            <label for="performanceDate">
+                Performance Date *
+            </label>
+
+            <input
+                type="date"
+                id="performanceDate"
+            >
+
+
+            <label for="performanceTime">
+                Start Time *
+            </label>
+
+            <input
+                type="time"
+                id="performanceTime"
+            >
+
+            <p id="performanceMessage"></p>
+
+            <button type="submit">
+                Add Performance
+            </button>
+
+        </form>
+
+
+        <div class="performance-list">
+
+            <h3>Performances</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Production</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="performanceBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         PRODUCTION & PERFORMANCE SCHEDULE
+         BN - PER4-14
+         ======================================== -->
+
+    <section id="productionScheduleSection">
+
+        <h2>Production & Performance Schedule</h2>
+
+        <p>
+            View planned productions and their scheduled performances.
+        </p>
+
+        <button
+            type="button"
+            id="viewScheduleButton"
+        >
+            View Schedule
+        </button>
+
+        <p id="scheduleMessage"></p>
+
+        <div id="productionSchedule"></div>
+
+    </section>
+
+
+    <!-- ========================================
+         VOLUNTEER MANAGEMENT
+         ======================================== -->
+
+    <section id="volunteerManagementSection">
+
+        <h2>Add Volunteer</h2>
+
+        <form id="volunteerForm">
+
+            <label for="fullName">
+                Full Name *
+            </label>
+
+            <input
+                type="text"
+                id="fullName"
+                placeholder="Enter volunteer name"
+            >
+
+
+            <label for="phone">
+                Phone Number *
+            </label>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Enter phone number"
+            >
+
+
+            <label for="email">
+                Email Address *
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter email address"
+            >
+
+
+            <label for="status">
+                Status
+            </label>
+
+            <input
+                type="text"
+                id="status"
+                value="Active"
+                readonly
+            >
+
+            <p id="message"></p>
+
+
+            <div class="buttons">
+
+                <button type="submit">
+                    Save Volunteer
+                </button>
+
+                <button
+                    type="reset"
+                    class="cancel"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <div class="volunteer-list">
+
+            <h3>Volunteer Records</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>System Access</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="volunteerBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         CREW ROLE MANAGEMENT
+         ======================================== -->
+
+    <section id="crewRoleManagementSection">
+
+        <h2>Crew Role Management</h2>
+
+        <form id="crewRoleForm">
+
+            <label for="rolePerformance">
+                Performance *
+            </label>
+
+            <select id="rolePerformance">
+
+                <option value="">
+                    Select performance
+                </option>
+
+                <option value="Opening Night">
+                    Opening Night
+                </option>
+
+                <option value="Friday Evening">
+                    Friday Evening
+                </option>
+
+                <option value="Saturday Matinee">
+                    Saturday Matinee
+                </option>
+
+            </select>
+
+
+            <label for="roleName">
+                Crew Role Name *
+            </label>
+
+            <input
+                type="text"
+                id="roleName"
+                placeholder="Enter crew role"
+            >
+
+            <p id="roleMessage"></p>
+
+            <button type="submit">
+                Add Required Crew Role
+            </button>
+
+        </form>
+
+
+        <div class="role-list">
+
+            <h3>Required Crew Roles</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Performance</th>
+                        <th>Crew Role</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="crewRoleBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         ASSIGN VOLUNTEER TO CREW ROLE
+         PER4-6 + PER4-7 + PER4-8 + PER4-10
+         ======================================== -->
+
+    <section id="assignmentManagementSection">
+
+        <h2>Assign Volunteer to Crew Role</h2>
+
+        <form id="assignmentForm">
+
+            <label for="performance">
+                Performance *
+            </label>
+
+            <!--
+                PER4-10:
+                Performances created in Performance Management
+                will be added here by JavaScript.
+            -->
+
+            <select id="performance">
+
+                <option value="">
+                    Select performance
+                </option>
+
+            </select>
+
+
+            <label for="assignmentRole">
+                Crew Role *
+            </label>
+
+            <select id="assignmentRole">
+
+                <option value="">
+                    Select crew role
+                </option>
+
+                <option value="Stage Manager">
+                    Stage Manager
+                </option>
+
+                <option value="Lighting">
+                    Lighting
+                </option>
+
+                <option value="Sound">
+                    Sound
+                </option>
+
+                <option value="Front of House">
+                    Front of House
+                </option>
+
+            </select>
+
+
+            <label for="volunteer">
+                Volunteer *
+            </label>
+
+            <select id="volunteer">
+
+                <option value="">
+                    Select volunteer
+                </option>
+
+                <option value="John Smith">
+                    John Smith
+                </option>
+
+                <option value="Sarah Brown">
+                    Sarah Brown
+                </option>
+
+                <option value="Michael Lee">
+                    Michael Lee
+                </option>
+
+            </select>
+
+
+            <p id="assignmentMessage"></p>
+
+            <button type="submit">
+                Assign Volunteer
+            </button>
+
+        </form>
+
+
+        <div class="assignment-list">
+
+            <h3>Crew Assignments</h3>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Performance</th>
+                        <th>Crew Role</th>
+                        <th>Volunteer</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="assignmentBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         VIEW PERFORMANCE ROSTER
+         ======================================== -->
+
+    <section id="rosterSection">
+
+        <h2>View Performance Roster</h2>
+
+        <label for="rosterPerformance">
+            Performance *
+        </label>
+
+        <select id="rosterPerformance">
+
+            <option value="">
+                Select performance
+            </option>
+
+            <option value="Opening Night">
+                Opening Night
+            </option>
+
+            <option value="Friday Evening">
+                Friday Evening
+            </option>
+
+            <option value="Saturday Matinee">
+                Saturday Matinee
+            </option>
+
+        </select>
+
+
+        <button
+            type="button"
+            id="viewRosterButton"
+        >
+            View Roster
+        </button>
+
+
+        <p id="rosterMessage"></p>
+
+
+        <table
+            id="rosterTable"
+            style="display: none;"
+        >
+
+            <thead>
+                <tr>
+                    <th>Performance</th>
+                    <th>Crew Role</th>
+                    <th>Volunteer</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="rosterBody"></tbody>
+
+        </table>
+
+    </section>
+
+
+    <!-- ========================================
+         VIEW MY ASSIGNMENTS
+         YM - PER4-10
+         ======================================== -->
+
+    <section
+        id="volunteerAssignmentSection"
+        style="display: none;"
+    >
 
         <h2>My Crew Assignment Information</h2>
 
@@ -1197,11 +642,14 @@
             You have Volunteer access. Administrative management functions are restricted.
         </p>
 
+
         <table>
 
             <thead>
                 <tr>
-                    <th>Performance</th>
+                    <th>Production</th>
+                    <th>Performance Date</th>
+                    <th>Start Time</th>
                     <th>Crew Role</th>
                     <th>Status</th>
                 </tr>
@@ -1213,8 +661,12 @@
 
     </section>
 
+
 </div>
+
+
 <script src="script.js"></script>
+
 </body>
 
 </html>
