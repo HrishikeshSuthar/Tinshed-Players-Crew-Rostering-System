@@ -265,104 +265,258 @@
 
 
     <!-- ========================================
-         VOLUNTEER MANAGEMENT
+     VOLUNTEER MANAGEMENT
+     HS - PER4-1
+     BN - PER4-2
+     HS - PER4-17
+     YM - PER4-15
+     ======================================== -->
+
+<section id="volunteerManagementSection">
+
+    <h2>Volunteer Management</h2>
+
+
+    <!-- ========================================
+         ADD VOLUNTEER
          ======================================== -->
 
-    <section id="volunteerManagementSection">
+    <h3>Add Volunteer</h3>
 
-        <h2>Add Volunteer</h2>
+    <form id="volunteerForm">
 
-        <form id="volunteerForm">
+        <label for="fullName">
+            Full Name *
+        </label>
 
-            <label for="fullName">
-                Full Name *
-            </label>
+        <input
+            type="text"
+            id="fullName"
+            placeholder="Enter volunteer name"
+        >
 
-            <input
-                type="text"
-                id="fullName"
-                placeholder="Enter volunteer name"
+
+        <label for="phone">
+            Phone Number *
+        </label>
+
+        <input
+            type="tel"
+            id="phone"
+            placeholder="Enter phone number"
+        >
+
+
+        <label for="email">
+            Email Address *
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter email address"
+        >
+
+
+        <label for="status">
+            Status
+        </label>
+
+        <input
+            type="text"
+            id="status"
+            value="Active"
+            readonly
+        >
+
+
+        <p id="message"></p>
+
+
+        <div class="buttons">
+
+            <button type="submit">
+                Save Volunteer
+            </button>
+
+            <button
+                type="reset"
+                class="cancel"
             >
-
-
-            <label for="phone">
-                Phone Number *
-            </label>
-
-            <input
-                type="tel"
-                id="phone"
-                placeholder="Enter phone number"
-            >
-
-
-            <label for="email">
-                Email Address *
-            </label>
-
-            <input
-                type="email"
-                id="email"
-                placeholder="Enter email address"
-            >
-
-
-            <label for="status">
-                Status
-            </label>
-
-            <input
-                type="text"
-                id="status"
-                value="Active"
-                readonly
-            >
-
-            <p id="message"></p>
-
-
-            <div class="buttons">
-
-                <button type="submit">
-                    Save Volunteer
-                </button>
-
-                <button
-                    type="reset"
-                    class="cancel"
-                >
-                    Cancel
-                </button>
-
-            </div>
-
-        </form>
-
-
-        <div class="volunteer-list">
-
-            <h3>Volunteer Records</h3>
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>System Access</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody id="volunteerBody"></tbody>
-
-            </table>
+                Cancel
+            </button>
 
         </div>
 
-    </section>
+    </form>
+
+
+    <!-- ========================================
+         SEARCH VOLUNTEER RECORDS
+         YM - PER4-15
+         ======================================== -->
+
+    <div class="volunteer-search">
+
+        <h3>Search Volunteer Records</h3>
+
+        <p>
+            Enter a volunteer name to find their record.
+        </p>
+
+
+        <label for="volunteerSearch">
+            Volunteer Name
+        </label>
+
+        <input
+            type="text"
+            id="volunteerSearch"
+            placeholder="Enter volunteer name"
+        >
+
+
+        <div class="buttons">
+
+            <button
+                type="button"
+                id="searchVolunteerButton"
+            >
+                Search
+            </button>
+
+
+            <button
+                type="button"
+                id="clearVolunteerSearchButton"
+                class="cancel"
+            >
+                Clear
+            </button>
+
+        </div>
+
+
+        <p id="volunteerSearchMessage"></p>
+
+    </div>
+
+
+    <!-- ========================================
+         VOLUNTEER RECORDS
+         ======================================== -->
+
+    <div class="volunteer-list">
+
+        <h3>Volunteer Records</h3>
+
+
+        <table id="volunteerRecordsTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Phone
+                    </th>
+
+                    <th>
+                        Email
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        System Access
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="volunteerBody"></tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ========================================
+         VIEW VOLUNTEER DETAILS
+         YM - PER4-15
+         ======================================== -->
+
+    <div
+        id="volunteerDetails"
+        class="volunteer-details"
+        style="display: none;"
+    >
+
+        <h3>Volunteer Details</h3>
+
+
+        <p>
+            <strong>Name:</strong>
+
+            <span id="detailVolunteerName">
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Phone:</strong>
+
+            <span id="detailVolunteerPhone">
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Email:</strong>
+
+            <span id="detailVolunteerEmail">
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Status:</strong>
+
+            <span id="detailVolunteerStatus">
+            </span>
+        </p>
+
+
+        <p>
+            <strong>System Access:</strong>
+
+            <span id="detailVolunteerAccess">
+            </span>
+        </p>
+
+
+        <button
+            type="button"
+            id="closeVolunteerDetailsButton"
+        >
+            Close Details
+        </button>
+
+    </div>
+
+</section>
 
 
     <!-- ========================================
