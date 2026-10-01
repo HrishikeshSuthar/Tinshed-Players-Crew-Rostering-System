@@ -1,26 +1,120 @@
 <!doctype html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Tinshed Players - Crew Rostering System</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body>
 
-<div class="container">
+<!-- ========================================
+     USER LOGIN
+     HS - PER4-11
+     ======================================== -->
+
+<div class="container" id="loginSection">
 
     <h1>Tinshed Players</h1>
     <p class="subtitle">Crew Rostering System</p>
+
+    <section>
+
+        <h2>User Login</h2>
+
+        <form id="loginForm">
+
+            <label for="loginUsername">
+                Username *
+            </label>
+
+            <input
+                type="text"
+                id="loginUsername"
+                placeholder="Enter username"
+            >
+
+            <label for="loginPassword">
+                Password *
+            </label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter password"
+            >
+
+            <p id="loginMessage"></p>
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<!-- ========================================
+     MAIN CREW ROSTERING SYSTEM
+     Hidden until successful login
+     ======================================== -->
+
+<div class="container" id="mainSystem" style="display: none;">
+
+    <!-- USER LOGOUT - BN PER4-16 -->
+
+    <div id="logoutArea">
+
+        <button type="button" id="logoutButton">
+            Logout
+        </button>
+
+    </div>
+
+
+    <h1>Tinshed Players</h1>
+
+    <p class="subtitle">
+        Crew Rostering System
+    </p>
+
+
+    <!-- ========================================
+         ROLE BASED ACCESS
+         BN - PER4-12
+         ======================================== -->
+
+    <div id="userAccessInfo">
+
+        <p>
+            Logged in as:
+            <strong id="loggedInUsername"></strong>
+        </p>
+
+        <p>
+            Role:
+            <strong id="loggedInRole"></strong>
+        </p>
+
+        <p id="accessMessage"></p>
+
+    </div>
 
 
     <!-- ========================================
          PRODUCTION MANAGEMENT
          ======================================== -->
 
-    <section>
+    <section id="productionManagementSection">
 
         <h2>Production Management</h2>
 
@@ -72,7 +166,7 @@
          YM - PER4-4
          ======================================== -->
 
-    <section>
+    <section id="performanceManagementSection">
 
         <h2>Performance Management</h2>
 
@@ -110,9 +204,7 @@
                 id="performanceTime"
             >
 
-
             <p id="performanceMessage"></p>
-
 
             <button type="submit">
                 Add Performance
@@ -146,111 +238,292 @@
 
 
     <!-- ========================================
-         VOLUNTEER MANAGEMENT
+         PRODUCTION & PERFORMANCE SCHEDULE
+         BN - PER4-14
          ======================================== -->
 
-    <section>
+    <section id="productionScheduleSection">
 
-        <h2>Add Volunteer</h2>
+        <h2>Production & Performance Schedule</h2>
 
-        <form id="volunteerForm">
+        <p>
+            View planned productions and their scheduled performances.
+        </p>
 
-            <label for="fullName">
-                Full Name *
-            </label>
+        <button
+            type="button"
+            id="viewScheduleButton"
+        >
+            View Schedule
+        </button>
 
-            <input
-                type="text"
-                id="fullName"
-                placeholder="Enter volunteer name"
+        <p id="scheduleMessage"></p>
+
+        <div id="productionSchedule"></div>
+
+    </section>
+
+
+    <!-- ========================================
+     VOLUNTEER MANAGEMENT
+     HS - PER4-1
+     BN - PER4-2
+     HS - PER4-17
+     YM - PER4-15
+     ======================================== -->
+
+<section id="volunteerManagementSection">
+
+    <h2>Volunteer Management</h2>
+
+
+    <!-- ========================================
+         ADD VOLUNTEER
+         ======================================== -->
+
+    <h3>Add Volunteer</h3>
+
+    <form id="volunteerForm">
+
+        <label for="fullName">
+            Full Name *
+        </label>
+
+        <input
+            type="text"
+            id="fullName"
+            placeholder="Enter volunteer name"
+        >
+
+
+        <label for="phone">
+            Phone Number *
+        </label>
+
+        <input
+            type="tel"
+            id="phone"
+            placeholder="Enter phone number"
+        >
+
+
+        <label for="email">
+            Email Address *
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter email address"
+        >
+
+
+        <label for="status">
+            Status
+        </label>
+
+        <input
+            type="text"
+            id="status"
+            value="Active"
+            readonly
+        >
+
+
+        <p id="message"></p>
+
+
+        <div class="buttons">
+
+            <button type="submit">
+                Save Volunteer
+            </button>
+
+            <button
+                type="reset"
+                class="cancel"
             >
-
-
-            <label for="phone">
-                Phone Number *
-            </label>
-
-            <input
-                type="tel"
-                id="phone"
-                placeholder="Enter phone number"
-            >
-
-
-            <label for="email">
-                Email Address *
-            </label>
-
-            <input
-                type="email"
-                id="email"
-                placeholder="Enter email address"
-            >
-
-
-            <label for="status">
-                Status
-            </label>
-
-            <input
-                type="text"
-                id="status"
-                value="Active"
-                readonly
-            >
-
-
-            <p id="message"></p>
-
-
-            <div class="buttons">
-
-                <button type="submit">
-                    Save Volunteer
-                </button>
-
-                <button
-                    type="reset"
-                    class="cancel"
-                >
-                    Cancel
-                </button>
-
-            </div>
-
-        </form>
-
-
-        <div class="volunteer-list">
-
-            <h3>Volunteer Records</h3>
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody id="volunteerBody"></tbody>
-
-            </table>
+                Cancel
+            </button>
 
         </div>
 
-    </section>
+    </form>
+
+
+    <!-- ========================================
+         SEARCH VOLUNTEER RECORDS
+         YM - PER4-15
+         ======================================== -->
+
+    <div class="volunteer-search">
+
+        <h3>Search Volunteer Records</h3>
+
+        <p>
+            Enter a volunteer name to find their record.
+        </p>
+
+
+        <label for="volunteerSearch">
+            Volunteer Name
+        </label>
+
+        <input
+            type="text"
+            id="volunteerSearch"
+            placeholder="Enter volunteer name"
+        >
+
+
+        <div class="buttons">
+
+            <button
+                type="button"
+                id="searchVolunteerButton"
+            >
+                Search
+            </button>
+
+
+            <button
+                type="button"
+                id="clearVolunteerSearchButton"
+                class="cancel"
+            >
+                Clear
+            </button>
+
+        </div>
+
+
+        <p id="volunteerSearchMessage"></p>
+
+    </div>
+
+
+    <!-- ========================================
+         VOLUNTEER RECORDS
+         ======================================== -->
+
+    <div class="volunteer-list">
+
+        <h3>Volunteer Records</h3>
+
+
+        <table id="volunteerRecordsTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Phone
+                    </th>
+
+                    <th>
+                        Email
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        System Access
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="volunteerBody"></tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ========================================
+         VIEW VOLUNTEER DETAILS
+         YM - PER4-15
+         ======================================== -->
+
+    <div
+        id="volunteerDetails"
+        class="volunteer-details"
+        style="display: none;"
+    >
+
+        <h3>Volunteer Details</h3>
+
+
+        <p>
+            <strong>Name:</strong>
+
+            <span id="detailVolunteerName">
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Phone:</strong>
+
+            <span id="detailVolunteerPhone">
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Email:</strong>
+
+            <span id="detailVolunteerEmail">
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Status:</strong>
+
+            <span id="detailVolunteerStatus">
+            </span>
+        </p>
+
+
+        <p>
+            <strong>System Access:</strong>
+
+            <span id="detailVolunteerAccess">
+            </span>
+        </p>
+
+
+        <button
+            type="button"
+            id="closeVolunteerDetailsButton"
+        >
+            Close Details
+        </button>
+
+    </div>
+
+</section>
 
 
     <!-- ========================================
          CREW ROLE MANAGEMENT
          ======================================== -->
 
-    <section>
+    <section id="crewRoleManagementSection">
 
         <h2>Crew Role Management</h2>
 
@@ -291,9 +564,7 @@
                 placeholder="Enter crew role"
             >
 
-
             <p id="roleMessage"></p>
-
 
             <button type="submit">
                 Add Required Crew Role
@@ -328,10 +599,10 @@
 
     <!-- ========================================
          ASSIGN VOLUNTEER TO CREW ROLE
-         PER4-6 + PER4-7
+         PER4-6 + PER4-7 + PER4-8 + PER4-10
          ======================================== -->
 
-    <section>
+    <section id="assignmentManagementSection">
 
         <h2>Assign Volunteer to Crew Role</h2>
 
@@ -341,22 +612,16 @@
                 Performance *
             </label>
 
+            <!--
+                PER4-10:
+                Performances created in Performance Management
+                will be added here by JavaScript.
+            -->
+
             <select id="performance">
 
                 <option value="">
                     Select performance
-                </option>
-
-                <option value="Opening Night">
-                    Opening Night
-                </option>
-
-                <option value="Friday Evening">
-                    Friday Evening
-                </option>
-
-                <option value="Saturday Matinee">
-                    Saturday Matinee
                 </option>
 
             </select>
@@ -418,7 +683,6 @@
 
             <p id="assignmentMessage"></p>
 
-
             <button type="submit">
                 Assign Volunteer
             </button>
@@ -455,7 +719,7 @@
          VIEW PERFORMANCE ROSTER
          ======================================== -->
 
-    <section>
+    <section id="rosterSection">
 
         <h2>View Performance Roster</h2>
 
@@ -515,10 +779,48 @@
 
     </section>
 
+
+    <!-- ========================================
+         VIEW MY ASSIGNMENTS
+         YM - PER4-10
+         ======================================== -->
+
+    <section
+        id="volunteerAssignmentSection"
+        style="display: none;"
+    >
+
+        <h2>My Crew Assignment Information</h2>
+
+        <p id="volunteerAccessMessage">
+            You have Volunteer access. Administrative management functions are restricted.
+        </p>
+
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Production</th>
+                    <th>Performance Date</th>
+                    <th>Start Time</th>
+                    <th>Crew Role</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="myAssignmentBody"></tbody>
+
+        </table>
+
+    </section>
+
+
 </div>
 
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
