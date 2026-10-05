@@ -131,3 +131,27 @@ td {
 th {
     background-color: #f4f4f4;
 }
+
+/* ========================================
+   ASSIGNMENT STATUS
+   ======================================== */
+
+.status-confirmed {
+    font-weight: bold;
+}
+
+.status-unconfirmed {
+    font-weight: bold;
+}
+
+#volunteerAssignmentSection button {
+    padding: 8px 12px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#volunteerAssignmentSection td {
+    vertical-align: middle;
+}

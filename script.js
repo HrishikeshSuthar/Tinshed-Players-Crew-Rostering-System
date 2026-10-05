@@ -1,6 +1,6 @@
 // ========================================
-// TINSHED PLAYERS
-// CREW ROSTERING SYSTEM
+// TINSHED PLAYERS CREW ROSTERING SYSTEM
+// COMPLETE SCRIPT.JS
 // ========================================
 
 
@@ -8,10 +8,13 @@
 // DATA
 // ========================================
 
-const productions = [];
-const performances = [];
-const requiredCrewRoles = [];
-const crewAssignments = [];
+let productions = [];
+
+let performances = [];
+
+let requiredCrewRoles = [];
+
+let crewAssignments = [];
 
 
 // ========================================
@@ -20,218 +23,327 @@ const crewAssignments = [];
 // ========================================
 
 const registeredUsers = [
+
     {
         username: "admin",
         password: "admin123",
         role: "Admin",
-        active: true
+        active: true,
+        volunteerName: null,
+        volunteerEmail: null
     },
+
     {
         username: "user",
         password: "user123",
         role: "User",
         active: true,
-        volunteerName: "John Smith"
+        volunteerName: "John Smith",
+        volunteerEmail: null
     }
+
 ];
+
 
 let currentUser = null;
 
 
 // ========================================
-// LOGIN ELEMENTS
-// ========================================
-
-const loginForm = document.getElementById("loginForm");
-const loginUsername = document.getElementById("loginUsername");
-const loginPassword = document.getElementById("loginPassword");
-const loginMessage = document.getElementById("loginMessage");
-const loginSection = document.getElementById("loginSection");
-const mainSystem = document.getElementById("mainSystem");
-
-
-// ========================================
-// USER LOGIN
+// LOGIN
 // HS - PER4-11
 // ========================================
 
-loginForm.addEventListener("submit", function (event) {
+const loginSection =
+    document.getElementById("loginSection");
 
-    event.preventDefault();
+const loginForm =
+    document.getElementById("loginForm");
 
-    const username = loginUsername.value.trim();
-    const password = loginPassword.value;
+const loginUsername =
+    document.getElementById("loginUsername");
 
-    if (username === "" || password === "") {
-        loginMessage.textContent =
-            "Username and password are required.";
-        loginMessage.style.color = "red";
-        return;
+const loginPassword =
+    document.getElementById("loginPassword");
+
+const loginMessage =
+    document.getElementById("loginMessage");
+
+const mainSystem =
+    document.getElementById("mainSystem");
+
+
+loginForm.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
+
+        const username =
+            loginUsername.value.trim();
+
+        const password =
+            loginPassword.value;
+
+
+        if (
+            username === "" ||
+            password === ""
+        ) {
+
+            loginMessage.textContent =
+                "Username and password are required.";
+
+            loginMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        const foundUser =
+            registeredUsers.find(
+                function (user) {
+
+                    return (
+                        user.username === username &&
+                        user.password === password
+                    );
+
+                }
+            );
+
+
+        if (!foundUser) {
+
+            loginMessage.textContent =
+                "Invalid username or password. Access denied.";
+
+            loginMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        if (!foundUser.active) {
+
+            loginMessage.textContent =
+                "This user account is inactive. Access denied.";
+
+            loginMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        currentUser = foundUser;
+
+
+        loginMessage.textContent = "";
+
+        loginSection.style.display =
+            "none";
+
+        mainSystem.style.display =
+            "block";
+
+
+        applyRoleBasedAccess();
+
     }
-
-    const user = registeredUsers.find(function (registeredUser) {
-        return (
-            registeredUser.username.toLowerCase() ===
-            username.toLowerCase()
-        );
-    });
-
-    if (!user || user.password !== password) {
-        loginMessage.textContent =
-            "Invalid username or password. Access denied.";
-        loginMessage.style.color = "red";
-        return;
-    }
-
-    if (!user.active) {
-        loginMessage.textContent =
-            "This user account has been deactivated. Access denied.";
-        loginMessage.style.color = "red";
-        return;
-    }
-
-    currentUser = user;
-
-    loginMessage.textContent = "Login successful.";
-    loginMessage.style.color = "green";
-
-    loginSection.style.display = "none";
-    mainSystem.style.display = "block";
-
-    applyRoleBasedAccess();
-});
+);
 
 
 // ========================================
-// ROLE BASED ACCESS
+// ROLE-BASED ACCESS
 // BN - PER4-12
 // ========================================
 
 function applyRoleBasedAccess() {
 
-    const loggedInUsername =
-        document.getElementById("loggedInUsername");
+    if (!currentUser) {
+        return;
+    }
 
-    const loggedInRole =
-        document.getElementById("loggedInRole");
 
-    const accessMessage =
-        document.getElementById("accessMessage");
+    const adminSections = [
 
-    const productionSection =
-        document.getElementById("productionManagementSection");
+        "productionManagementSection",
 
-    const performanceSection =
-        document.getElementById("performanceManagementSection");
+        "performanceManagementSection",
 
-    const productionScheduleSection =
-        document.getElementById("productionScheduleSection");
+        "productionScheduleSection",
 
-    const volunteerSection =
-        document.getElementById("volunteerManagementSection");
+        "volunteerManagementSection",
 
-    const crewRoleSection =
-        document.getElementById("crewRoleManagementSection");
+        "crewRoleManagementSection",
 
-    const assignmentSection =
-        document.getElementById("assignmentManagementSection");
+        "assignmentManagementSection",
 
-    const rosterSection =
-        document.getElementById("rosterSection");
+        "rosterSection"
+
+    ];
+
 
     const volunteerAssignmentSection =
-        document.getElementById("volunteerAssignmentSection");
+        document.getElementById(
+            "volunteerAssignmentSection"
+        );
 
 
-    loggedInUsername.textContent = currentUser.username;
-    loggedInRole.textContent = currentUser.role;
+    const loggedInUsername =
+        document.getElementById(
+            "loggedInUsername"
+        );
+
+    const loggedInRole =
+        document.getElementById(
+            "loggedInRole"
+        );
+
+    const accessMessage =
+        document.getElementById(
+            "accessMessage"
+        );
 
 
-    // ADMIN / VOLUNTEER COORDINATOR
+    loggedInUsername.textContent =
+        currentUser.username;
+
+    loggedInRole.textContent =
+        currentUser.role;
+
 
     if (currentUser.role === "Admin") {
 
-        productionSection.style.display = "block";
-        performanceSection.style.display = "block";
-        productionScheduleSection.style.display = "block";
-        volunteerSection.style.display = "block";
-        crewRoleSection.style.display = "block";
-        assignmentSection.style.display = "block";
-        rosterSection.style.display = "block";
-        volunteerAssignmentSection.style.display = "none";
+        adminSections.forEach(
+            function (sectionId) {
+
+                const section =
+                    document.getElementById(
+                        sectionId
+                    );
+
+                if (section) {
+
+                    section.style.display =
+                        "block";
+
+                }
+
+            }
+        );
+
+
+        volunteerAssignmentSection.style.display =
+            "none";
+
 
         accessMessage.textContent =
-            "Volunteer Coordinator access granted. Administrative functions are available.";
+            "You have Volunteer Coordinator access.";
 
-        accessMessage.style.color = "green";
+        accessMessage.style.color =
+            "green";
 
-        return;
     }
 
 
-    // VOLUNTEER
+    else if (currentUser.role === "User") {
 
-    if (currentUser.role === "User") {
+        adminSections.forEach(
+            function (sectionId) {
 
-        productionSection.style.display = "none";
-        performanceSection.style.display = "none";
-        productionScheduleSection.style.display = "none";
-        volunteerSection.style.display = "none";
-        crewRoleSection.style.display = "none";
-        assignmentSection.style.display = "none";
-        rosterSection.style.display = "none";
-        volunteerAssignmentSection.style.display = "block";
+                const section =
+                    document.getElementById(
+                        sectionId
+                    );
+
+                if (section) {
+
+                    section.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        volunteerAssignmentSection.style.display =
+            "block";
+
 
         accessMessage.textContent =
-            "Volunteer access granted. Administrative management functions are restricted.";
+            "You have Volunteer access. Administrative management functions are restricted.";
 
-        accessMessage.style.color = "green";
+        accessMessage.style.color =
+            "green";
+
 
         displayMyAssignments();
 
-        return;
     }
 
-
-    productionSection.style.display = "none";
-    performanceSection.style.display = "none";
-    productionScheduleSection.style.display = "none";
-    volunteerSection.style.display = "none";
-    crewRoleSection.style.display = "none";
-    assignmentSection.style.display = "none";
-    rosterSection.style.display = "none";
-    volunteerAssignmentSection.style.display = "none";
-
-    accessMessage.textContent = "Access denied.";
-    accessMessage.style.color = "red";
 }
 
 
 // ========================================
-// USER LOGOUT
+// LOGOUT
 // BN - PER4-16
 // ========================================
 
 const logoutButton =
-    document.getElementById("logoutButton");
+    document.getElementById(
+        "logoutButton"
+    );
 
-logoutButton.addEventListener("click", function () {
 
-    currentUser = null;
+logoutButton.addEventListener(
+    "click",
+    function () {
 
-    mainSystem.style.display = "none";
-    loginSection.style.display = "block";
+        currentUser = null;
 
-    loginUsername.value = "";
-    loginPassword.value = "";
-    loginMessage.textContent = "";
 
-    document.getElementById("loggedInUsername").textContent = "";
-    document.getElementById("loggedInRole").textContent = "";
-    document.getElementById("accessMessage").textContent = "";
+        mainSystem.style.display =
+            "none";
 
-    loginUsername.focus();
-});
+        loginSection.style.display =
+            "block";
+
+
+        loginUsername.value = "";
+
+        loginPassword.value = "";
+
+        loginMessage.textContent = "";
+
+
+        document.getElementById(
+            "loggedInUsername"
+        ).textContent = "";
+
+
+        document.getElementById(
+            "loggedInRole"
+        ).textContent = "";
+
+
+        document.getElementById(
+            "accessMessage"
+        ).textContent = "";
+
+
+        document.getElementById(
+            "myAssignmentBody"
+        ).innerHTML = "";
+
+
+        loginUsername.focus();
+
+    }
+);
 
 
 // ========================================
@@ -240,48 +352,99 @@ logoutButton.addEventListener("click", function () {
 // ========================================
 
 const productionForm =
-    document.getElementById("productionForm");
+    document.getElementById(
+        "productionForm"
+    );
 
 const productionTitle =
-    document.getElementById("productionTitle");
+    document.getElementById(
+        "productionTitle"
+    );
 
 const productionMessage =
-    document.getElementById("productionMessage");
+    document.getElementById(
+        "productionMessage"
+    );
 
 const productionBody =
-    document.getElementById("productionBody");
+    document.getElementById(
+        "productionBody"
+    );
 
-const performanceProduction =
-    document.getElementById("performanceProduction");
+
+productionForm.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
 
 
-productionForm.addEventListener("submit", function (event) {
+        const title =
+            productionTitle.value.trim();
 
-    event.preventDefault();
 
-    const title = productionTitle.value.trim();
+        if (title === "") {
 
-    if (title === "") {
+            productionMessage.textContent =
+                "Production title is required.";
+
+            productionMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        const duplicate =
+            productions.some(
+                function (production) {
+
+                    return (
+                        production.title.toLowerCase() ===
+                        title.toLowerCase()
+                    );
+
+                }
+            );
+
+
+        if (duplicate) {
+
+            productionMessage.textContent =
+                "This production already exists.";
+
+            productionMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        productions.push({
+
+            title: title
+
+        });
+
+
+        displayProductions();
+
+        updateProductionOptions();
+
+        displayProductionSchedule();
+
+
         productionMessage.textContent =
-            "Please enter a production title.";
-        productionMessage.style.color = "red";
-        return;
+            "Production created successfully.";
+
+        productionMessage.style.color =
+            "green";
+
+
+        productionForm.reset();
+
     }
-
-    productions.push({
-        title: title
-    });
-
-    displayProductions();
-    updateProductionOptions();
-
-    productionMessage.textContent =
-        "Production saved successfully.";
-
-    productionMessage.style.color = "green";
-
-    productionForm.reset();
-});
+);
 
 
 // ========================================
@@ -292,117 +455,53 @@ function displayProductions() {
 
     productionBody.innerHTML = "";
 
-    productions.forEach(function (production, index) {
 
-        const row = document.createElement("tr");
+    productions.forEach(
+        function (
+            production,
+            index
+        ) {
 
-        row.innerHTML = `
-            <td>${production.title}</td>
-
-            <td>
-                <button
-                    type="button"
-                    onclick="editProduction(${index})"
-                >
-                    Edit
-                </button>
-
-                <button
-                    type="button"
-                    onclick="removeProduction(${index})"
-                >
-                    Remove
-                </button>
-            </td>
-        `;
-
-        productionBody.appendChild(row);
-    });
-}
+            const row =
+                document.createElement(
+                    "tr"
+                );
 
 
-// ========================================
-// EDIT PRODUCTION
-// ========================================
+            row.innerHTML = `
 
-function editProduction(index) {
+                <td>
+                    ${production.title}
+                </td>
 
-    const oldTitle = productions[index].title;
+                <td>
 
-    const updatedTitle = prompt(
-        "Update production title:",
-        oldTitle
+                    <button
+                        type="button"
+                        onclick="editProduction(${index})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="removeProduction(${index})"
+                    >
+                        Remove
+                    </button>
+
+                </td>
+
+            `;
+
+
+            productionBody.appendChild(
+                row
+            );
+
+        }
     );
 
-    if (updatedTitle === null) {
-        return;
-    }
-
-    if (updatedTitle.trim() === "") {
-        productionMessage.textContent =
-            "Production title cannot be empty.";
-        productionMessage.style.color = "red";
-        return;
-    }
-
-    const newTitle = updatedTitle.trim();
-
-    productions[index].title = newTitle;
-
-    performances.forEach(function (performance) {
-
-        if (performance.production === oldTitle) {
-            performance.production = newTitle;
-        }
-    });
-
-    crewAssignments.forEach(function (assignment) {
-
-        if (assignment.production === oldTitle) {
-            assignment.production = newTitle;
-        }
-    });
-
-    displayProductions();
-    displayPerformances();
-    updateProductionOptions();
-    updatePerformanceSelectors();
-    displayAssignments();
-
-    productionMessage.textContent =
-        "Production updated successfully.";
-
-    productionMessage.style.color = "green";
-}
-
-
-// ========================================
-// REMOVE PRODUCTION
-// ========================================
-
-function removeProduction(index) {
-
-    const production = productions[index];
-
-    const confirmed = confirm(
-        "Remove production " +
-        production.title +
-        "?"
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    productions.splice(index, 1);
-
-    displayProductions();
-    updateProductionOptions();
-
-    productionMessage.textContent =
-        "Production removed successfully.";
-
-    productionMessage.style.color = "green";
 }
 
 
@@ -412,19 +511,274 @@ function removeProduction(index) {
 
 function updateProductionOptions() {
 
+    const performanceProduction =
+        document.getElementById(
+            "performanceProduction"
+        );
+
+
     performanceProduction.innerHTML =
         '<option value="">Select production</option>';
 
-    productions.forEach(function (production) {
 
-        const option =
-            document.createElement("option");
+    productions.forEach(
+        function (production) {
 
-        option.value = production.title;
-        option.textContent = production.title;
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-        performanceProduction.appendChild(option);
-    });
+
+            option.value =
+                production.title;
+
+            option.textContent =
+                production.title;
+
+
+            performanceProduction.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// EDIT PRODUCTION
+// ========================================
+
+function editProduction(index) {
+
+    const production =
+        productions[index];
+
+
+    const oldTitle =
+        production.title;
+
+
+    const newTitle =
+        prompt(
+            "Update production title:",
+            oldTitle
+        );
+
+
+    if (newTitle === null) {
+        return;
+    }
+
+
+    const cleanTitle =
+        newTitle.trim();
+
+
+    if (cleanTitle === "") {
+
+        productionMessage.textContent =
+            "Production title is required.";
+
+        productionMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    const duplicate =
+        productions.some(
+            function (
+                item,
+                itemIndex
+            ) {
+
+                return (
+                    itemIndex !== index &&
+                    item.title.toLowerCase() ===
+                    cleanTitle.toLowerCase()
+                );
+
+            }
+        );
+
+
+    if (duplicate) {
+
+        productionMessage.textContent =
+            "This production already exists.";
+
+        productionMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    production.title =
+        cleanTitle;
+
+
+    performances.forEach(
+        function (performance) {
+
+            if (
+                performance.production ===
+                oldTitle
+            ) {
+
+                const oldReference =
+                    getPerformanceReference(
+                        performance
+                    );
+
+
+                performance.production =
+                    cleanTitle;
+
+
+                const newReference =
+                    getPerformanceReference(
+                        performance
+                    );
+
+
+                requiredCrewRoles.forEach(
+                    function (item) {
+
+                        if (
+                            item.performance ===
+                            oldReference
+                        ) {
+
+                            item.performance =
+                                newReference;
+
+                        }
+
+                    }
+                );
+
+
+                crewAssignments.forEach(
+                    function (assignment) {
+
+                        if (
+                            assignment.performance ===
+                            oldReference
+                        ) {
+
+                            assignment.performance =
+                                newReference;
+
+                            assignment.production =
+                                cleanTitle;
+
+                        }
+
+                    }
+                );
+
+            }
+
+        }
+    );
+
+
+    displayProductions();
+
+    displayPerformances();
+
+    updateProductionOptions();
+
+    updatePerformanceSelectors();
+
+    displayRequiredRoles();
+
+    displayAssignments();
+
+    displayProductionSchedule();
+
+
+    productionMessage.textContent =
+        "Production updated successfully.";
+
+    productionMessage.style.color =
+        "green";
+
+}
+
+
+// ========================================
+// REMOVE PRODUCTION
+// ========================================
+
+function removeProduction(index) {
+
+    const production =
+        productions[index];
+
+
+    const hasPerformances =
+        performances.some(
+            function (performance) {
+
+                return (
+                    performance.production ===
+                    production.title
+                );
+
+            }
+        );
+
+
+    if (hasPerformances) {
+
+        productionMessage.textContent =
+            "This production cannot be removed while performances are linked to it.";
+
+        productionMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Remove production " +
+            production.title +
+            "?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    productions.splice(
+        index,
+        1
+    );
+
+
+    displayProductions();
+
+    updateProductionOptions();
+
+    displayProductionSchedule();
+
+
+    productionMessage.textContent =
+        "Production removed successfully.";
+
+    productionMessage.style.color =
+        "green";
+
 }
 
 
@@ -434,66 +788,133 @@ function updateProductionOptions() {
 // ========================================
 
 const performanceForm =
-    document.getElementById("performanceForm");
-
-const performanceDate =
-    document.getElementById("performanceDate");
-
-const performanceTime =
-    document.getElementById("performanceTime");
+    document.getElementById(
+        "performanceForm"
+    );
 
 const performanceMessage =
-    document.getElementById("performanceMessage");
+    document.getElementById(
+        "performanceMessage"
+    );
 
 const performanceBody =
-    document.getElementById("performanceBody");
+    document.getElementById(
+        "performanceBody"
+    );
 
 
-performanceForm.addEventListener("submit", function (event) {
+performanceForm.addEventListener(
+    "submit",
+    function (event) {
 
-    event.preventDefault();
+        event.preventDefault();
 
-    const production = performanceProduction.value;
-    const date = performanceDate.value;
-    const time = performanceTime.value;
 
-    if (
-        production === "" ||
-        date === "" ||
-        time === ""
-    ) {
+        const production =
+            document.getElementById(
+                "performanceProduction"
+            ).value;
+
+
+        const date =
+            document.getElementById(
+                "performanceDate"
+            ).value;
+
+
+        const time =
+            document.getElementById(
+                "performanceTime"
+            ).value;
+
+
+        if (
+            production === "" ||
+            date === "" ||
+            time === ""
+        ) {
+
+            performanceMessage.textContent =
+                "Production, performance date and start time are required.";
+
+            performanceMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        const duplicate =
+            performances.some(
+                function (performance) {
+
+                    return (
+                        performance.production ===
+                        production &&
+
+                        performance.date ===
+                        date &&
+
+                        performance.time ===
+                        time
+                    );
+
+                }
+            );
+
+
+        if (duplicate) {
+
+            performanceMessage.textContent =
+                "This performance already exists.";
+
+            performanceMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        performances.push({
+
+            production: production,
+
+            date: date,
+
+            time: time
+
+        });
+
+
+        sortPerformances();
+
+        displayPerformances();
+
+        updatePerformanceSelectors();
+
+        displayProductionSchedule();
+
+
         performanceMessage.textContent =
-            "Please select a production and enter the performance date and start time.";
+            "Performance created successfully.";
 
-        performanceMessage.style.color = "red";
-        return;
+        performanceMessage.style.color =
+            "green";
+
+
+        performanceForm.reset();
+
     }
-
-    performances.push({
-        production: production,
-        date: date,
-        time: time
-    });
-
-    sortPerformances();
-    displayPerformances();
-    updatePerformanceSelectors();
-
-    performanceMessage.textContent =
-        "Performance saved successfully.";
-
-    performanceMessage.style.color = "green";
-
-    performanceForm.reset();
-});
+);
 
 
 // ========================================
 // PERFORMANCE REFERENCE
-// YM - PER4-10
 // ========================================
 
-function getPerformanceReference(performance) {
+function getPerformanceReference(
+    performance
+) {
 
     return (
         performance.production +
@@ -502,60 +923,7 @@ function getPerformanceReference(performance) {
         " | " +
         performance.time
     );
-}
 
-
-// ========================================
-// UPDATE PERFORMANCE DROPDOWNS
-// YM - PER4-10
-// ========================================
-
-function updatePerformanceSelectors() {
-
-    const rolePerformance =
-        document.getElementById("rolePerformance");
-
-    const assignmentPerformance =
-        document.getElementById("performance");
-
-    const rosterPerformance =
-        document.getElementById("rosterPerformance");
-
-    const selectors = [
-        rolePerformance,
-        assignmentPerformance,
-        rosterPerformance
-    ];
-
-    selectors.forEach(function (selector) {
-
-        if (!selector) {
-            return;
-        }
-
-        selector.innerHTML =
-            '<option value="">Select performance</option>';
-
-        performances.forEach(function (performance) {
-
-            const option =
-                document.createElement("option");
-
-            const reference =
-                getPerformanceReference(performance);
-
-            option.value = reference;
-
-            option.textContent =
-                performance.production +
-                " - " +
-                performance.date +
-                " - " +
-                performance.time;
-
-            selector.appendChild(option);
-        });
-    });
 }
 
 
@@ -565,16 +933,30 @@ function updatePerformanceSelectors() {
 
 function sortPerformances() {
 
-    performances.sort(function (a, b) {
+    performances.sort(
+        function (a, b) {
 
-        const first =
-            new Date(a.date + "T" + a.time);
+            const first =
+                new Date(
+                    a.date +
+                    "T" +
+                    a.time
+                );
 
-        const second =
-            new Date(b.date + "T" + b.time);
 
-        return first - second;
-    });
+            const second =
+                new Date(
+                    b.date +
+                    "T" +
+                    b.time
+                );
+
+
+            return first - second;
+
+        }
+    );
+
 }
 
 
@@ -586,35 +968,131 @@ function displayPerformances() {
 
     performanceBody.innerHTML = "";
 
-    performances.forEach(function (performance, index) {
 
-        const row =
-            document.createElement("tr");
+    performances.forEach(
+        function (
+            performance,
+            index
+        ) {
 
-        row.innerHTML = `
-            <td>${performance.production}</td>
-            <td>${performance.date}</td>
-            <td>${performance.time}</td>
+            const row =
+                document.createElement(
+                    "tr"
+                );
 
-            <td>
-                <button
-                    type="button"
-                    onclick="editPerformance(${index})"
-                >
-                    Edit
-                </button>
 
-                <button
-                    type="button"
-                    onclick="removePerformance(${index})"
-                >
-                    Remove
-                </button>
-            </td>
-        `;
+            row.innerHTML = `
 
-        performanceBody.appendChild(row);
-    });
+                <td>
+                    ${performance.production}
+                </td>
+
+                <td>
+                    ${performance.date}
+                </td>
+
+                <td>
+                    ${performance.time}
+                </td>
+
+                <td>
+
+                    <button
+                        type="button"
+                        onclick="editPerformance(${index})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="removePerformance(${index})"
+                    >
+                        Remove
+                    </button>
+
+                </td>
+
+            `;
+
+
+            performanceBody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// UPDATE PERFORMANCE SELECTORS
+// ========================================
+
+function updatePerformanceSelectors() {
+
+    const selectors = [
+
+        document.getElementById(
+            "rolePerformance"
+        ),
+
+        document.getElementById(
+            "performance"
+        ),
+
+        document.getElementById(
+            "rosterPerformance"
+        )
+
+    ];
+
+
+    selectors.forEach(
+        function (selector) {
+
+            if (!selector) {
+                return;
+            }
+
+
+            selector.innerHTML =
+                '<option value="">Select performance</option>';
+
+
+            performances.forEach(
+                function (performance) {
+
+                    const reference =
+                        getPerformanceReference(
+                            performance
+                        );
+
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        reference;
+
+                    option.textContent =
+                        reference;
+
+
+                    selector.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+        }
+    );
+
 }
 
 
@@ -627,103 +1105,165 @@ function editPerformance(index) {
     const performance =
         performances[index];
 
-    const oldReference =
-        getPerformanceReference(performance);
 
-    const newDate = prompt(
-        "Update performance date (YYYY-MM-DD):",
-        performance.date
-    );
+    const oldReference =
+        getPerformanceReference(
+            performance
+        );
+
+
+    const newDate =
+        prompt(
+            "Update performance date (YYYY-MM-DD):",
+            performance.date
+        );
+
 
     if (newDate === null) {
         return;
     }
 
-    const newTime = prompt(
-        "Update start time (HH:MM):",
-        performance.time
-    );
+
+    const newTime =
+        prompt(
+            "Update start time (HH:MM):",
+            performance.time
+        );
+
 
     if (newTime === null) {
         return;
     }
 
+
     if (
         newDate.trim() === "" ||
         newTime.trim() === ""
     ) {
+
         performanceMessage.textContent =
             "Performance date and start time are required.";
 
-        performanceMessage.style.color = "red";
+        performanceMessage.style.color =
+            "red";
+
         return;
     }
+
 
     const datePattern =
         /^\d{4}-\d{2}-\d{2}$/;
 
+
     const timePattern =
         /^([01]\d|2[0-3]):[0-5]\d$/;
 
+
     if (
-        !datePattern.test(newDate.trim()) ||
-        !timePattern.test(newTime.trim())
+        !datePattern.test(
+            newDate.trim()
+        ) ||
+
+        !timePattern.test(
+            newTime.trim()
+        )
     ) {
+
         performanceMessage.textContent =
             "Please enter a valid date and start time.";
 
-        performanceMessage.style.color = "red";
+        performanceMessage.style.color =
+            "red";
+
         return;
     }
 
-    performance.date = newDate.trim();
-    performance.time = newTime.trim();
+
+    performance.date =
+        newDate.trim();
+
+    performance.time =
+        newTime.trim();
+
 
     const newReference =
-        getPerformanceReference(performance);
+        getPerformanceReference(
+            performance
+        );
 
-    requiredCrewRoles.forEach(function (item) {
 
-        if (item.performance === oldReference) {
-            item.performance = newReference;
+    requiredCrewRoles.forEach(
+        function (item) {
+
+            if (
+                item.performance ===
+                oldReference
+            ) {
+
+                item.performance =
+                    newReference;
+
+            }
+
         }
-    });
+    );
 
-    crewAssignments.forEach(function (assignment) {
 
-        if (assignment.performance === oldReference) {
+    crewAssignments.forEach(
+        function (assignment) {
 
-            assignment.performance =
-                newReference;
+            if (
+                assignment.performance ===
+                oldReference
+            ) {
 
-            assignment.production =
-                performance.production;
+                assignment.performance =
+                    newReference;
 
-            assignment.performanceDate =
-                performance.date;
+                assignment.production =
+                    performance.production;
 
-            assignment.startTime =
-                performance.time;
+                assignment.performanceDate =
+                    performance.date;
+
+                assignment.startTime =
+                    performance.time;
+
+            }
+
         }
-    });
+    );
+
 
     sortPerformances();
+
     displayPerformances();
+
     updatePerformanceSelectors();
+
     displayRequiredRoles();
+
     displayAssignments();
+
+    displayProductionSchedule();
+
 
     if (
         currentUser &&
         currentUser.role === "User"
     ) {
+
         displayMyAssignments();
+
     }
+
 
     performanceMessage.textContent =
         "Performance updated successfully.";
 
-    performanceMessage.style.color = "green";
+    performanceMessage.style.color =
+        "green";
+
 }
 
 
@@ -736,44 +1276,192 @@ function removePerformance(index) {
     const performance =
         performances[index];
 
-    const confirmed = confirm(
-        "Remove this performance from " +
-        performance.production +
-        "?"
-    );
+
+    const reference =
+        getPerformanceReference(
+            performance
+        );
+
+
+    const confirmed =
+        confirm(
+            "Remove this performance from " +
+            performance.production +
+            "?"
+        );
+
 
     if (!confirmed) {
         return;
     }
 
-    performances.splice(index, 1);
+
+    performances.splice(
+        index,
+        1
+    );
+
+
+    requiredCrewRoles =
+        requiredCrewRoles.filter(
+            function (item) {
+
+                return (
+                    item.performance !==
+                    reference
+                );
+
+            }
+        );
+
+
+    crewAssignments =
+        crewAssignments.filter(
+            function (assignment) {
+
+                return (
+                    assignment.performance !==
+                    reference
+                );
+
+            }
+        );
+
 
     displayPerformances();
+
     updatePerformanceSelectors();
+
+    displayRequiredRoles();
+
+    displayAssignments();
+
+    displayProductionSchedule();
+
 
     performanceMessage.textContent =
         "Performance removed successfully.";
 
-    performanceMessage.style.color = "green";
+    performanceMessage.style.color =
+        "green";
+
 }
 
 
 // ========================================
 // VOLUNTEER MANAGEMENT
+//
 // HS - PER4-1
 // BN - PER4-2
 // HS - PER4-17
 // YM - PER4-15
+// YM - PER4-18
 // ========================================
 
 const volunteerForm =
-    document.getElementById("volunteerForm");
+    document.getElementById(
+        "volunteerForm"
+    );
 
 const volunteerBody =
-    document.getElementById("volunteerBody");
+    document.getElementById(
+        "volunteerBody"
+    );
 
 const volunteerMessage =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
+
+
+// ========================================
+// UPDATE VOLUNTEER ASSIGNMENT DROPDOWN
+// IMPORTANT FIX
+// ========================================
+
+function updateVolunteerOptions() {
+
+    const volunteerSelect =
+        document.getElementById(
+            "volunteer"
+        );
+
+
+    if (!volunteerSelect) {
+        return;
+    }
+
+
+    volunteerSelect.innerHTML =
+        '<option value="">Select volunteer</option>';
+
+
+    const volunteerRows =
+        volunteerBody.querySelectorAll(
+            "tr"
+        );
+
+
+    volunteerRows.forEach(
+        function (row) {
+
+            const nameCell =
+                row.querySelector(
+                    ".volunteer-name"
+                );
+
+
+            const statusCell =
+                row.querySelector(
+                    ".volunteer-status"
+                );
+
+
+            if (
+                !nameCell ||
+                !statusCell
+            ) {
+
+                return;
+            }
+
+
+            const volunteerName =
+                nameCell.textContent.trim();
+
+
+            const volunteerStatus =
+                statusCell.textContent.trim();
+
+
+            if (
+                volunteerStatus ===
+                "Active"
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    volunteerName;
+
+                option.textContent =
+                    volunteerName;
+
+
+                volunteerSelect.appendChild(
+                    option
+                );
+
+            }
+
+        }
+    );
+
+}
 
 
 // ========================================
@@ -781,131 +1469,188 @@ const volunteerMessage =
 // HS - PER4-1
 // ========================================
 
-volunteerForm.addEventListener("submit", function (event) {
+volunteerForm.addEventListener(
+    "submit",
+    function (event) {
 
-    event.preventDefault();
+        event.preventDefault();
 
-    const name =
-        document
-            .getElementById("fullName")
-            .value
-            .trim();
 
-    const phone =
-        document
-            .getElementById("phone")
-            .value
-            .trim();
+        const name =
+            document.getElementById(
+                "fullName"
+            ).value.trim();
 
-    const email =
-        document
-            .getElementById("email")
-            .value
-            .trim();
 
-    if (
-        name === "" ||
-        phone === "" ||
-        email === ""
-    ) {
+        const phone =
+            document.getElementById(
+                "phone"
+            ).value.trim();
+
+
+        const email =
+            document.getElementById(
+                "email"
+            ).value.trim();
+
+
+        if (
+            name === "" ||
+            phone === "" ||
+            email === ""
+        ) {
+
+            volunteerMessage.textContent =
+                "Please complete all required fields.";
+
+            volunteerMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        if (
+            !email.includes("@") ||
+            !email.includes(".")
+        ) {
+
+            volunteerMessage.textContent =
+                "Please enter a valid email address.";
+
+            volunteerMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        const existingVolunteer =
+            Array.from(
+                volunteerBody.querySelectorAll(
+                    ".volunteer-name"
+                )
+            ).some(
+                function (cell) {
+
+                    return (
+                        cell.textContent
+                            .trim()
+                            .toLowerCase() ===
+                        name.toLowerCase()
+                    );
+
+                }
+            );
+
+
+        if (existingVolunteer) {
+
+            volunteerMessage.textContent =
+                "A volunteer with this name already exists.";
+
+            volunteerMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
+        const row =
+            document.createElement(
+                "tr"
+            );
+
+
+        row.innerHTML = `
+
+            <td class="volunteer-name">
+                ${name}
+            </td>
+
+            <td class="volunteer-phone">
+                ${phone}
+            </td>
+
+            <td class="volunteer-email">
+                ${email}
+            </td>
+
+            <td class="volunteer-status">
+                Active
+            </td>
+
+            <td class="volunteer-access">
+                No Access
+            </td>
+
+            <td>
+
+                <button
+                    type="button"
+                    onclick="editVolunteer(this)"
+                >
+                    Edit
+                </button>
+
+                <button
+                    type="button"
+                    onclick="deactivateVolunteer(this)"
+                >
+                    Deactivate Volunteer
+                </button>
+
+                <button
+                    type="button"
+                    class="grant-access-button"
+                    onclick="grantVolunteerAccess(this)"
+                >
+                    Grant Access
+                </button>
+
+                <button
+                    type="button"
+                    class="deactivate-access-button"
+                    onclick="deactivateVolunteerAccess(this)"
+                >
+                    Deactivate Access
+                </button>
+
+                <button
+                    type="button"
+                    onclick="viewVolunteerDetails(this)"
+                >
+                    View Details
+                </button>
+
+            </td>
+
+        `;
+
+
+        volunteerBody.appendChild(
+            row
+        );
+
+
+        // IMPORTANT:
+        // Newly created volunteer is immediately
+        // available for crew assignment.
+
+        updateVolunteerOptions();
+
+
         volunteerMessage.textContent =
-            "Please complete all required fields.";
+            "Volunteer saved successfully.";
 
-        volunteerMessage.style.color = "red";
-        return;
+        volunteerMessage.style.color =
+            "green";
+
+
+        volunteerForm.reset();
+
     }
-
-    if (
-        !email.includes("@") ||
-        !email.includes(".")
-    ) {
-        volunteerMessage.textContent =
-            "Please enter a valid email address.";
-
-        volunteerMessage.style.color = "red";
-        return;
-    }
-
-    const row =
-        document.createElement("tr");
-
-    row.innerHTML = `
-
-    <td class="volunteer-name">
-        ${name}
-    </td>
-
-    <td class="volunteer-phone">
-        ${phone}
-    </td>
-
-    <td class="volunteer-email">
-        ${email}
-    </td>
-
-    <td class="volunteer-status">
-        Active
-    </td>
-
-    <td class="volunteer-access">
-        No Access
-    </td>
-
-    <td>
-
-        <button
-            type="button"
-            onclick="editVolunteer(this)"
-        >
-            Edit
-        </button>
-
-        <button
-            type="button"
-            onclick="deactivateVolunteer(this)"
-        >
-            Deactivate Volunteer
-        </button>
-
-        <button
-            type="button"
-            class="grant-access-button"
-            onclick="grantVolunteerAccess(this)"
-        >
-            Grant Access
-        </button>
-
-        <button
-            type="button"
-            class="deactivate-access-button"
-            onclick="deactivateVolunteerAccess(this)"
-            disabled
-        >
-            Deactivate Access
-        </button>
-
-        <button
-            type="button"
-            onclick="viewVolunteerDetails(this)"
-        >
-            View Details
-        </button>
-
-    </td>
-`;
-
-
-    volunteerBody.appendChild(row);
-
-    volunteerMessage.textContent =
-        "Volunteer saved successfully.";
-
-    volunteerMessage.style.color = "green";
-
-    volunteerForm.reset();
-
-    clearVolunteerSearch();
-});
+);
 
 
 // ========================================
@@ -918,83 +1663,175 @@ function editVolunteer(button) {
     const row =
         button.closest("tr");
 
+
     const nameCell =
-        row.querySelector(".volunteer-name");
+        row.querySelector(
+            ".volunteer-name"
+        );
+
 
     const phoneCell =
-        row.querySelector(".volunteer-phone");
+        row.querySelector(
+            ".volunteer-phone"
+        );
+
 
     const emailCell =
-        row.querySelector(".volunteer-email");
+        row.querySelector(
+            ".volunteer-email"
+        );
 
-    const updatedName = prompt(
-        "Update volunteer name:",
-        nameCell.textContent.trim()
-    );
+
+    const oldName =
+        nameCell.textContent.trim();
+
+
+    const updatedName =
+        prompt(
+            "Update volunteer name:",
+            oldName
+        );
+
 
     if (updatedName === null) {
         return;
     }
 
-    const updatedPhone = prompt(
-        "Update phone number:",
-        phoneCell.textContent.trim()
-    );
+
+    const updatedPhone =
+        prompt(
+            "Update phone number:",
+            phoneCell.textContent.trim()
+        );
+
 
     if (updatedPhone === null) {
         return;
     }
 
-    const updatedEmail = prompt(
-        "Update email address:",
-        emailCell.textContent.trim()
-    );
+
+    const updatedEmail =
+        prompt(
+            "Update email address:",
+            emailCell.textContent.trim()
+        );
+
 
     if (updatedEmail === null) {
         return;
     }
+
 
     if (
         updatedName.trim() === "" ||
         updatedPhone.trim() === "" ||
         updatedEmail.trim() === ""
     ) {
-        alert(
-            "Name, phone and email are required."
-        );
+
+        volunteerMessage.textContent =
+            "Volunteer name, phone and email are required.";
+
+        volunteerMessage.style.color =
+            "red";
+
         return;
     }
+
 
     if (
         !updatedEmail.includes("@") ||
         !updatedEmail.includes(".")
     ) {
-        alert(
-            "Please enter a valid email address."
-        );
+
+        volunteerMessage.textContent =
+            "Please enter a valid email address.";
+
+        volunteerMessage.style.color =
+            "red";
+
         return;
     }
 
-    nameCell.textContent =
+
+    const newName =
         updatedName.trim();
+
+
+    nameCell.textContent =
+        newName;
+
 
     phoneCell.textContent =
         updatedPhone.trim();
 
+
     emailCell.textContent =
         updatedEmail.trim();
+
+
+    // Keep the login account connected
+    // if the volunteer's name changes.
+
+    registeredUsers.forEach(
+        function (user) {
+
+            if (
+                user.volunteerName &&
+                user.volunteerName
+                    .toLowerCase() ===
+                oldName.toLowerCase()
+            ) {
+
+                user.volunteerName =
+                    newName;
+
+                user.volunteerEmail =
+                    updatedEmail.trim();
+
+            }
+
+        }
+    );
+
+
+    // Keep historical/current assignments
+    // linked to the volunteer.
+
+    crewAssignments.forEach(
+        function (assignment) {
+
+            if (
+                assignment.volunteer &&
+                assignment.volunteer
+                    .toLowerCase() ===
+                oldName.toLowerCase()
+            ) {
+
+                assignment.volunteer =
+                    newName;
+
+            }
+
+        }
+    );
+
+
+    displayAssignments();
+
+    updateVolunteerOptions();
+
 
     volunteerMessage.textContent =
         "Volunteer record updated successfully.";
 
-    volunteerMessage.style.color = "green";
+    volunteerMessage.style.color =
+        "green";
 
-    closeVolunteerDetails();
 }
 
 
 // ========================================
-// DEACTIVATE VOLUNTEER
+// DEACTIVATE VOLUNTEER RECORD
 // BN - PER4-2
 // ========================================
 
@@ -1003,27 +1840,69 @@ function deactivateVolunteer(button) {
     const row =
         button.closest("tr");
 
+
+    const nameCell =
+        row.querySelector(
+            ".volunteer-name"
+        );
+
+
     const statusCell =
-        row.querySelector(".volunteer-status");
+        row.querySelector(
+            ".volunteer-status"
+        );
+
+
+    const volunteerName =
+        nameCell.textContent.trim();
+
+
+    if (
+        statusCell.textContent.trim() ===
+        "Inactive"
+    ) {
+
+        volunteerMessage.textContent =
+            "This volunteer is already inactive.";
+
+        volunteerMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Deactivate volunteer " +
+            volunteerName +
+            "?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
 
     statusCell.textContent =
         "Inactive";
 
-    button.disabled = true;
+
+    // Existing assignments are NOT deleted.
+
+    updateVolunteerOptions();
+
 
     volunteerMessage.textContent =
-        "Volunteer deactivated successfully. Existing records are retained.";
+        "Volunteer deactivated successfully. Existing crew assignment history has been retained.";
 
-    volunteerMessage.style.color = "green";
+    volunteerMessage.style.color =
+        "green";
 
-    closeVolunteerDetails();
 }
 
 
-// ========================================
-// GRANT VOLUNTEER SYSTEM ACCESS
-// HS - PER4-17
-// ========================================
 // ========================================
 // GRANT VOLUNTEER SYSTEM ACCESS
 // HS - PER4-17
@@ -1034,45 +1913,32 @@ function grantVolunteerAccess(button) {
     const row =
         button.closest("tr");
 
-    const nameCell =
+
+    const name =
         row.querySelector(
             ".volunteer-name"
-        );
+        ).textContent.trim();
 
-    const emailCell =
+
+    const email =
         row.querySelector(
             ".volunteer-email"
-        );
+        ).textContent.trim();
 
-    const statusCell =
+
+    const status =
         row.querySelector(
             ".volunteer-status"
-        );
+        ).textContent.trim();
+
 
     const accessCell =
         row.querySelector(
             ".volunteer-access"
         );
 
-    const deactivateAccessButton =
-        row.querySelector(
-            ".deactivate-access-button"
-        );
 
-
-    const volunteerName =
-        nameCell.textContent.trim();
-
-    const volunteerEmail =
-        emailCell.textContent.trim();
-
-
-    // Volunteer record must still be active.
-
-    if (
-        statusCell.textContent.trim() !==
-        "Active"
-    ) {
+    if (status !== "Active") {
 
         volunteerMessage.textContent =
             "System access cannot be granted to an inactive volunteer.";
@@ -1084,93 +1950,72 @@ function grantVolunteerAccess(button) {
     }
 
 
-    // Check whether an account already exists.
-
-    const existingUser =
+    const linkedAccount =
         registeredUsers.find(
             function (user) {
 
                 return (
-
                     user.volunteerName &&
                     user.volunteerName
                         .toLowerCase() ===
-                    volunteerName
-                        .toLowerCase()
-
+                    name.toLowerCase()
                 );
 
             }
         );
 
 
-    // If an active account already exists,
-    // do not create another account.
+    // Existing linked account.
 
-    if (
-        existingUser &&
-        existingUser.active
-    ) {
+    if (linkedAccount) {
 
-        volunteerMessage.textContent =
-            volunteerName +
-            " already has active system access.";
+        if (linkedAccount.active) {
 
-        volunteerMessage.style.color =
-            "red";
+            volunteerMessage.textContent =
+                name +
+                " already has active system access.";
 
-        return;
-    }
+            volunteerMessage.style.color =
+                "red";
+
+            accessCell.textContent =
+                "Active";
+
+            return;
+        }
 
 
-    // If an old inactive account exists,
-    // reactivate the same account.
-
-    if (
-        existingUser &&
-        !existingUser.active
-    ) {
-
-        existingUser.active =
+        linkedAccount.active =
             true;
+
+        linkedAccount.volunteerEmail =
+            email;
 
 
         accessCell.textContent =
             "Active";
 
 
-        button.disabled =
-            true;
-
-
-        if (deactivateAccessButton) {
-
-            deactivateAccessButton.disabled =
-                false;
-
-        }
-
-
         volunteerMessage.textContent =
             "System access reactivated for " +
-            volunteerName +
+            name +
             ". Username: " +
-            existingUser.username;
-
+            linkedAccount.username +
+            " | Password: " +
+            linkedAccount.password;
 
         volunteerMessage.style.color =
             "green";
-
 
         return;
 
     }
 
 
-    // Create username from volunteer name.
+    // Generate username from volunteer name.
 
-    const baseUsername =
-        volunteerName
+    let baseUsername =
+        name
             .toLowerCase()
             .replace(
                 /[^a-z0-9]/g,
@@ -1178,26 +2023,29 @@ function grantVolunteerAccess(button) {
             );
 
 
+    if (baseUsername === "") {
+
+        baseUsername =
+            "volunteer";
+
+    }
+
+
     let username =
         baseUsername;
 
-    let number =
-        1;
 
+    let counter =
+        2;
 
-    // Prevent duplicate usernames.
 
     while (
         registeredUsers.some(
             function (user) {
 
                 return (
-
-                    user.username
-                        .toLowerCase() ===
+                    user.username ===
                     username
-                        .toLowerCase()
-
                 );
 
             }
@@ -1206,237 +2054,171 @@ function grantVolunteerAccess(button) {
 
         username =
             baseUsername +
-            number;
+            counter;
 
-        number++;
+        counter++;
 
     }
 
 
-    const password =
-        "welcome123";
+    const newUser = {
+
+        username: username,
+
+        password: "welcome123",
+
+        role: "User",
+
+        active: true,
+
+        volunteerName: name,
+
+        volunteerEmail: email
+
+    };
 
 
-    // Create linked volunteer account.
+    registeredUsers.push(
+        newUser
+    );
 
-    registeredUsers.push({
-
-        username:
-            username,
-
-        password:
-            password,
-
-        role:
-            "User",
-
-        active:
-            true,
-
-        volunteerName:
-            volunteerName,
-
-        volunteerEmail:
-            volunteerEmail
-
-    });
-
-
-    // Update display.
 
     accessCell.textContent =
         "Active";
 
 
-    button.disabled =
-        true;
-
-
-    if (deactivateAccessButton) {
-
-        deactivateAccessButton.disabled =
-            false;
-
-    }
-
-
     volunteerMessage.textContent =
         "System access granted to " +
-        volunteerName +
+        name +
         ". Username: " +
         username +
-        " | Password: " +
-        password +
-        " | Role: User";
+        " | Password: welcome123";
 
 
     volunteerMessage.style.color =
         "green";
 
 }
+
 
 // ========================================
 // DEACTIVATE VOLUNTEER SYSTEM ACCESS
 // YM - PER4-18
 // ========================================
 
-function deactivateVolunteerAccess(button) {
+function deactivateVolunteerAccess(
+    button
+) {
 
     const row =
         button.closest("tr");
 
 
-    const nameCell =
+    const volunteerName =
         row.querySelector(
             ".volunteer-name"
-        );
+        ).textContent.trim();
+
 
     const accessCell =
         row.querySelector(
             ".volunteer-access"
         );
 
-    const grantAccessButton =
-        row.querySelector(
-            ".grant-access-button"
-        );
-
-
-    const volunteerName =
-        nameCell.textContent.trim();
-
-
-    // Find the linked system account.
 
     const linkedUser =
         registeredUsers.find(
             function (user) {
 
                 return (
-
                     user.volunteerName &&
                     user.volunteerName
                         .toLowerCase() ===
                     volunteerName
                         .toLowerCase()
-
                 );
 
             }
         );
 
 
-    // Make sure an active account exists.
-
-    if (
-        !linkedUser ||
-        !linkedUser.active
-    ) {
+    if (!linkedUser) {
 
         volunteerMessage.textContent =
-            volunteerName +
-            " does not currently have active system access.";
+            "This volunteer does not have system access.";
 
         volunteerMessage.style.color =
             "red";
 
         return;
-
     }
 
 
-    // Acceptance Criteria:
-    // Ask coordinator for confirmation first.
+    if (!linkedUser.active) {
+
+        volunteerMessage.textContent =
+            "This volunteer's system access is already inactive.";
+
+        volunteerMessage.style.color =
+            "red";
+
+        accessCell.textContent =
+            "Inactive";
+
+        return;
+    }
+
 
     const confirmed =
         confirm(
-            "Are you sure you want to deactivate system access for " +
+            "Deactivate system access for " +
             volunteerName +
             "?"
         );
 
 
     if (!confirmed) {
-
-        volunteerMessage.textContent =
-            "System access deactivation cancelled.";
-
-        volunteerMessage.style.color =
-            "red";
-
         return;
-
     }
 
-
-    // Only deactivate login access.
-    // DO NOT delete volunteer details.
-    // DO NOT delete crew assignments.
-    // DO NOT delete historical information.
 
     linkedUser.active =
         false;
 
 
-    // Clearly display inactive access.
-
     accessCell.textContent =
         "Inactive";
 
 
-    // Allow access to be granted again later.
-
-    if (grantAccessButton) {
-
-        grantAccessButton.disabled =
-            false;
-
-    }
-
-
-    button.disabled =
-        true;
-
+    // Volunteer details and crew assignments
+    // are intentionally NOT deleted.
 
     volunteerMessage.textContent =
-        "System access for " +
+        "System access deactivated for " +
         volunteerName +
-        " has been deactivated. " +
-        "Volunteer records and existing crew assignments have been preserved.";
+        ". Volunteer details and existing crew assignments have been retained.";
 
 
     volunteerMessage.style.color =
         "green";
 
-
-    // Refresh details if currently open.
-
-    if (
-        volunteerDetails.style.display !==
-        "none"
-    ) {
-
-        viewVolunteerDetails(
-            row.querySelector(
-                'button[onclick^="viewVolunteerDetails"]'
-            )
-        );
-
-    }
-
 }
 
 
 // ========================================
-// SEARCH AND VIEW VOLUNTEER RECORDS
+// SEARCH VOLUNTEER
 // YM - PER4-15
 // ========================================
 
 const volunteerSearch =
-    document.getElementById("volunteerSearch");
+    document.getElementById(
+        "volunteerSearch"
+    );
 
 const searchVolunteerButton =
-    document.getElementById("searchVolunteerButton");
+    document.getElementById(
+        "searchVolunteerButton"
+    );
 
 const clearVolunteerSearchButton =
     document.getElementById(
@@ -1448,80 +2230,48 @@ const volunteerSearchMessage =
         "volunteerSearchMessage"
     );
 
-const volunteerDetails =
-    document.getElementById(
-        "volunteerDetails"
-    );
-
-const closeVolunteerDetailsButton =
-    document.getElementById(
-        "closeVolunteerDetailsButton"
-    );
-
-
-// ========================================
-// SEARCH BUTTON
-// ========================================
 
 searchVolunteerButton.addEventListener(
     "click",
-    function () {
-
-        searchVolunteerRecords();
-
-    }
+    searchVolunteerRecords
 );
 
-
-// ========================================
-// SEARCH WHEN ENTER IS PRESSED
-// ========================================
 
 volunteerSearch.addEventListener(
-    "keydown",
+    "keyup",
     function (event) {
 
-        if (event.key === "Enter") {
-
-            event.preventDefault();
+        if (
+            event.key ===
+            "Enter"
+        ) {
 
             searchVolunteerRecords();
+
         }
+
     }
 );
 
-
-// ========================================
-// SEARCH VOLUNTEER RECORDS
-// YM - PER4-15
-// ========================================
 
 function searchVolunteerRecords() {
 
     const searchValue =
-        volunteerSearch
-            .value
+        volunteerSearch.value
             .trim()
             .toLowerCase();
 
+
     const rows =
-        volunteerBody.querySelectorAll("tr");
+        volunteerBody.querySelectorAll(
+            "tr"
+        );
 
-
-    closeVolunteerDetails();
-
-
-    // If search field is empty,
-    // show all volunteer records.
 
     if (searchValue === "") {
 
-        rows.forEach(function (row) {
-            row.style.display = "";
-        });
-
         volunteerSearchMessage.textContent =
-            "Please enter a volunteer name to search.";
+            "Please enter a volunteer name.";
 
         volunteerSearchMessage.style.color =
             "red";
@@ -1530,105 +2280,117 @@ function searchVolunteerRecords() {
     }
 
 
-    let matchCount = 0;
+    let matchFound =
+        false;
 
 
-    rows.forEach(function (row) {
+    rows.forEach(
+        function (row) {
 
-        const nameCell =
-            row.querySelector(
-                ".volunteer-name"
-            );
+            const nameCell =
+                row.querySelector(
+                    ".volunteer-name"
+                );
 
-        if (!nameCell) {
-            return;
+
+            if (!nameCell) {
+                return;
+            }
+
+
+            const name =
+                nameCell.textContent
+                    .trim()
+                    .toLowerCase();
+
+
+            if (
+                name.includes(
+                    searchValue
+                )
+            ) {
+
+                row.style.display =
+                    "";
+
+                matchFound =
+                    true;
+
+            }
+
+            else {
+
+                row.style.display =
+                    "none";
+
+            }
+
         }
-
-        const volunteerName =
-            nameCell
-                .textContent
-                .trim()
-                .toLowerCase();
+    );
 
 
-        if (
-            volunteerName.includes(
-                searchValue
-            )
-        ) {
-            row.style.display = "";
-            matchCount++;
-        } else {
-            row.style.display = "none";
-        }
-    });
-
-
-    // No volunteer found.
-
-    if (matchCount === 0) {
+    if (matchFound) {
 
         volunteerSearchMessage.textContent =
-            "No volunteer records found.";
+            "Matching volunteer records found.";
+
+        volunteerSearchMessage.style.color =
+            "green";
+
+    }
+
+    else {
+
+        volunteerSearchMessage.textContent =
+            "No volunteer information found.";
 
         volunteerSearchMessage.style.color =
             "red";
 
-        return;
     }
 
-
-    // Matching records found.
-
-    if (matchCount === 1) {
-
-        volunteerSearchMessage.textContent =
-            "1 matching volunteer record found.";
-
-    } else {
-
-        volunteerSearchMessage.textContent =
-            matchCount +
-            " matching volunteer records found.";
-    }
-
-    volunteerSearchMessage.style.color =
-        "green";
 }
 
 
 // ========================================
 // CLEAR VOLUNTEER SEARCH
-// YM - PER4-15
 // ========================================
 
 clearVolunteerSearchButton.addEventListener(
     "click",
     function () {
 
-        clearVolunteerSearch();
+        volunteerSearch.value =
+            "";
+
+
+        volunteerSearchMessage.textContent =
+            "";
+
+
+        const rows =
+            volunteerBody.querySelectorAll(
+                "tr"
+            );
+
+
+        rows.forEach(
+            function (row) {
+
+                row.style.display =
+                    "";
+
+            }
+        );
+
+
+        document.getElementById(
+            "volunteerDetails"
+        ).style.display =
+            "none";
 
     }
 );
-
-
-function clearVolunteerSearch() {
-
-    volunteerSearch.value =
-        "";
-
-    volunteerSearchMessage.textContent =
-        "";
-
-    const rows =
-        volunteerBody.querySelectorAll("tr");
-
-    rows.forEach(function (row) {
-        row.style.display = "";
-    });
-
-    closeVolunteerDetails();
-}
 
 
 // ========================================
@@ -1636,150 +2398,100 @@ function clearVolunteerSearch() {
 // YM - PER4-15
 // ========================================
 
-function viewVolunteerDetails(button) {
+function viewVolunteerDetails(
+    button
+) {
 
     const row =
         button.closest("tr");
 
-    const name =
-        row
-            .querySelector(
-                ".volunteer-name"
-            )
-            .textContent
-            .trim();
-
-    const phone =
-        row
-            .querySelector(
-                ".volunteer-phone"
-            )
-            .textContent
-            .trim();
-
-    const email =
-        row
-            .querySelector(
-                ".volunteer-email"
-            )
-            .textContent
-            .trim();
-
-    const status =
-        row
-            .querySelector(
-                ".volunteer-status"
-            )
-            .textContent
-            .trim();
-
-    const systemAccess =
-        row
-            .querySelector(
-                ".volunteer-access"
-            )
-            .textContent
-            .trim();
-
 
     document.getElementById(
         "detailVolunteerName"
-    ).textContent = name;
+    ).textContent =
+        row.querySelector(
+            ".volunteer-name"
+        ).textContent.trim();
 
 
     document.getElementById(
         "detailVolunteerPhone"
-    ).textContent = phone;
+    ).textContent =
+        row.querySelector(
+            ".volunteer-phone"
+        ).textContent.trim();
 
 
     document.getElementById(
         "detailVolunteerEmail"
-    ).textContent = email;
+    ).textContent =
+        row.querySelector(
+            ".volunteer-email"
+        ).textContent.trim();
 
 
     document.getElementById(
         "detailVolunteerStatus"
-    ).textContent = status;
+    ).textContent =
+        row.querySelector(
+            ".volunteer-status"
+        ).textContent.trim();
 
 
     document.getElementById(
         "detailVolunteerAccess"
-    ).textContent = systemAccess;
+    ).textContent =
+        row.querySelector(
+            ".volunteer-access"
+        ).textContent.trim();
 
 
-    volunteerDetails.style.display =
+    document.getElementById(
+        "volunteerDetails"
+    ).style.display =
         "block";
 
-
-    volunteerSearchMessage.textContent =
-        "Volunteer details displayed.";
-
-    volunteerSearchMessage.style.color =
-        "green";
 }
 
 
 // ========================================
 // CLOSE VOLUNTEER DETAILS
-// YM - PER4-15
 // ========================================
 
-closeVolunteerDetailsButton.addEventListener(
+document.getElementById(
+    "closeVolunteerDetailsButton"
+).addEventListener(
     "click",
     function () {
 
-        closeVolunteerDetails();
+        document.getElementById(
+            "volunteerDetails"
+        ).style.display =
+            "none";
 
     }
 );
 
 
-function closeVolunteerDetails() {
-
-    volunteerDetails.style.display =
-        "none";
-
-    document.getElementById(
-        "detailVolunteerName"
-    ).textContent = "";
-
-    document.getElementById(
-        "detailVolunteerPhone"
-    ).textContent = "";
-
-    document.getElementById(
-        "detailVolunteerEmail"
-    ).textContent = "";
-
-    document.getElementById(
-        "detailVolunteerStatus"
-    ).textContent = "";
-
-    document.getElementById(
-        "detailVolunteerAccess"
-    ).textContent = "";
-}
-
-
 // ========================================
-// CREW ROLE MANAGEMENT
-// HS + BN
+// REQUIRED CREW ROLES
+// HS + BN - PER4-5
 // ========================================
 
 const crewRoleForm =
-    document.getElementById("crewRoleForm");
-
-const rolePerformance =
-    document.getElementById("rolePerformance");
-
-const roleName =
-    document.getElementById("roleName");
+    document.getElementById(
+        "crewRoleForm"
+    );
 
 const roleMessage =
-    document.getElementById("roleMessage");
+    document.getElementById(
+        "roleMessage"
+    );
 
 const crewRoleBody =
-    document.getElementById("crewRoleBody");
+    document.getElementById(
+        "crewRoleBody"
+    );
 
 
 crewRoleForm.addEventListener(
@@ -1788,18 +2500,26 @@ crewRoleForm.addEventListener(
 
         event.preventDefault();
 
+
         const performance =
-            rolePerformance.value;
+            document.getElementById(
+                "rolePerformance"
+            ).value;
+
 
         const role =
-            roleName.value.trim();
+            document.getElementById(
+                "roleName"
+            ).value.trim();
+
 
         if (
             performance === "" ||
             role === ""
         ) {
+
             roleMessage.textContent =
-                "Please select a performance and enter a crew role.";
+                "Performance and crew role are required.";
 
             roleMessage.style.color =
                 "red";
@@ -1807,12 +2527,46 @@ crewRoleForm.addEventListener(
             return;
         }
 
+
+        const duplicate =
+            requiredCrewRoles.some(
+                function (item) {
+
+                    return (
+                        item.performance ===
+                        performance &&
+
+                        item.role.toLowerCase() ===
+                        role.toLowerCase()
+                    );
+
+                }
+            );
+
+
+        if (duplicate) {
+
+            roleMessage.textContent =
+                "This crew role already exists for the selected performance.";
+
+            roleMessage.style.color =
+                "red";
+
+            return;
+        }
+
+
         requiredCrewRoles.push({
+
             performance: performance,
+
             role: role
+
         });
 
+
         displayRequiredRoles();
+
 
         roleMessage.textContent =
             "Required crew role added successfully.";
@@ -1820,24 +2574,55 @@ crewRoleForm.addEventListener(
         roleMessage.style.color =
             "green";
 
+
         crewRoleForm.reset();
+
     }
 );
 
 
 // ========================================
-// DISPLAY REQUIRED ROLES
+// DISPLAY REQUIRED CREW ROLES
 // ========================================
 
 function displayRequiredRoles() {
 
     crewRoleBody.innerHTML = "";
 
+
     requiredCrewRoles.forEach(
-        function (item, index) {
+        function (
+            item,
+            index
+        ) {
+
+            const assignment =
+                crewAssignments.find(
+                    function (crewAssignment) {
+
+                        return (
+                            crewAssignment.performance ===
+                            item.performance &&
+
+                            crewAssignment.role ===
+                            item.role
+                        );
+
+                    }
+                );
+
+
+            const roleStatus =
+                assignment
+                    ? "Filled"
+                    : "Unfilled";
+
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
+
 
             row.innerHTML = `
 
@@ -1850,56 +2635,72 @@ function displayRequiredRoles() {
                 </td>
 
                 <td>
-                    Unfilled
+                    ${roleStatus}
                 </td>
 
                 <td>
 
                     <button
                         type="button"
-                        onclick="editCrewRole(${index})"
+                        onclick="editRequiredRole(${index})"
                     >
                         Edit
                     </button>
 
                     <button
                         type="button"
-                        onclick="removeCrewRole(${index})"
+                        onclick="removeRequiredRole(${index})"
                     >
                         Remove
                     </button>
 
                 </td>
+
             `;
 
-            crewRoleBody.appendChild(row);
+
+            crewRoleBody.appendChild(
+                row
+            );
+
         }
     );
+
 }
 
 
 // ========================================
-// EDIT CREW ROLE
+// EDIT REQUIRED ROLE
 // ========================================
 
-function editCrewRole(index) {
+function editRequiredRole(index) {
 
-    const currentRole =
-        requiredCrewRoles[index].role;
+    const item =
+        requiredCrewRoles[index];
 
-    const updatedRole = prompt(
-        "Update crew role:",
-        currentRole
-    );
 
-    if (updatedRole === null) {
+    const oldRole =
+        item.role;
+
+
+    const newRole =
+        prompt(
+            "Update crew role:",
+            oldRole
+        );
+
+
+    if (newRole === null) {
         return;
     }
 
-    if (updatedRole.trim() === "") {
+
+    if (
+        newRole.trim() === ""
+    ) {
 
         roleMessage.textContent =
-            "Crew role cannot be empty.";
+            "Crew role is required.";
 
         roleMessage.style.color =
             "red";
@@ -1907,67 +2708,138 @@ function editCrewRole(index) {
         return;
     }
 
-    requiredCrewRoles[index].role =
-        updatedRole.trim();
+
+    item.role =
+        newRole.trim();
+
+
+    crewAssignments.forEach(
+        function (assignment) {
+
+            if (
+                assignment.performance ===
+                item.performance &&
+
+                assignment.role ===
+                oldRole
+            ) {
+
+                assignment.role =
+                    newRole.trim();
+
+            }
+
+        }
+    );
+
 
     displayRequiredRoles();
+
+    displayAssignments();
+
 
     roleMessage.textContent =
         "Crew role updated successfully.";
 
     roleMessage.style.color =
         "green";
+
 }
 
 
 // ========================================
-// REMOVE CREW ROLE
+// REMOVE REQUIRED ROLE
 // ========================================
 
-function removeCrewRole(index) {
+function removeRequiredRole(index) {
 
     const item =
         requiredCrewRoles[index];
 
-    const confirmed = confirm(
-        "Remove " +
-        item.role +
-        " from " +
-        item.performance +
-        "?"
-    );
+
+    const assigned =
+        crewAssignments.some(
+            function (assignment) {
+
+                return (
+                    assignment.performance ===
+                    item.performance &&
+
+                    assignment.role ===
+                    item.role
+                );
+
+            }
+        );
+
+
+    if (assigned) {
+
+        roleMessage.textContent =
+            "This crew role cannot be removed while a volunteer is assigned to it.";
+
+        roleMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Remove " +
+            item.role +
+            " from " +
+            item.performance +
+            "?"
+        );
+
 
     if (!confirmed) {
         return;
     }
 
-    requiredCrewRoles.splice(index, 1);
+
+    requiredCrewRoles.splice(
+        index,
+        1
+    );
+
 
     displayRequiredRoles();
+
 
     roleMessage.textContent =
         "Crew role removed successfully.";
 
     roleMessage.style.color =
         "green";
+
 }
 
 
 // ========================================
 // ASSIGN VOLUNTEER
-// HS PER4-6
-// YM PER4-7
-// YM PER4-10
+//
+// HS - PER4-6
+// YM - PER4-7
+// YM - PER4-10
 // ========================================
 
 const assignmentForm =
-    document.getElementById("assignmentForm");
+    document.getElementById(
+        "assignmentForm"
+    );
 
 const assignmentMessage =
-    document.getElementById("assignmentMessage");
+    document.getElementById(
+        "assignmentMessage"
+    );
 
 const assignmentBody =
-    document.getElementById("assignmentBody");
+    document.getElementById(
+        "assignmentBody"
+    );
 
 
 assignmentForm.addEventListener(
@@ -1976,20 +2848,24 @@ assignmentForm.addEventListener(
 
         event.preventDefault();
 
+
         const performanceReference =
-            document
-                .getElementById("performance")
-                .value;
+            document.getElementById(
+                "performance"
+            ).value;
+
 
         const role =
-            document
-                .getElementById("assignmentRole")
-                .value;
+            document.getElementById(
+                "assignmentRole"
+            ).value;
+
 
         const volunteer =
-            document
-                .getElementById("volunteer")
-                .value;
+            document.getElementById(
+                "volunteer"
+            ).value;
+
 
         if (
             performanceReference === "" ||
@@ -2006,6 +2882,7 @@ assignmentForm.addEventListener(
             return;
         }
 
+
         const selectedPerformance =
             performances.find(
                 function (performance) {
@@ -2016,8 +2893,10 @@ assignmentForm.addEventListener(
                         ) ===
                         performanceReference
                     );
+
                 }
             );
+
 
         if (!selectedPerformance) {
 
@@ -2030,20 +2909,27 @@ assignmentForm.addEventListener(
             return;
         }
 
+
+        // PER4-7
+        // Prevent the same volunteer from receiving
+        // more than one crew role for the same performance.
+
         const duplicateAssignment =
             crewAssignments.some(
                 function (assignment) {
 
                     return (
                         assignment.performance ===
-                            performanceReference &&
+                        performanceReference &&
 
                         assignment.volunteer
                             .toLowerCase() ===
-                            volunteer.toLowerCase()
+                        volunteer.toLowerCase()
                     );
+
                 }
             );
+
 
         if (duplicateAssignment) {
 
@@ -2056,6 +2942,39 @@ assignmentForm.addEventListener(
 
             return;
         }
+
+
+        // Prevent two volunteers filling the exact
+        // same required role.
+
+        const roleAlreadyFilled =
+            crewAssignments.some(
+                function (assignment) {
+
+                    return (
+                        assignment.performance ===
+                        performanceReference &&
+
+                        assignment.role ===
+                        role
+                    );
+
+                }
+            );
+
+
+        if (roleAlreadyFilled) {
+
+            assignmentMessage.textContent =
+                role +
+                " is already filled for this performance.";
+
+            assignmentMessage.style.color =
+                "red";
+
+            return;
+        }
+
 
         crewAssignments.push({
 
@@ -2079,9 +2998,14 @@ assignmentForm.addEventListener(
 
             status:
                 "Unconfirmed"
+
         });
 
+
         displayAssignments();
+
+        displayRequiredRoles();
+
 
         assignmentMessage.textContent =
             "Volunteer assigned successfully.";
@@ -2089,57 +3013,11 @@ assignmentForm.addEventListener(
         assignmentMessage.style.color =
             "green";
 
+
         assignmentForm.reset();
+
     }
 );
-
-
-// ========================================
-// CONFIRM ASSIGNMENT
-// HS - PER4-13
-// ========================================
-
-function confirmAssignment(index) {
-
-    const assignment =
-        crewAssignments[index];
-
-    if (!assignment) {
-        return;
-    }
-
-    if (
-        assignment.status ===
-        "Confirmed"
-    ) {
-
-        assignmentMessage.textContent =
-            "This crew assignment is already confirmed.";
-
-        assignmentMessage.style.color =
-            "red";
-
-        return;
-    }
-
-    assignment.status =
-        "Confirmed";
-
-    displayAssignments();
-
-    if (
-        currentUser &&
-        currentUser.role === "User"
-    ) {
-        displayMyAssignments();
-    }
-
-    assignmentMessage.textContent =
-        "Crew assignment confirmed successfully.";
-
-    assignmentMessage.style.color =
-        "green";
-}
 
 
 // ========================================
@@ -2150,11 +3028,18 @@ function displayAssignments() {
 
     assignmentBody.innerHTML = "";
 
+
     crewAssignments.forEach(
-        function (assignment, index) {
+        function (
+            assignment,
+            index
+        ) {
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
+
 
             row.innerHTML = `
 
@@ -2177,11 +3062,15 @@ function displayAssignments() {
                 <td>
 
                     <button
-                        type="button"
-                        onclick="confirmAssignment(${index})"
-                    >
-                        Confirm
-                    </button>
+    type="button"
+    onclick="confirmAssignment(${index})"
+>
+    ${
+        assignment.status === "Confirmed"
+            ? "Mark Unconfirmed"
+            : "Confirm"
+    }
+</button>
 
                     <button
                         type="button"
@@ -2198,11 +3087,79 @@ function displayAssignments() {
                     </button>
 
                 </td>
+
             `;
 
-            assignmentBody.appendChild(row);
+
+            assignmentBody.appendChild(
+                row
+            );
+
         }
     );
+
+}
+
+
+// ========================================
+// CHANGE ASSIGNMENT STATUS
+// HS - PER4-13
+// Admin / Coordinator
+// ========================================
+
+function confirmAssignment(index) {
+
+    const assignment =
+        crewAssignments[index];
+
+
+    if (!assignment) {
+        return;
+    }
+
+
+    if (
+        assignment.status ===
+        "Unconfirmed"
+    ) {
+
+        assignment.status =
+            "Confirmed";
+
+        assignmentMessage.textContent =
+            "Crew assignment confirmed successfully.";
+
+    }
+
+    else {
+
+        assignment.status =
+            "Unconfirmed";
+
+        assignmentMessage.textContent =
+            "Crew assignment changed to unconfirmed.";
+
+    }
+
+
+    assignmentMessage.style.color =
+        "green";
+
+
+    displayAssignments();
+
+    displayRequiredRoles();
+
+
+    if (
+        currentUser &&
+        currentUser.role === "User"
+    ) {
+
+        displayMyAssignments();
+
+    }
+
 }
 
 
@@ -2216,27 +3173,42 @@ function changeAssignment(index) {
     const currentAssignment =
         crewAssignments[index];
 
-    const newRole = prompt(
-        "Enter new crew role:",
-        currentAssignment.role
-    );
+
+    const newRole =
+        prompt(
+            "Enter new crew role:",
+            currentAssignment.role
+        );
+
 
     if (newRole === null) {
         return;
     }
 
-    const newVolunteer = prompt(
-        "Enter volunteer name:",
-        currentAssignment.volunteer
-    );
+
+    const newVolunteer =
+        prompt(
+            "Enter volunteer name:",
+            currentAssignment.volunteer
+        );
+
 
     if (newVolunteer === null) {
         return;
     }
 
+
+    const cleanRole =
+        newRole.trim();
+
+
+    const cleanVolunteer =
+        newVolunteer.trim();
+
+
     if (
-        newRole.trim() === "" ||
-        newVolunteer.trim() === ""
+        cleanRole === "" ||
+        cleanVolunteer === ""
     ) {
 
         assignmentMessage.textContent =
@@ -2248,6 +3220,57 @@ function changeAssignment(index) {
         return;
     }
 
+
+    const volunteerExists =
+        Array.from(
+            volunteerBody.querySelectorAll(
+                "tr"
+            )
+        ).some(
+            function (row) {
+
+                const nameCell =
+                    row.querySelector(
+                        ".volunteer-name"
+                    );
+
+                const statusCell =
+                    row.querySelector(
+                        ".volunteer-status"
+                    );
+
+
+                return (
+                    nameCell &&
+                    statusCell &&
+
+                    nameCell.textContent
+                        .trim()
+                        .toLowerCase() ===
+                    cleanVolunteer
+                        .toLowerCase() &&
+
+                    statusCell.textContent
+                        .trim() ===
+                    "Active"
+                );
+
+            }
+        );
+
+
+    if (!volunteerExists) {
+
+        assignmentMessage.textContent =
+            "The selected volunteer does not exist or is inactive.";
+
+        assignmentMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
     const duplicateAssignment =
         crewAssignments.some(
             function (
@@ -2257,24 +3280,25 @@ function changeAssignment(index) {
 
                 return (
                     assignmentIndex !==
-                        index &&
+                    index &&
 
                     assignment.performance ===
-                        currentAssignment.performance &&
+                    currentAssignment.performance &&
 
                     assignment.volunteer
                         .toLowerCase() ===
-                        newVolunteer
-                            .trim()
-                            .toLowerCase()
+                    cleanVolunteer
+                        .toLowerCase()
                 );
+
             }
         );
+
 
     if (duplicateAssignment) {
 
         assignmentMessage.textContent =
-            newVolunteer.trim() +
+            cleanVolunteer +
             " already has a crew role in this performance.";
 
         assignmentMessage.style.color =
@@ -2283,26 +3307,63 @@ function changeAssignment(index) {
         return;
     }
 
+
+    const roleAlreadyFilled =
+        crewAssignments.some(
+            function (
+                assignment,
+                assignmentIndex
+            ) {
+
+                return (
+                    assignmentIndex !==
+                    index &&
+
+                    assignment.performance ===
+                    currentAssignment.performance &&
+
+                    assignment.role
+                        .toLowerCase() ===
+                    cleanRole
+                        .toLowerCase()
+                );
+
+            }
+        );
+
+
+    if (roleAlreadyFilled) {
+
+        assignmentMessage.textContent =
+            cleanRole +
+            " is already filled for this performance.";
+
+        assignmentMessage.style.color =
+            "red";
+
+        return;
+    }
+
+
     currentAssignment.role =
-        newRole.trim();
+        cleanRole;
+
 
     currentAssignment.volunteer =
-        newVolunteer.trim();
+        cleanVolunteer;
+
 
     displayAssignments();
 
-    if (
-        currentUser &&
-        currentUser.role === "User"
-    ) {
-        displayMyAssignments();
-    }
+    displayRequiredRoles();
+
 
     assignmentMessage.textContent =
         "Crew assignment updated successfully.";
 
     assignmentMessage.style.color =
         "green";
+
 }
 
 
@@ -2316,36 +3377,54 @@ function removeAssignment(index) {
     const assignment =
         crewAssignments[index];
 
-    const confirmed = confirm(
-        "Remove " +
-        assignment.volunteer +
-        " from " +
-        assignment.role +
-        " for " +
-        assignment.performance +
-        "?"
-    );
+
+    if (!assignment) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+
+            "Remove " +
+
+            assignment.volunteer +
+
+            " from " +
+
+            assignment.role +
+
+            " for " +
+
+            assignment.performance +
+
+            "?"
+
+        );
+
 
     if (!confirmed) {
         return;
     }
 
-    crewAssignments.splice(index, 1);
+
+    crewAssignments.splice(
+        index,
+        1
+    );
+
 
     displayAssignments();
 
-    if (
-        currentUser &&
-        currentUser.role === "User"
-    ) {
-        displayMyAssignments();
-    }
+    displayRequiredRoles();
+
 
     assignmentMessage.textContent =
         "Crew assignment removed successfully. The crew role is now unfilled.";
 
     assignmentMessage.style.color =
         "green";
+
 }
 
 
@@ -2361,46 +3440,91 @@ function displayMyAssignments() {
             "myAssignmentBody"
         );
 
+
     const volunteerAccessMessage =
         document.getElementById(
             "volunteerAccessMessage"
         );
 
-    myAssignmentBody.innerHTML = "";
+
+    myAssignmentBody.innerHTML =
+        "";
+
 
     if (!currentUser) {
         return;
     }
 
-    const userAssignments =
-        crewAssignments.filter(
-            function (assignment) {
-
-                if (
-                    currentUser.volunteerName
-                ) {
-
-                    return (
-                        assignment.volunteer
-                            .toLowerCase() ===
-
-                        currentUser.volunteerName
-                            .toLowerCase()
-                    );
-                }
-
-                return (
-                    currentUser.username ===
-                        "user" &&
-
-                    assignment.volunteer ===
-                        "John Smith"
-                );
-            }
-        );
 
     if (
-        userAssignments.length === 0
+        currentUser.role !==
+        "User"
+    ) {
+
+        return;
+    }
+
+
+    if (
+        !currentUser.volunteerName
+    ) {
+
+        volunteerAccessMessage.textContent =
+            "This user account is not linked to a volunteer record.";
+
+        return;
+    }
+
+
+    const loggedInVolunteerName =
+        currentUser.volunteerName
+            .trim()
+            .toLowerCase();
+
+
+    const userAssignments =
+        crewAssignments
+            .map(
+                function (
+                    assignment,
+                    index
+                ) {
+
+                    return {
+                        assignment:
+                            assignment,
+
+                        originalIndex:
+                            index
+                    };
+
+                }
+            )
+            .filter(
+                function (item) {
+
+                    if (
+                        !item.assignment.volunteer
+                    ) {
+
+                        return false;
+                    }
+
+
+                    return (
+                        item.assignment.volunteer
+                            .trim()
+                            .toLowerCase() ===
+                        loggedInVolunteerName
+                    );
+
+                }
+            );
+
+
+    if (
+        userAssignments.length ===
+        0
     ) {
 
         volunteerAccessMessage.textContent =
@@ -2409,35 +3533,52 @@ function displayMyAssignments() {
         return;
     }
 
+
     userAssignments.sort(
         function (a, b) {
 
             const first =
                 new Date(
-                    a.performanceDate +
+                    a.assignment.performanceDate +
                     "T" +
-                    a.startTime
+                    a.assignment.startTime
                 );
+
 
             const second =
                 new Date(
-                    b.performanceDate +
+                    b.assignment.performanceDate +
                     "T" +
-                    b.startTime
+                    b.assignment.startTime
                 );
 
+
             return first - second;
+
         }
     );
+
 
     volunteerAccessMessage.textContent =
         "Your current crew assignments:";
 
+
     userAssignments.forEach(
-        function (assignment) {
+        function (item) {
+
+            const assignment =
+                item.assignment;
+
+
+            const assignmentIndex =
+                item.originalIndex;
+
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
+
 
             row.innerHTML = `
 
@@ -2460,11 +3601,96 @@ function displayMyAssignments() {
                 <td>
                     ${assignment.status}
                 </td>
+
+                <td>
+
+                    <button
+                        type="button"
+                        onclick="changeMyAssignmentStatus(${assignmentIndex})"
+                    >
+                        ${
+                            assignment.status === "Confirmed"
+                                ? "Mark Unconfirmed"
+                                : "Confirm"
+                        }
+                    </button>
+
+                </td>
+
             `;
 
-            myAssignmentBody.appendChild(row);
+
+            myAssignmentBody.appendChild(
+                row
+            );
+
         }
     );
+
+}
+
+// ========================================
+// VOLUNTEER CHANGE OWN ASSIGNMENT STATUS
+// ========================================
+
+function changeMyAssignmentStatus(index) {
+
+    if (
+        !currentUser ||
+        currentUser.role !== "User" ||
+        !currentUser.volunteerName
+    ) {
+
+        return;
+    }
+
+
+    const assignment =
+        crewAssignments[index];
+
+
+    if (!assignment) {
+        return;
+    }
+
+
+    if (
+        assignment.volunteer
+            .trim()
+            .toLowerCase() !==
+        currentUser.volunteerName
+            .trim()
+            .toLowerCase()
+    ) {
+
+        return;
+    }
+
+
+    if (
+        assignment.status ===
+        "Unconfirmed"
+    ) {
+
+        assignment.status =
+            "Confirmed";
+
+    }
+
+    else {
+
+        assignment.status =
+            "Unconfirmed";
+
+    }
+
+
+    displayMyAssignments();
+
+    displayAssignments();
+
+    displayRequiredRoles();
+
 }
 
 
@@ -2506,14 +3732,19 @@ viewRosterButton.addEventListener(
         const selectedPerformance =
             rosterPerformance.value;
 
-        rosterBody.innerHTML = "";
+
+        rosterBody.innerHTML =
+            "";
+
 
         if (
-            selectedPerformance === ""
+            selectedPerformance ===
+            ""
         ) {
 
             rosterTable.style.display =
                 "none";
+
 
             rosterMessage.textContent =
                 "Please select a performance.";
@@ -2524,6 +3755,7 @@ viewRosterButton.addEventListener(
             return;
         }
 
+
         const rolesForPerformance =
             requiredCrewRoles.filter(
                 function (item) {
@@ -2532,8 +3764,10 @@ viewRosterButton.addEventListener(
                         item.performance ===
                         selectedPerformance
                     );
+
                 }
             );
+
 
         if (
             rolesForPerformance.length ===
@@ -2542,6 +3776,7 @@ viewRosterButton.addEventListener(
 
             rosterTable.style.display =
                 "none";
+
 
             rosterMessage.textContent =
                 "No crew roles have been created for this performance.";
@@ -2552,6 +3787,7 @@ viewRosterButton.addEventListener(
             return;
         }
 
+
         rolesForPerformance.forEach(
             function (roleItem) {
 
@@ -2561,26 +3797,33 @@ viewRosterButton.addEventListener(
 
                             return (
                                 item.performance ===
-                                    selectedPerformance &&
+                                selectedPerformance &&
 
                                 item.role ===
-                                    roleItem.role
+                                roleItem.role
                             );
+
                         }
                     );
+
 
                 const volunteer =
                     assignment
                         ? assignment.volunteer
                         : "Unfilled";
 
+
                 const status =
                     assignment
                         ? assignment.status
                         : "Unfilled";
 
+
                 const row =
-                    document.createElement("tr");
+                    document.createElement(
+                        "tr"
+                    );
+
 
                 row.innerHTML = `
 
@@ -2599,20 +3842,28 @@ viewRosterButton.addEventListener(
                     <td>
                         ${status}
                     </td>
+
                 `;
 
-                rosterBody.appendChild(row);
+
+                rosterBody.appendChild(
+                    row
+                );
+
             }
         );
 
+
         rosterTable.style.display =
             "table";
+
 
         rosterMessage.textContent =
             "Performance roster loaded successfully.";
 
         rosterMessage.style.color =
             "green";
+
     }
 );
 
@@ -2643,16 +3894,24 @@ viewScheduleButton.addEventListener(
     function () {
 
         displayProductionSchedule();
+
     }
 );
 
 
+// ========================================
+// DISPLAY PRODUCTION SCHEDULE
+// ========================================
+
 function displayProductionSchedule() {
 
-    productionSchedule.innerHTML = "";
+    productionSchedule.innerHTML =
+        "";
+
 
     if (
-        productions.length === 0
+        productions.length ===
+        0
     ) {
 
         scheduleMessage.textContent =
@@ -2664,27 +3923,37 @@ function displayProductionSchedule() {
         return;
     }
 
+
     scheduleMessage.textContent =
         "Current production and performance schedule.";
 
     scheduleMessage.style.color =
         "green";
 
+
     productions.forEach(
         function (production) {
 
             const productionContainer =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            const productionHeading =
-                document.createElement("h3");
 
-            productionHeading.textContent =
+            const heading =
+                document.createElement(
+                    "h3"
+                );
+
+
+            heading.textContent =
                 production.title;
 
+
             productionContainer.appendChild(
-                productionHeading
+                heading
             );
+
 
             const productionPerformances =
                 performances.filter(
@@ -2694,8 +3963,10 @@ function displayProductionSchedule() {
                             performance.production ===
                             production.title
                         );
+
                     }
                 );
+
 
             productionPerformances.sort(
                 function (a, b) {
@@ -2707,6 +3978,7 @@ function displayProductionSchedule() {
                             a.time
                         );
 
+
                     const second =
                         new Date(
                             b.date +
@@ -2714,50 +3986,80 @@ function displayProductionSchedule() {
                             b.time
                         );
 
+
                     return first - second;
+
                 }
             );
+
 
             if (
                 productionPerformances.length ===
                 0
             ) {
 
-                const noPerformance =
-                    document.createElement("p");
+                const emptyMessage =
+                    document.createElement(
+                        "p"
+                    );
 
-                noPerformance.textContent =
-                    "No performances scheduled.";
+
+                emptyMessage.textContent =
+                    "No performances scheduled for this production.";
+
 
                 productionContainer.appendChild(
-                    noPerformance
+                    emptyMessage
                 );
 
-            } else {
+            }
+
+            else {
 
                 const table =
-                    document.createElement("table");
+                    document.createElement(
+                        "table"
+                    );
+
 
                 table.innerHTML = `
 
                     <thead>
+
                         <tr>
-                            <th>Date</th>
-                            <th>Start Time</th>
+
+                            <th>
+                                Performance Date
+                            </th>
+
+                            <th>
+                                Start Time
+                            </th>
+
                         </tr>
+
                     </thead>
 
-                    <tbody></tbody>
+                    <tbody>
+                    </tbody>
+
                 `;
 
-                const tableBody =
-                    table.querySelector("tbody");
+
+                const body =
+                    table.querySelector(
+                        "tbody"
+                    );
+
 
                 productionPerformances.forEach(
                     function (performance) {
 
                         const row =
-                            document.createElement("tr");
+                            document.createElement(
+                                "tr"
+                            );
+
 
                         row.innerHTML = `
 
@@ -2768,20 +4070,51 @@ function displayProductionSchedule() {
                             <td>
                                 ${performance.time}
                             </td>
+
                         `;
 
-                        tableBody.appendChild(row);
+
+                        body.appendChild(
+                            row
+                        );
+
                     }
                 );
+
 
                 productionContainer.appendChild(
                     table
                 );
+
             }
+
 
             productionSchedule.appendChild(
                 productionContainer
             );
+
         }
     );
+
 }
+
+
+// ========================================
+// INITIAL DISPLAY SETUP
+// ========================================
+
+updateProductionOptions();
+
+updatePerformanceSelectors();
+
+updateVolunteerOptions();
+
+displayProductions();
+
+displayPerformances();
+
+displayRequiredRoles();
+
+displayAssignments();
+
+displayProductionSchedule();
